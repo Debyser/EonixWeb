@@ -9,9 +9,8 @@ namespace EonixWebApi.ApplicationCore.Repositories
         void RemoveById(Guid id);
         void Update(T entity);
         ValueTask<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        ValueTask<T> FindByFilterAsync(T filter, CancellationToken cancellationToken = default);
         ValueTask CommitAsync(CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
-        List<string> Includes { get; }
-        void AddInclude(string include);
     }
 }

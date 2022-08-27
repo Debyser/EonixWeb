@@ -1,13 +1,7 @@
 ﻿using EonixWebApi.ApplicationCore.Entities;
 using EonixWebApi.ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace EonixWebApi.Infrastructure.Data
 {
@@ -23,8 +17,6 @@ namespace EonixWebApi.Infrastructure.Data
             _dbSet = context.Set<T>();
         }
 
-        public List<string> Includes { get; private set; }
-
         public void Add(T entity)
         {
             _dbSet.Add(entity);
@@ -35,15 +27,14 @@ namespace EonixWebApi.Infrastructure.Data
             await DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async ValueTask<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async ValueTask<T> FindByFilterAsync(T filter, CancellationToken cancellationToken = default)
         {
-            // manage include
-            if (Includes != null) { 
-                var result = ApplySpecification();
-                return result.FirstOrDefault();
-            }
-            return await _dbSet.FindAsync(id);
+            //return await DbContext.FindAsync(filter.GetType(), cancellationToken);
+            return null;
         }
+
+        public async ValueTask<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default) 
+            => await _dbSet.FindAsync(new object[] { id }, cancellationToken);
 
         public async ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
         {
@@ -59,22 +50,6 @@ namespace EonixWebApi.Infrastructure.Data
         public void Update(T entity)
         {
             DbContext.Entry(entity).State = EntityState.Modified;
-        }
-
-        public void AddInclude(string include)
-        {
-            if (Includes == null) Includes = new List<string>();
-            Includes.Add(include);
-        }
-
-        private IQueryable<T> ApplySpecification()
-        {
-            var query = DbContext.Set<T>().AsQueryable();
-            if (Includes != null)
-            {
-                query = Includes.Aggregate(query, (current, include) => current.Include(include));
-            }
-            return query;
         }
     }
 }

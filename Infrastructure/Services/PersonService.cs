@@ -57,5 +57,8 @@ namespace Infrastructure.Services
             var result = await _personRepository.FindByIdAsync(id, cancellationToken);
             return result;
         }
+
+        public async ValueTask<Person> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default) 
+            => await _personRepository.FindByFilterAsync(filter, cancellationToken);
     }
 }
