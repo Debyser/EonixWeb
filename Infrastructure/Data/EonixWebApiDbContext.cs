@@ -13,8 +13,6 @@ namespace EonixWebApi.Infrastructure.Data
             _contextName = options.ContextType.Name;
         }
 
-
-        //Turn DbSet virtual to enable in memory mocking of the DbContext
         public virtual DbSet<Person> Persons { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

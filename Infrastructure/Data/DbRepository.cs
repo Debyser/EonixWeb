@@ -27,14 +27,11 @@ namespace EonixWebApi.Infrastructure.Data
             await DbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async ValueTask<T> FindByFilterAsync(T filter, CancellationToken cancellationToken = default)
+        public async ValueTask<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            //return await DbContext.FindAsync(filter.GetType(), cancellationToken);
-            return null;
+            T? t = await _dbSet.FindAsync(new object[] { id }, cancellationToken);
+            return t;
         }
-
-        public async ValueTask<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default) 
-            => await _dbSet.FindAsync(new object[] { id }, cancellationToken);
 
         public async ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
         {

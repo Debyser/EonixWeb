@@ -9,6 +9,6 @@ namespace ApplicationCore.Services
         ValueTask DeleteIdAsync(Guid id, CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<Person>> GetAllAsync(CancellationToken cancellationToken = default);
         ValueTask<Person> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-        ValueTask<Person> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default);
+        ValueTask<IEnumerable<Person>> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default);
     }
 }

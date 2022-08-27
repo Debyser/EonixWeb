@@ -1,6 +1,7 @@
 ﻿using EonixWebApi.ApplicationCore.Entities;
 using EonixWebApi.ApplicationCore.Repositories;
 using EonixWebApi.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
@@ -8,6 +9,20 @@ namespace Infrastructure.Data
     {
         public PersonRepository(EonixWebApiDbContext context) : base(context)
         {
+        }
+
+        public async ValueTask<IEnumerable<Person>> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default) 
+        {
+            return 
+                await ((EonixWebApiDbContext)DbContext).Persons
+                .Where(p => (p.FirstName.StartsWith(filter.FirstName) || p.FirstName.EndsWith(filter.FirstName))
+                 && (p.LastName.StartsWith(filter.LastName) || p.LastName.EndsWith(filter.LastName))).ToListAsync();
+
+            //return (filter.LastName == null && filter.FirstName == null) ?
+            //   await ((EonixWebApiDbContext)DbContext).Persons.ToListAsync() :
+            //   await ((EonixWebApiDbContext)DbContext).Persons
+            //   .Where(p => (p.FirstName.StartsWith(filter.FirstName) || p.FirstName.EndsWith(filter.FirstName))
+            //    && (p.LastName.StartsWith(filter.LastName) || p.LastName.EndsWith(filter.LastName))).ToListAsync();
         }
     }
 }

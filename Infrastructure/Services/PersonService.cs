@@ -13,17 +13,11 @@ namespace Infrastructure.Services
             _personRepository = personRepository;
         }
 
+        // to do : tester 
         public async ValueTask<Guid> CreateAsync(Person person, CancellationToken cancellationToken = default)
         {
-            // fix. SqlException: Cannot insert explicit value for identity column in table 'Address' when IDENTITY_INSERT is set to OFF.
-            //  * assign to 0 otherwise ValueGeneratedOnAdd() is not working
-            //person.Id = 0L;
-            //person.MainAddressId = 0L;
-            //person.MainAddress.Id = 0L;
-            //_addressRepository.Add(person.MainAddress);
             _personRepository.Add(person);
             await _personRepository.CommitAsync(cancellationToken);
-
             return person.Id;
         }
 
@@ -36,29 +30,22 @@ namespace Infrastructure.Services
             await _personRepository.CommitAsync(cancellationToken);
         }
 
-        public async ValueTask ModifyAsync(Guid personId, Person contact, CancellationToken cancellationToken = default)
+        public async ValueTask ModifyAsync(Guid personId, Person person, CancellationToken cancellationToken = default)
         {
             var prevPerson = await GetByIdAsync(personId, cancellationToken);
-            //TODO: validation here  + dynamic mapping
-            prevPerson.FirstName = contact.FirstName;
-            prevPerson.LastName = contact.LastName;
-            // update 
+            prevPerson.FirstName = person.FirstName;
+            prevPerson.LastName = person.LastName;
             _personRepository.Update(prevPerson);
             await _personRepository.CommitAsync(cancellationToken);
         }
 
-        public async ValueTask<IEnumerable<Person>> GetAllAsync(CancellationToken cancellationToken = default)
-        {
-            return await _personRepository.GetAllAsync(cancellationToken);
-        }
+        public async ValueTask<IEnumerable<Person>> GetAllAsync(CancellationToken cancellationToken = default) 
+            => await _personRepository.GetAllAsync(cancellationToken);
 
-        public async ValueTask<Person> GetByIdAsync(Guid id, CancellationToken cancellationToken)
-        {
-            var result = await _personRepository.FindByIdAsync(id, cancellationToken);
-            return result;
-        }
+        public async ValueTask<Person> GetByIdAsync(Guid id, CancellationToken cancellationToken) 
+            => await _personRepository.FindByIdAsync(id, cancellationToken);
 
-        public async ValueTask<Person> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default) 
-            => await _personRepository.FindByFilterAsync(filter, cancellationToken);
+        public async ValueTask<IEnumerable<Person>> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default) 
+            => await _personRepository.GetByFilterAsync(filter, cancellationToken);
     }
 }
