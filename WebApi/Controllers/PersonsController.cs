@@ -31,15 +31,18 @@ namespace EonixWebApi.WebApi
             => Ok(await _personService.CreateAsync(_mapper.Map<Person>(person)));
 
 
-        [HttpGet("", Name = nameof(GetAllPersons))]
-        public async Task<IActionResult> GetAllPersons()
-            => Ok(_mapper.Map<IEnumerable<PersonViewModel>>(await _personService.GetAllAsync()));
+        //[HttpGet("{name:alpha}", Name = nameof(GetAllPersons))]
+        //public async Task<IActionResult> GetAllPersons([FromQuery] string name)
+        //    => Ok(_mapper.Map<IEnumerable<PersonViewModel>>(await _personService.GetAllAsync()));
 
+        [HttpGet("", Name = nameof(GetPersonByFilter))]
+        public async Task<IActionResult> GetPersonByFilter([FromQuery] PersonViewModel filter)
+          => Ok(_mapper.Map<IEnumerable<PersonViewModel>>(await _personService.GetByFilterAsync(_mapper.Map<Person>(filter))));
 
 
         [HttpGet("{id:guid}", Name = nameof(GetPersonById))]
-        public async Task<IActionResult> GetPersonById([FromRoute] Guid? id) 
-            => Ok(_mapper.Map<PersonViewModel> (await _personService.GetByIdAsync(id.Value)));
+        public async Task<IActionResult> GetPersonById([FromRoute] Guid id) 
+            => Ok(_mapper.Map<PersonViewModel> (await _personService.GetByIdAsync(id)));
 
         [HttpDelete("{id:guid}", Name = nameof(DeletePerson))]
         public async Task<IActionResult> DeletePerson([FromRoute] Guid id)
@@ -48,9 +51,6 @@ namespace EonixWebApi.WebApi
             return NoContent();
         }
 
-        [HttpGet("ByFilter", Name = nameof(GetPersonByFilter))]
-        public async Task<IActionResult> GetPersonByFilter([FromBody] PersonViewModel filter = null)
-           => Ok(_mapper.Map<IEnumerable<PersonViewModel>>(await _personService.GetByFilterAsync(_mapper.Map<Person>(filter))));
-
+       
     }
 }

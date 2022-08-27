@@ -1,7 +1,6 @@
 ﻿using ApplicationCore.Services;
 using EonixWebApi.ApplicationCore.Entities;
 using EonixWebApi.ApplicationCore.Repositories;
-
 namespace Infrastructure.Services
 {
     public class PersonService : IPersonService
@@ -40,12 +39,14 @@ namespace Infrastructure.Services
         }
 
         public async ValueTask<IEnumerable<Person>> GetAllAsync(CancellationToken cancellationToken = default) 
-            => await _personRepository.GetAllAsync(cancellationToken);
+            => (await _personRepository.GetAllAsync(cancellationToken)).OrderBy(p=>p.LastName).ThenBy(p=>p.FirstName);
 
         public async ValueTask<Person> GetByIdAsync(Guid id, CancellationToken cancellationToken) 
             => await _personRepository.FindByIdAsync(id, cancellationToken);
 
         public async ValueTask<IEnumerable<Person>> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default) 
-            => await _personRepository.GetByFilterAsync(filter, cancellationToken);
+            => string.IsNullOrWhiteSpace(filter.LastName) && string.IsNullOrWhiteSpace(filter.LastName) ?
+               await GetAllAsync(cancellationToken) :
+               await _personRepository.GetByFilterAsync(filter, cancellationToken);
     }
 }
