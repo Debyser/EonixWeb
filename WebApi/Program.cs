@@ -1,4 +1,3 @@
-using Autofac.Core;
 using AutoMapper;
 using EonixWebApi.WebApi.Extensions;
 using WebApi.Mappings;
@@ -12,7 +11,8 @@ var config = new MapperConfiguration(cfg =>
 });
 builder.Services.AddSingleton<IMapper>(sp => config.CreateMapper());
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
+
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigurePersonRepository();
 builder.Services.ConfigurePersonService();
