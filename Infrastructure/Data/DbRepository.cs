@@ -1,13 +1,7 @@
 ﻿using EonixWebApi.ApplicationCore.Entities;
 using EonixWebApi.ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace EonixWebApi.Infrastructure.Data
 {
@@ -23,58 +17,18 @@ namespace EonixWebApi.Infrastructure.Data
             _dbSet = context.Set<T>();
         }
 
-        public List<string> Includes { get; private set; }
-
         public void Add(T entity)
         {
             _dbSet.Add(entity);
         }
 
-        public async ValueTask CommitAsync(CancellationToken cancellationToken = default)
-        {
-            await DbContext.SaveChangesAsync(cancellationToken);
-        }
+        public async ValueTask CommitAsync(CancellationToken cancellationToken = default) => await DbContext.SaveChangesAsync(cancellationToken);
 
-        public async ValueTask<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        {
-            // manage include
-            if (Includes != null) { 
-                var result = ApplySpecification();
-                return result.FirstOrDefault();
-            }
-            return await _dbSet.FindAsync(id);
-        }
+        public async ValueTask<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default) => await _dbSet.FindAsync(new object[] { id }, cancellationToken);
 
-        public async ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
-        {
-            return await _dbSet.ToListAsync(cancellationToken);
-        }
-
-        public void Remove(T entity)
-        {
-            _dbSet.Remove(entity);
-        }
+        public async ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default) => await _dbSet.ToListAsync(cancellationToken);
+        public void Remove(T entity) => _dbSet.Remove(entity);
         public void RemoveById(Guid id) => Remove(_dbSet.Find(id));
-
-        public void Update(T entity)
-        {
-            DbContext.Entry(entity).State = EntityState.Modified;
-        }
-
-        public void AddInclude(string include)
-        {
-            if (Includes == null) Includes = new List<string>();
-            Includes.Add(include);
-        }
-
-        private IQueryable<T> ApplySpecification()
-        {
-            var query = DbContext.Set<T>().AsQueryable();
-            if (Includes != null)
-            {
-                query = Includes.Aggregate(query, (current, include) => current.Include(include));
-            }
-            return query;
-        }
+        public void Update(T entity) => DbContext.Entry(entity).State = EntityState.Modified;
     }
 }

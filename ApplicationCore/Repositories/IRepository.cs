@@ -11,7 +11,5 @@ namespace EonixWebApi.ApplicationCore.Repositories
         ValueTask<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default);
         ValueTask CommitAsync(CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
-        List<string> Includes { get; }
-        void AddInclude(string include);
     }
 }
