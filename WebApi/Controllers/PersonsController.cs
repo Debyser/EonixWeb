@@ -30,11 +30,6 @@ namespace EonixWebApi.WebApi
         public async Task<IActionResult> CreatePerson([FromBody] PersonViewModel person) 
             => Ok(await _personService.CreateAsync(_mapper.Map<Person>(person)));
 
-
-        //[HttpGet("{name:alpha}", Name = nameof(GetAllPersons))]
-        //public async Task<IActionResult> GetAllPersons([FromQuery] string name)
-        //    => Ok(_mapper.Map<IEnumerable<PersonViewModel>>(await _personService.GetAllAsync()));
-
         [HttpGet("", Name = nameof(GetPersonByFilter))]
         public async Task<IActionResult> GetPersonByFilter([FromQuery] PersonViewModel filter)
           => Ok(_mapper.Map<IEnumerable<PersonViewModel>>(await _personService.GetByFilterAsync(_mapper.Map<Person>(filter))));

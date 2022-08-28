@@ -22,31 +22,13 @@ namespace EonixWebApi.Infrastructure.Data
             _dbSet.Add(entity);
         }
 
-        public async ValueTask CommitAsync(CancellationToken cancellationToken = default)
-        {
-            await DbContext.SaveChangesAsync(cancellationToken);
-        }
+        public async ValueTask CommitAsync(CancellationToken cancellationToken = default) => await DbContext.SaveChangesAsync(cancellationToken);
 
-        public async ValueTask<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        {
-            T? t = await _dbSet.FindAsync(new object[] { id }, cancellationToken);
-            return t;
-        }
+        public async ValueTask<T> FindByIdAsync(Guid id, CancellationToken cancellationToken = default) => await _dbSet.FindAsync(new object[] { id }, cancellationToken);
 
-        public async ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
-        {
-            return await _dbSet.ToListAsync(cancellationToken);
-        }
-
-        public void Remove(T entity)
-        {
-            _dbSet.Remove(entity);
-        }
+        public async ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default) => await _dbSet.ToListAsync(cancellationToken);
+        public void Remove(T entity) => _dbSet.Remove(entity);
         public void RemoveById(Guid id) => Remove(_dbSet.Find(id));
-
-        public void Update(T entity)
-        {
-            DbContext.Entry(entity).State = EntityState.Modified;
-        }
+        public void Update(T entity) => DbContext.Entry(entity).State = EntityState.Modified;
     }
 }
