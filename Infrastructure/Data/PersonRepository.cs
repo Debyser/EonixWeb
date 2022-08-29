@@ -17,7 +17,7 @@ namespace Infrastructure.Data
             if (string.IsNullOrWhiteSpace(filter.LastName))
                 return await ((EonixWebApiDbContext)DbContext).Persons
                 .Where(p => p.FirstName.StartsWith(filter.FirstName) || p.FirstName.EndsWith(filter.FirstName))
-                 .OrderBy(p => p.LastName)
+                .OrderBy(p => p.LastName)
                 .ThenBy(p => p.FirstName)
                 .ToListAsync(cancellationToken);
 

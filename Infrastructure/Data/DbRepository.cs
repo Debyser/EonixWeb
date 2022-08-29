@@ -1,11 +1,9 @@
 ﻿using EonixWebApi.ApplicationCore.Entities;
 using EonixWebApi.ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.CodeAnalysis;
 
 namespace EonixWebApi.Infrastructure.Data
 {
-    [ExcludeFromCodeCoverage]
     public class DbRepository<T> : IRepository<T> where T : class, IEntityBase, new()
     {
         protected readonly DbContext DbContext;
@@ -17,10 +15,7 @@ namespace EonixWebApi.Infrastructure.Data
             _dbSet = context.Set<T>();
         }
 
-        public void Add(T entity)
-        {
-            _dbSet.Add(entity);
-        }
+        public void Add(T entity) => _dbSet.Add(entity);
 
         public async ValueTask CommitAsync(CancellationToken cancellationToken = default) => await DbContext.SaveChangesAsync(cancellationToken);
 

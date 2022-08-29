@@ -45,7 +45,5 @@ namespace EonixWebApi.WebApi
             await _personService.DeleteIdAsync(id);
             return NoContent();
         }
-
-       
     }
 }

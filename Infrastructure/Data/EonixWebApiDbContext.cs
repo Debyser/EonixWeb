@@ -20,10 +20,7 @@ namespace EonixWebApi.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => base.OnConfiguring(optionsBuilder);
 
         private void ApplyAllConfigurations(ModelBuilder modelBuilder)
         {
