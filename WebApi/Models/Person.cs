@@ -1,6 +1,6 @@
 ﻿namespace WebApi.Models
 {
-    public class PersonViewModel
+    public class Person
     {
         public Guid Id { get; set; }
         public string? LastName { get; set; }

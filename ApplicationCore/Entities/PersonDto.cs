@@ -2,7 +2,7 @@
 
 namespace EonixWebApi.ApplicationCore.Entities
 {
-    public class Person : EntityBase
+    public class PersonDto : EntityBase
     {
         [Required(ErrorMessage = "Person lastname is a required field.")]
         public string LastName { get; set; }

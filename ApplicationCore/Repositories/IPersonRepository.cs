@@ -2,8 +2,8 @@
 
 namespace EonixWebApi.ApplicationCore.Repositories
 {
-    public interface IPersonRepository : IRepository<Person>
+    public interface IPersonRepository : IRepository<PersonDto>
     {
-        ValueTask<IEnumerable<Person>> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default);
+        ValueTask<IEnumerable<PersonDto>> GetByFilterAsync(PersonDto filter, CancellationToken cancellationToken = default);
     }
 }

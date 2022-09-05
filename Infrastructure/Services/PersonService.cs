@@ -12,8 +12,7 @@ namespace Infrastructure.Services
             _personRepository = personRepository;
         }
 
-        // to do : tester 
-        public async ValueTask<Guid> CreateAsync(Person person, CancellationToken cancellationToken = default)
+        public async ValueTask<Guid> CreateAsync(PersonDto person, CancellationToken cancellationToken = default)
         {
             _personRepository.Add(person);
             await _personRepository.CommitAsync(cancellationToken);
@@ -29,7 +28,7 @@ namespace Infrastructure.Services
             await _personRepository.CommitAsync(cancellationToken);
         }
 
-        public async ValueTask ModifyAsync(Guid personId, Person person, CancellationToken cancellationToken = default)
+        public async ValueTask ModifyAsync(Guid personId, PersonDto person, CancellationToken cancellationToken = default)
         {
             var prevPerson = await GetByIdAsync(personId, cancellationToken);
             prevPerson.FirstName = person.FirstName;
@@ -38,13 +37,13 @@ namespace Infrastructure.Services
             await _personRepository.CommitAsync(cancellationToken);
         }
 
-        public async ValueTask<IEnumerable<Person>> GetAllAsync(CancellationToken cancellationToken = default) 
+        public async ValueTask<IEnumerable<PersonDto>> GetAllAsync(CancellationToken cancellationToken = default) 
             => (await _personRepository.GetAllAsync(cancellationToken)).OrderBy(p=>p.LastName).ThenBy(p=>p.FirstName);
 
-        public async ValueTask<Person> GetByIdAsync(Guid id, CancellationToken cancellationToken) 
+        public async ValueTask<PersonDto> GetByIdAsync(Guid id, CancellationToken cancellationToken) 
             => await _personRepository.FindByIdAsync(id, cancellationToken);
 
-        public async ValueTask<IEnumerable<Person>> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default) 
+        public async ValueTask<IEnumerable<PersonDto>> GetByFilterAsync(PersonDto filter, CancellationToken cancellationToken = default) 
             => string.IsNullOrWhiteSpace(filter.LastName) && string.IsNullOrWhiteSpace(filter.LastName) ?
                await GetAllAsync(cancellationToken) :
                await _personRepository.GetByFilterAsync(filter, cancellationToken);
