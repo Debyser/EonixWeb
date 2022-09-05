@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class PersonRepository : DbRepository<PersonDto>, IPersonRepository
+    public class PersonRepository : DbRepository<Person>, IPersonRepository
     {
         public PersonRepository(EonixWebApiDbContext context) : base(context)
         {
         }
 
-        public async ValueTask<IEnumerable<PersonDto>> GetByFilterAsync(PersonDto filter, CancellationToken cancellationToken = default) 
+        public async ValueTask<IEnumerable<Person>> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default) 
         {
 
             if (string.IsNullOrWhiteSpace(filter.LastName))

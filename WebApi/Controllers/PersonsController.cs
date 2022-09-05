@@ -22,34 +22,25 @@ namespace EonixWebApi.WebApi
         }
 
         [HttpPut("{id:guid}", Name = nameof(ModifyPerson))]
-        public async Task<IActionResult> ModifyPerson([FromRoute] Guid id, [FromBody] Person person)
+        public async Task<IActionResult> ModifyPerson([FromRoute] Guid id, [FromBody] PersonViewModel person)
         {
-            await _personService.ModifyAsync(id, _mapper.Map<PersonDto>(person));
+            await _personService.ModifyAsync(id, _mapper.Map<Person>(person));
             return Ok();
         }
 
         [HttpPost("", Name = nameof(CreatePerson))]
-        public async Task<IActionResult> CreatePerson([FromBody] Person person) 
-            => Ok(await _personService.CreateAsync(_mapper.Map<PersonDto>(person)));
+        public async Task<IActionResult> CreatePerson([FromBody] PersonViewModel person) 
+            => Ok(await _personService.CreateAsync(_mapper.Map<Person>(person)));
 
-        [HttpGet("", Name = nameof(Get))]
-        public IEnumerable<string> Get()
-        {
-            throw new Exception("Exception");
-            _logger.LogInfo("Here is info message from our values controller."); 
-            _logger.LogDebug("Here is debug message from our values controller.");
-            _logger.LogWarn("Here is warn message from our values controller.");
-            _logger.LogError("Here is an error message from our values controller."); 
-            return new string[] { "value1", "value2" };
-        }
-        //[HttpGet("", Name = nameof(GetPersonByFilter))]
-        //public async Task<IActionResult> GetPersonByFilter([FromQuery] PersonViewModel filter)
-        // => Ok(_mapper.Map<IEnumerable<PersonViewModel>>(await _personService.GetByFilterAsync(_mapper.Map<Person>(filter))));
+
+        [HttpGet("", Name = nameof(GetPersonByFilter))]
+        public async Task<IActionResult> GetPersonByFilter([FromQuery] PersonViewModel filter)
+         => Ok(_mapper.Map<IEnumerable<PersonViewModel>>(await _personService.GetByFilterAsync(_mapper.Map<Person>(filter))));
 
 
         [HttpGet("{id:guid}", Name = nameof(GetPersonById))]
-        public async Task<IActionResult> GetPersonById([FromRoute] Guid id) 
-            => Ok(_mapper.Map<Person> (await _personService.GetByIdAsync(id)));
+        public async Task<IActionResult> GetPersonById([FromRoute] Guid id)
+            => Ok(_mapper.Map<PersonViewModel>(await _personService.GetByIdAsync(id)));
 
         [HttpDelete("{id:guid}", Name = nameof(DeletePerson))]
         public async Task<IActionResult> DeletePerson([FromRoute] Guid id)

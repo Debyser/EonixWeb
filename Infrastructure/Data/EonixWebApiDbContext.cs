@@ -13,7 +13,7 @@ namespace EonixWebApi.Infrastructure.Data
             _contextName = options.ContextType.Name;
         }
 
-        public virtual DbSet<PersonDto> Persons { get; set; }
+        public virtual DbSet<Person> Persons { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ApplyAllConfigurations(modelBuilder);
