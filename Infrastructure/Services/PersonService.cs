@@ -1,6 +1,9 @@
 ﻿using ApplicationCore.Services;
 using EonixWebApi.ApplicationCore.Entities;
 using EonixWebApi.ApplicationCore.Repositories;
+using EonixWebApi.Infrastructure.Exceptions;
+using System.Data;
+
 namespace Infrastructure.Services
 {
     public class PersonService : IPersonService
@@ -12,7 +15,6 @@ namespace Infrastructure.Services
             _personRepository = personRepository;
         }
 
-        // to do : tester 
         public async ValueTask<Guid> CreateAsync(Person person, CancellationToken cancellationToken = default)
         {
             _personRepository.Add(person);
@@ -42,7 +44,12 @@ namespace Infrastructure.Services
             => (await _personRepository.GetAllAsync(cancellationToken)).OrderBy(p=>p.LastName).ThenBy(p=>p.FirstName);
 
         public async ValueTask<Person> GetByIdAsync(Guid id, CancellationToken cancellationToken) 
-            => await _personRepository.FindByIdAsync(id, cancellationToken);
+        {
+            var person = await _personRepository.FindByIdAsync(id, cancellationToken);
+            if (person == null)
+                throw new PersonNotFoundException(id);
+            return person;
+        }
 
         public async ValueTask<IEnumerable<Person>> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default) 
             => string.IsNullOrWhiteSpace(filter.LastName) && string.IsNullOrWhiteSpace(filter.LastName) ?

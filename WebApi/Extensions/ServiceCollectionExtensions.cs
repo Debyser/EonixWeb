@@ -4,6 +4,7 @@ using EonixWebApi.Infrastructure.Data;
 using Infrastructure.Data;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Services;
 
 namespace EonixWebApi.WebApi.Extensions
 {
@@ -16,5 +17,8 @@ namespace EonixWebApi.WebApi.Extensions
             services.AddScoped<IPersonService, PersonService>();
         public static void ConfigurePersonRepository(this IServiceCollection services) =>
             services.AddScoped<IPersonRepository, PersonRepository>();
+
+        public static void ConfigureLoggerService(this IServiceCollection services) => 
+            services.AddSingleton<ILoggerService, LoggerManager>();
     }
 }
