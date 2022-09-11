@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EonixWebApi.ApplicationCore.Entities
+namespace ApplicationCore.Entities
 {
     public class EntityBase : IEntityBase
     {

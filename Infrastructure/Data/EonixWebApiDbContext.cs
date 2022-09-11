@@ -1,7 +1,7 @@
-﻿using EonixWebApi.ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EonixWebApi.Infrastructure.Data
+namespace Infrastructure.Data
 {
     public class EonixWebApiDbContext : DbContext
     {

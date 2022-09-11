@@ -1,4 +1,4 @@
-﻿using EonixWebApi.ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
 
 namespace ApplicationCore.Services
 {
@@ -9,5 +9,6 @@ namespace ApplicationCore.Services
         ValueTask DeleteIdAsync(Guid id, CancellationToken cancellationToken = default);
         ValueTask<Person> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<Person>> GetByFilterAsync(Person filter, CancellationToken cancellationToken = default);
+        ValueTask<IEnumerable<Person>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
     }
 }

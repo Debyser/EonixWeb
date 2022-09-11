@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using EonixWebApi.ApplicationCore.Entities;
 using ApplicationCore.Services;
 using WebApi.Models;
+using ApplicationCore.Entities;
 
-namespace EonixWebApi.WebApi
+namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -29,7 +29,7 @@ namespace EonixWebApi.WebApi
         }
 
         [HttpPost("", Name = nameof(CreatePerson))]
-        public async Task<IActionResult> CreatePerson([FromBody] PersonDto person) 
+        public async Task<IActionResult> CreatePerson([FromBody] PersonDto person)
             => Ok(await _personService.CreateAsync(_mapper.Map<Person>(person)));
 
 

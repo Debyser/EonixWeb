@@ -1,5 +1,5 @@
 ﻿using ApplicationCore.Services;
-using EonixWebApi.Infrastructure.Exceptions;
+using Infrastructure.Entities.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using WebApi.Models;
 

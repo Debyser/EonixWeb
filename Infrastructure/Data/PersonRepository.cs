@@ -1,6 +1,5 @@
-﻿using EonixWebApi.ApplicationCore.Entities;
-using EonixWebApi.ApplicationCore.Repositories;
-using EonixWebApi.Infrastructure.Data;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
@@ -36,5 +35,8 @@ namespace Infrastructure.Data
                 .ThenBy(p => p.FirstName)
                 .ToListAsync(cancellationToken);
         }
+
+        public ValueTask<IEnumerable<Person>> GetByIds(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
+            => FindByConditionAsync(x => ids.Contains(x.Id), cancellationToken);
     }
 }
