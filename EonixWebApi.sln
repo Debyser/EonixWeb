@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{49
 		contact.sql = contact.sql
 		contact_role.sql = contact_role.sql
 		country.sql = country.sql
+		personData.sql = personData.sql
+		persons.sql = persons.sql
 	EndProjectSection
 EndProject
 Global

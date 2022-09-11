@@ -12,8 +12,8 @@ builder.Services.ConfigureLoggerService();
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 builder.Services.ConfigureSqlContext(builder.Configuration);
-builder.Services.ConfigurePersonRepository();
-builder.Services.ConfigurePersonService();
+builder.Services.ConfigureRepository();
+builder.Services.ConfigureService();
 //var config = new MapperConfiguration(cfg =>
 //{
 //    cfg.AddProfile(new PersonMappingProfile());

@@ -6,7 +6,7 @@ using System.Data;
 
 namespace Infrastructure.Services
 {
-    public class PersonService : IPersonService
+    public class PersonService //: IPersonService
     {
         private readonly IPersonRepository _personRepository;
 
@@ -17,9 +17,11 @@ namespace Infrastructure.Services
 
         public async ValueTask<Guid> CreateAsync(Person person, CancellationToken cancellationToken = default)
         {
-            _personRepository.Add(person);
-            await _personRepository.CommitAsync(cancellationToken);
-            return person.Id;
+            //_personRepository.Add(person);
+            //await _personRepository.CommitAsync(cancellationToken);
+            //return person.Id;
+
+            return new Guid();
         }
 
         public async ValueTask DeleteIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -45,7 +47,8 @@ namespace Infrastructure.Services
 
         public async ValueTask<Person> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var person = await _personRepository.FindByIdAsync(id, cancellationToken);
+            Person person = null;
+            //var person = await _personRepository.FindByIdAsync(id, cancellationToken);
             if (person == null)
                 throw new PersonNotFoundException(id);
             return person;
@@ -70,6 +73,11 @@ namespace Infrastructure.Services
         //}
 
         public ValueTask<IEnumerable<Person>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask<Person> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
