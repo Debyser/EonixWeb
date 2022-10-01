@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Services;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Services;
 using AutoMapper;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,15 @@ namespace WebApi.Controllers
 
         [HttpGet("{id:int}", Name = nameof(GetCountryById))]
         public async Task<IActionResult> GetCountryById([FromRoute] int id)
-           => Ok(_mapper.Map<PersonDto>(await _countryService.GetByIdAsync(id)));
+        {
+            //=> Ok(_mapper.Map<PersonDto>(await _countryService.GetByIdAsync(id)));
+            //    provoque l'erreur car pas de personDto ic'
+
+            return null;
+        }
+
+        [HttpGet("", Name = nameof(GetCountryByFilter))]
+        public async Task<IActionResult> GetCountryByFilter([FromQuery] Country filter)
+            => Ok(_mapper.Map<IEnumerable<PersonDto>>(await _countryService.GetByFilterAsync(_mapper.Map<Country>(filter))));
     }
 }

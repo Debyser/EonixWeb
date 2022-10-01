@@ -15,9 +15,9 @@ namespace Infrastructure.Services
     {
         private readonly ICountryRepository _repository;
 
-        public CountryService(ICountryRepository personRepository)
+        public CountryService(ICountryRepository countryRepository)
         {
-            _repository = personRepository;
+            _repository = countryRepository;
         }
 
         public async ValueTask<int> CreateAsync(Country person, CancellationToken cancellationToken = default)
@@ -31,10 +31,10 @@ namespace Infrastructure.Services
 
         public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var person = await GetByIdAsync(id, cancellationToken);
+            var country = await GetByIdAsync(id, cancellationToken);
             // not found 
-            if (person == null) return;
-            _repository.Remove(person);
+            if (country == null) return;
+            _repository.Remove(country);
             await _repository.CommitAsync(cancellationToken);
         }
 
@@ -52,10 +52,10 @@ namespace Infrastructure.Services
 
         public async ValueTask<Country> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var person = await _repository.FindByIdAsync(id, cancellationToken);
-            if (person == null)
+            var country = await _repository.FindByIdAsync(id, cancellationToken);
+            if (country == null)
                 throw new CountryNotFoundException(id);
-            return person;
+            return country;
         }
 
         public IEnumerable<Country> GetByIds(IEnumerable<int> ids, CancellationToken cancellationToken = default)
@@ -76,8 +76,8 @@ namespace Infrastructure.Services
         }
 
         public ValueTask<IEnumerable<Country>> GetByFilterAsync(Country filter, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+            => string.IsNullOrWhiteSpace(filter.Name) ?
+               await GetAllAsync(cancellationToken) :
+               await _personRepository.GetByFilterAsync(filter, cancellationToken);
     }
 }

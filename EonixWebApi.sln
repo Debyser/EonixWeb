@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{49
 		persons.sql = persons.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{9C99A28B-3750-4AD4-8848-97D626318AB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{008EDCC3-FAF5-4C84-8FB6-BF393482FD92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{008EDCC3-FAF5-4C84-8FB6-BF393482FD92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{008EDCC3-FAF5-4C84-8FB6-BF393482FD92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C99A28B-3750-4AD4-8848-97D626318AB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C99A28B-3750-4AD4-8848-97D626318AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C99A28B-3750-4AD4-8848-97D626318AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C99A28B-3750-4AD4-8848-97D626318AB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{D577F7E8-0149-4B00-8060-49A7171B8C09} = {9149D893-EF94-4CCC-9613-BA6769114890}
 		{2294FD51-D99C-44CB-8C8F-7CE28D2EA4D3} = {9149D893-EF94-4CCC-9613-BA6769114890}
 		{008EDCC3-FAF5-4C84-8FB6-BF393482FD92} = {9149D893-EF94-4CCC-9613-BA6769114890}
+		{9C99A28B-3750-4AD4-8848-97D626318AB9} = {9149D893-EF94-4CCC-9613-BA6769114890}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {853771C9-63B9-42DF-92B6-988C8399C82A}

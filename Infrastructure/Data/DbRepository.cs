@@ -2,7 +2,6 @@
 using ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Threading;
 
 namespace Infrastructure.Data
 {

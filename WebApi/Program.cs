@@ -1,5 +1,3 @@
-using AutoMapper;
-using WebApi.Mappings;
 using NLog;
 using WebApi.Extensions;
 using ApplicationCore.Services;

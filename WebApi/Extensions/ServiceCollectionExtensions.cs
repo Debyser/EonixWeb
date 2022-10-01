@@ -4,18 +4,15 @@ using Infrastructure.Data;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Services;
-
+using Infrastructure.Data;
 namespace WebApi.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
-            services.AddDbContext<DbContext>(opts =>
-            opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("WebApi")));
 
-        //public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
-        //   services.AddDbContext<EonixWebApiDbContext>(opts =>
-        //   opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("WebApi")));
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
+           services.AddDbContext<EonixWebApiContext>(opts =>
+           opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("WebApi")));
 
         public static void ConfigureService(this IServiceCollection services)
         {
