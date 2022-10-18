@@ -50,7 +50,7 @@ namespace Infrastructure.Services
         private async ValueTask<IEnumerable<Country>> GetAllAsync(CancellationToken cancellationToken = default)
             => (await _repository.GetAllAsync(cancellationToken)).OrderBy(p => p.Name);
 
-        public async ValueTask<Country> GetByIdAsync(int id, CancellationToken cancellationToken)
+        public async ValueTask<Country> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             var country = await _repository.FindByIdAsync(id, cancellationToken);
             if (country == null)
@@ -75,9 +75,9 @@ namespace Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public ValueTask<IEnumerable<Country>> GetByFilterAsync(Country filter, CancellationToken cancellationToken = default)
+        public async ValueTask<IEnumerable<Country>> GetByFilterAsync(Country filter, CancellationToken cancellationToken = default)
             => string.IsNullOrWhiteSpace(filter.Name) ?
                await GetAllAsync(cancellationToken) :
-               await _personRepository.GetByFilterAsync(filter, cancellationToken);
+               await _repository.GetByFilterAsync(filter, cancellationToken);
     }
 }

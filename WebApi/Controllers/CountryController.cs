@@ -3,6 +3,8 @@ using ApplicationCore.Services;
 using AutoMapper;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
+using NLog.Filters;
+using Shared.DataTransferObjects;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -15,9 +17,9 @@ namespace WebApi.Controllers
         private readonly IMapper _mapper;
         private ILoggerService _logger;
 
-        public CountryController(ICountryService personService, IMapper mapper, ILoggerService logger)
+        public CountryController(ICountryService countryService, IMapper mapper, ILoggerService logger)
         {
-            _countryService = personService;
+            _countryService = countryService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -25,14 +27,11 @@ namespace WebApi.Controllers
         [HttpGet("{id:int}", Name = nameof(GetCountryById))]
         public async Task<IActionResult> GetCountryById([FromRoute] int id)
         {
-            //=> Ok(_mapper.Map<PersonDto>(await _countryService.GetByIdAsync(id)));
-            //    provoque l'erreur car pas de personDto ic'
-
-            return null;
+            return Ok(_mapper.Map<CountryDto>(await _countryService.GetByIdAsync(id)));
         }
 
         [HttpGet("", Name = nameof(GetCountryByFilter))]
         public async Task<IActionResult> GetCountryByFilter([FromQuery] Country filter)
-            => Ok(_mapper.Map<IEnumerable<PersonDto>>(await _countryService.GetByFilterAsync(_mapper.Map<Country>(filter))));
+            => Ok(_mapper.Map<IEnumerable<CountryDto>>(await _countryService.GetByFilterAsync(_mapper.Map<Country>(filter))));
     }
 }
