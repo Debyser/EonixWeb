@@ -20,13 +20,11 @@ namespace Infrastructure.Services
             _repository = countryRepository;
         }
 
-        public async ValueTask<int> CreateAsync(Country person, CancellationToken cancellationToken = default)
+        public async ValueTask<int> CreateAsync(Country country, CancellationToken cancellationToken = default)
         {
-            //_personRepository.Add(person);
-            //await _personRepository.CommitAsync(cancellationToken);
-            //return person.Id;
-
-            return -1;
+            _repository.Add(country);
+            await _repository.CommitAsync(cancellationToken);
+            return country.Id;
         }
 
         public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
@@ -38,12 +36,12 @@ namespace Infrastructure.Services
             await _repository.CommitAsync(cancellationToken);
         }
 
-        public async ValueTask ModifyAsync(int personId, Country person, CancellationToken cancellationToken = default)
+        public async ValueTask ModifyAsync(int countryId, Country country, CancellationToken cancellationToken = default)
         {
-            //var prevPerson = await GetByIdAsync(personId, cancellationToken);
-            //prevPerson.FirstName = person.FirstName;
-            //prevPerson.LastName = person.LastName;
-            //_repository.Update(prevPerson);
+            var prevCountry = await GetByIdAsync(countryId, cancellationToken);
+            prevCountry.Name = country.Name;
+            prevCountry.Iso3Code = country.Iso3Code;
+            _repository.Update(prevCountry);
             await _repository.CommitAsync(cancellationToken);
         }
 

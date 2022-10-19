@@ -17,9 +17,8 @@ namespace Infrastructure.Services
 
         public async ValueTask<Guid> CreateAsync(Person person, CancellationToken cancellationToken = default)
         {
-            //_personRepository.Add(person);
-            //await _personRepository.CommitAsync(cancellationToken);
-            //return person.Id;
+            _personRepository.Add(person);
+            await _personRepository.CommitAsync(cancellationToken);
 
             return new Guid();
         }
@@ -47,8 +46,8 @@ namespace Infrastructure.Services
 
         public async ValueTask<Person> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            Person person = null;
             //var person = await _personRepository.FindByIdAsync(id, cancellationToken);
+            Person person = null;
             if (person == null)
                 throw new PersonNotFoundException(id);
             return person;
