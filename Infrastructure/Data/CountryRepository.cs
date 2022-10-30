@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using WebApi.Models;
 
 namespace Infrastructure.Data
@@ -22,9 +23,8 @@ namespace Infrastructure.Data
                 await _context.Countries.ToListAsync();
         }
 
-        public ValueTask<IEnumerable<Country>> GetByIds(IEnumerable<int> ids, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //TODO : create 9.6 Model binding in API
+        public async ValueTask<IEnumerable<Country>> GetByIds(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+            => await _context.Countries.Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);
     }
 }

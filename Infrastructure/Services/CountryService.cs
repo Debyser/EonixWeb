@@ -2,20 +2,21 @@
 using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebApi.Models;
+using System.Linq;
 
 namespace Infrastructure.Services
 {
     public class CountryService : ICountryService
     {
         private readonly ICountryRepository _repository;
+        private readonly IAddressRepository _addressRepository;
 
-        public CountryService(ICountryRepository countryRepository)
+        public CountryService(ICountryRepository countryRepository, IAddressRepository addressRepository)
         {
             _repository = countryRepository;
         }
@@ -30,8 +31,8 @@ namespace Infrastructure.Services
         public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
         {
             var country = await GetByIdAsync(id, cancellationToken);
-            // not found 
-            if (country == null) return;
+            if (country == null)
+                throw new CountryNotFoundException(id);
             _repository.Remove(country);
             await _repository.CommitAsync(cancellationToken);
         }
@@ -39,8 +40,8 @@ namespace Infrastructure.Services
         public async ValueTask ModifyAsync(int countryId, Country country, CancellationToken cancellationToken = default)
         {
             var prevCountry = await GetByIdAsync(countryId, cancellationToken);
-            prevCountry.Name = country.Name;
             prevCountry.Iso3Code = country.Iso3Code;
+            prevCountry.Name = country.Name;
             _repository.Update(prevCountry);
             await _repository.CommitAsync(cancellationToken);
         }
@@ -56,22 +57,25 @@ namespace Infrastructure.Services
             return country;
         }
 
-        public IEnumerable<Country> GetByIds(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+        public async ValueTask<IEnumerable<Country>> GetByIdsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
         {
-            //if (ids is null)
-            //   throw new IdParametersBadRequestException(); 
-            var companyEntities = _repository.GetByIds(ids, cancellationToken);
-            //if (ids.Count() != companyEntities..Count())
-            //    throw new CollectionByIdsBadRequestException(); 
-            //return companyEntities;
-
-            return null;
+            if (ids == null)
+                throw new IdParametersBadRequestException();
+            var countryEntities = await _repository.GetByIds(ids, cancellationToken);
+            if (ids.Count() != countryEntities.Count())
+                throw new CollectionByIdsBadRequestException();
+            return countryEntities;
         }
 
-        public ValueTask<IEnumerable<Country>> GetByIdsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //public ValueTask<IEnumerable<Country>> GetByIdsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+        //{
+        //    if (ids == null) 
+        //        throw new CompanyCollectionBadRequest(); 
+        //    var companyEntities = _mapper.Map<IEnumerable<Company>>(companyCollection); 
+        //    foreach (var company in companyEntities) 
+        //        _repository.CreateCompany(company);
+        //    _repository.Save(); var companyCollectionToReturn = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities); var ids = string.Join(",", companyCollectionToReturn.Select(c => c.Id)); return (companies: companyCollectionToReturn, ids: ids);
+        //}
 
         public async ValueTask<IEnumerable<Country>> GetByFilterAsync(Country filter, CancellationToken cancellationToken = default)
             => string.IsNullOrWhiteSpace(filter.Name) ?

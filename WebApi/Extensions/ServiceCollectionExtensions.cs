@@ -4,7 +4,7 @@ using Infrastructure.Data;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Services;
-using Infrastructure.Data;
+
 namespace WebApi.Extensions
 {
     public static class ServiceCollectionExtensions
@@ -17,13 +17,14 @@ namespace WebApi.Extensions
         public static void ConfigureService(this IServiceCollection services)
         {
             services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<IAddressService, AddressService>();
+
             //services.AddScoped<IPersonService, PersonService>();
         }
         public static void ConfigureRepository(this IServiceCollection services)
         {
-            //services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
-
+            services.AddScoped<IAddressRepository, AddressRepository>();
         }
 
         public static void ConfigureLoggerService(this IServiceCollection services) =>

@@ -13,6 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{492CBFE8-B2FF-4F78-9C0C-94A223D0BF0C}"
 	ProjectSection(SolutionItems) = preProject
+		..\..\..\Downloads\Address(3).sql = ..\..\..\Downloads\Address(3).sql
 		address.sql = address.sql
 		company.sql = company.sql
 		contact.sql = contact.sql
@@ -22,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{49
 		persons.sql = persons.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{9C99A28B-3750-4AD4-8848-97D626318AB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{9C99A28B-3750-4AD4-8848-97D626318AB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
