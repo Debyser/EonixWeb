@@ -17,24 +17,20 @@ namespace Infrastructure.Services
             _countryRepository = countryRepository;
         }
 
-        public async ValueTask<int> CreateAsync(Address model, CancellationToken cancellationToken = default)
+        public async ValueTask<int> CreateAsync(Address address, CancellationToken cancellationToken = default)
         {
-            _addressRepository.Add(model);
-            await _addressRepository.CommitAsync(cancellationToken);
-            return model.Id;
-
             // fix. SqlException: Cannot insert explicit value for identity column in table 'Address' when IDENTITY_INSERT is set to OFF.
             //  * assign to 0 otherwise ValueGeneratedOnAdd() is not working
-            //contact.Id = 0L;
-            //contact.MainAddressId = 0L;
-            //contact.MainAddress.Id = 0L;
-            //_addressRepository.Add(contact.MainAddress);
-            //await _addressRepository.CommitAsync(cancellationToken);
+            address.Id = 0;
+            address.Address2countryNavigation.Id = 0;
+            address.Address2country = 0;
+            _countryRepository.Add(address.Address2countryNavigation);
+            await _countryRepository.CommitAsync(cancellationToken);
 
-            //_contactRepository.Add(contact);
-            //await _contactRepository.CommitAsync(cancellationToken);
+            _addressRepository.Add(address);
+            await _addressRepository.CommitAsync(cancellationToken);
 
-            //return contact.Id;
+            return address.Id;
         }
 
         public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)

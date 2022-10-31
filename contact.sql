@@ -12,3 +12,8 @@ CREATE TABLE contact (
 	contact2address int NOT NULL,
 	CONSTRAINT contact_pk PRIMARY KEY (id)
 );
+
+
+-- public.contact foreign keys
+
+ALTER TABLE contact ADD CONSTRAINT contact_contact2address_fkey FOREIGN KEY (contact2address) REFERENCES address(id);
