@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Repositories;
 using ApplicationCore.Services;
+using Infrastructure.Data;
 using Infrastructure.Entities.Exceptions;
 using WebApi.Models;
 
@@ -47,6 +48,7 @@ namespace Infrastructure.Services
 
         public async ValueTask<Address> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
+            _addressRepository.AddInclude("Address2countryNavigation");
             var address = await _addressRepository.FindByIdAsync(id, cancellationToken);
             if (address == null)
                 throw new AddressNotFoundException(id);
