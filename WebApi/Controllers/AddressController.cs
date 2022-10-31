@@ -35,7 +35,10 @@ namespace WebApi.Controllers
 
         [HttpGet("{id:int}", Name = nameof(GetAddressById))]
         public async Task<IActionResult> GetAddressById([FromRoute] int id)
-            => Ok(_mapper.Map<AddressDto>(await _addressService.GetByIdAsync(id)));
+        {
+        var ok = Ok(_mapper.Map<AddressDto>(await _addressService.GetByIdAsync(id)));
+            return ok;
+        }
 
 
         [HttpDelete("{id:int}", Name = nameof(DeleteAddress))]

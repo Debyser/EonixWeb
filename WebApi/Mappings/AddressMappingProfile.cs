@@ -14,6 +14,7 @@ namespace WebApi.Mappings
                 .ForMember(w => w.Street, opt => opt.MapFrom(p => p.Street))
                 .ForMember(w => w.Zipcode, opt => opt.MapFrom(p => p.Zipcode))
                 .ForMember(w => w.City, opt => opt.MapFrom(p => p.City))
+                .ForMember(w => w.Country, opt => opt.MapFrom(p => p.Address2countryNavigation))
                 .ReverseMap();
 
         }
