@@ -17,7 +17,7 @@ namespace WebApi.Models
         public string City { get; set; }
         public int Address2country { get; set; }
 
-        public virtual Country Address2countryNavigation { get; set; }
+        public virtual Country Country { get; set; }
         public virtual ICollection<Company> Companies { get; set; }
     }
 }

@@ -22,9 +22,9 @@ namespace Infrastructure.Services
             // fix. SqlException: Cannot insert explicit value for identity column in table 'Address' when IDENTITY_INSERT is set to OFF.
             //  * assign to 0 otherwise ValueGeneratedOnAdd() is not working
             address.Id = 0;
-            address.Address2countryNavigation.Id = 0;
+            address.Country.Id = 0;
             address.Address2country = 0;
-            _countryRepository.Add(address.Address2countryNavigation);
+            _countryRepository.Add(address.Country);
             await _countryRepository.CommitAsync(cancellationToken);
 
             _addressRepository.Add(address);
@@ -50,9 +50,6 @@ namespace Infrastructure.Services
             return address;
         }
 
-        // TOdo : doit être déplacer dans le 
-       
-
         public async ValueTask ModifyAsync(int addressId, Address model, CancellationToken cancellationToken = default)
         {
             var prevAddress = await GetByIdAsync(addressId, cancellationToken);
@@ -62,8 +59,8 @@ namespace Infrastructure.Services
             prevAddress.City = model.City;
             prevAddress.Zipcode = model.Zipcode;
             //
-            prevCountry.Iso3Code = model.Address2countryNavigation.Iso3Code;
-            prevCountry.Name = model.Address2countryNavigation.Name;
+            prevCountry.Iso3Code = model.Country.Iso3Code;
+            prevCountry.Name = model.Country.Name;
             // update
             _countryRepository.Update(prevCountry);
             _addressRepository.Update(prevAddress);

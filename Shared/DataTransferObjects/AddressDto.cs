@@ -6,7 +6,5 @@
         public string? Street { get; init; }
         public string? BoxNumber { get; init; }
         public string? City { get; init; }
-        //public CountryDto? Country { get; set; }
-
     }
 }

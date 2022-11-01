@@ -65,7 +65,7 @@ namespace Infrastructure.Data
                     .IsUnicode(false)
                     .HasColumnName("zipcode");
 
-                entity.HasOne(d => d.Address2countryNavigation)
+                entity.HasOne(d => d.Country)
                     .WithMany(p => p.Addresses)
                     .HasForeignKey(d => d.Address2country)
                     .OnDelete(DeleteBehavior.ClientSetNull)
