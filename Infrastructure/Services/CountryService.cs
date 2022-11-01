@@ -1,13 +1,7 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Repositories;
+﻿using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebApi.Models;
-using System.Linq;
 
 namespace Infrastructure.Services
 {

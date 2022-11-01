@@ -1,7 +1,6 @@
 ﻿using ApplicationCore.Services;
 using Autofac.Core;
 using AutoMapper;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DataTransferObjects;
 using WebApi.Models;

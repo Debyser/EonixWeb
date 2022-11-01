@@ -10,13 +10,27 @@ namespace WebApi.Mappings
         public AddressMappingProfile()
         {
             CreateMap<Address, AddressDto>()
-                .ForMember(w => w.BoxNumber, opt => opt.MapFrom(p => p.BoxNumber))
-                .ForMember(w => w.Street, opt => opt.MapFrom(p => p.Street))
-                .ForMember(w => w.Zipcode, opt => opt.MapFrom(p => p.Zipcode))
-                .ForMember(w => w.City, opt => opt.MapFrom(p => p.City))
-                .ForMember(w => w.Country, opt => opt.MapFrom(p => p.Address2countryNavigation))
-                .ReverseMap();
+            .ForMember(w => w.BoxNumber, opt => opt.MapFrom(p => p.BoxNumber))
+            .ForMember(w => w.Street, opt => opt.MapFrom(p => p.Street))
+            .ForMember(w => w.Zipcode, opt => opt.MapFrom(p => p.Zipcode))
+            .ForMember(w => w.City, opt => opt.MapFrom(p => p.City))
+            .ReverseMap();
 
+            CreateMap<Address, AddressForCreationDto>()
+            .ForMember(w => w.BoxNumber, opt => opt.MapFrom(p => p.BoxNumber))
+            .ForMember(w => w.Street, opt => opt.MapFrom(p => p.Street))
+            .ForMember(w => w.Zipcode, opt => opt.MapFrom(p => p.Zipcode))
+            .ForMember(w => w.City, opt => opt.MapFrom(p => p.City))
+            .ForMember(w => w.Country, opt => opt.MapFrom(p => p.Address2countryNavigation))
+            .ReverseMap();
+
+            CreateMap<Address, AddressForUpdateDto>()
+           .ForMember(w => w.BoxNumber, opt => opt.MapFrom(p => p.BoxNumber))
+           .ForMember(w => w.Street, opt => opt.MapFrom(p => p.Street))
+           .ForMember(w => w.Zipcode, opt => opt.MapFrom(p => p.Zipcode))
+           .ForMember(w => w.City, opt => opt.MapFrom(p => p.City))
+           .ForMember(w => w.Country, opt => opt.MapFrom(p => p.Address2countryNavigation))
+           .ReverseMap();
         }
     }
 }

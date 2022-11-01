@@ -6,6 +6,8 @@ using WebApi.Models;
 
 namespace WebApi.Controllers
 {
+//[Route("api/companies/{companyId}/employees")]
+    
     [ApiController]
     [Route("[controller]")]
     public class AddressController : ControllerBase
@@ -22,20 +24,20 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id:int}", Name = nameof(ModifyAddress))]
-        public async Task<IActionResult> ModifyAddress([FromRoute] int id, [FromBody] AddressDto addressDto)
+        public async Task<IActionResult> ModifyAddress([FromRoute] int id, [FromBody] AddressForUpdateDto addressDto)
         {
             await _addressService.ModifyAsync(id, _mapper.Map<Address>(addressDto));
             return Ok();
         }
 
         [HttpPost("", Name = nameof(CreateAddress))]
-        public async Task<IActionResult> CreateAddress([FromBody] AddressDto Address)
+        public async Task<IActionResult> CreateAddress([FromBody] AddressForCreationDto Address)
             => Ok(await _addressService.CreateAsync(_mapper.Map<Address>(Address)));
 
 
         [HttpGet("{id:int}", Name = nameof(GetAddressById))]
         public async Task<IActionResult> GetAddressById([FromRoute] int id)
-            =>Ok(_mapper.Map<AddressDto>(await _addressService.GetByIdAsync(id)));
+            => Ok(_mapper.Map<AddressDto>(await _addressService.GetByIdAsync(id)));
 
 
         [HttpDelete("{id:int}", Name = nameof(DeleteAddress))]

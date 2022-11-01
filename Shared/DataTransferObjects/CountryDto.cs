@@ -6,9 +6,7 @@ namespace Shared.DataTransferObjects
     // Id LastName FirstName instead of strange names
     public record CountryDto
     {
-        //public int Id { get; init; }
         public string? CountryAlpha3Code { get; init; }
         public string? Name { get; init; }
-
     }
 }

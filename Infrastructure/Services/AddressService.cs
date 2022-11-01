@@ -35,45 +35,39 @@ namespace Infrastructure.Services
 
         public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var country = await GetByIdAsync(id, cancellationToken);
-            if (country == null)
+            var address = await GetByIdAsync(id, cancellationToken);
+            if (address == null)
                 throw new AddressNotFoundException(id);
-            _addressRepository.Remove(country);
+            _addressRepository.Remove(address);
             await _addressRepository.CommitAsync(cancellationToken);
         }
 
         public async ValueTask<Address> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            _addressRepository.AddInclude("Address2countryNavigation");
             var address = await _addressRepository.FindByIdAsync(id, cancellationToken);
             if (address == null)
                 throw new AddressNotFoundException(id);
             return address;
         }
 
+        // TOdo : doit être déplacer dans le 
+       
+
         public async ValueTask ModifyAsync(int addressId, Address model, CancellationToken cancellationToken = default)
         {
             var prevAddress = await GetByIdAsync(addressId, cancellationToken);
+            var prevCountry = await _countryRepository.FindByIdAsync(prevAddress.Address2country, cancellationToken);
             prevAddress.Street = model.Street;
             prevAddress.BoxNumber = model.BoxNumber;
+            prevAddress.City = model.City;
+            prevAddress.Zipcode = model.Zipcode;
+            //
+            prevCountry.Iso3Code = model.Address2countryNavigation.Iso3Code;
+            prevCountry.Name = model.Address2countryNavigation.Name;
+            // update
+            _countryRepository.Update(prevCountry);
             _addressRepository.Update(prevAddress);
             await _addressRepository.CommitAsync(cancellationToken);
-
-            //var prevContact = await GetByIdAsync(contactId, cancellationToken);
-            //var prevMainAddress = await _addressRepository.FindByIdAsync(contact.MainAddressId, cancellationToken);
-            ////TODO: validation here  + dynamic mapping
-            //prevContact.FirstName = contact.FirstName;
-            //prevContact.LastName = contact.LastName;
-            //prevContact.PhoneNumber = contact.PhoneNumber;
-            //prevContact.Vat = contact.Vat;
-            ////
-            //prevMainAddress.City = contact.MainAddress.City;
-            //prevMainAddress.ZipCode = contact.MainAddress.ZipCode;
-            //prevMainAddress.Description = contact.MainAddress.Description;
-            //// update 
-            //_contactRepository.Update(prevContact);
-            //_addressRepository.Update(prevMainAddress);
-            //await _contactRepository.CommitAsync(cancellationToken);
         }
     }
 }

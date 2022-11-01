@@ -27,12 +27,7 @@ namespace Infrastructure.Data
 
         public async ValueTask<T> FindByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            if (Includes != null)
-            {
-                var result = ApplySpecification();
-                return result.FirstOrDefault();
-            }
-            return await _dbSet.FindAsync(id, cancellationToken);
+            return await _dbSet.FindAsync(new object[] { id }, cancellationToken);
         } 
 
         public async ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default) =>
@@ -45,16 +40,6 @@ namespace Infrastructure.Data
         {
             if (Includes == null) Includes = new List<string>();
             Includes.Add(include);
-        }
-
-        private IQueryable<T> ApplySpecification()
-        {
-            var query = DbContext.Set<T>().AsQueryable();
-            if (Includes != null)
-            {
-                query = Includes.Aggregate(query, (current, include) => current.Include(include));
-            }
-            return query;
         }
     }
 }
