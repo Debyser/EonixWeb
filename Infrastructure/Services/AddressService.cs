@@ -1,6 +1,5 @@
 ﻿using ApplicationCore.Repositories;
 using ApplicationCore.Services;
-using Infrastructure.Data;
 using Infrastructure.Entities.Exceptions;
 using WebApi.Models;
 

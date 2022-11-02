@@ -13,6 +13,7 @@ namespace Infrastructure.Data
             _context = context;
         }
 
-        public async ValueTask<Address> GetByIdAsync(int id, CancellationToken cancellationToken = default) => await _context.Addresses.Where(Country => Country.Id == id).Include(p => p.Country).FirstOrDefaultAsync(cancellationToken);
+        public async ValueTask<Address> GetByIdAsync(int id, CancellationToken cancellationToken = default) 
+            => await _context.Addresses.Where(p => p.Id == id).Include(p => p.Country).FirstOrDefaultAsync(cancellationToken);
     }
 }

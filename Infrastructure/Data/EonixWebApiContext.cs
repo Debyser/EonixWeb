@@ -112,6 +112,8 @@ namespace Infrastructure.Data
                     .HasMaxLength(40)
                     .IsUnicode(false)
                     .HasColumnName("lastname");
+
+
             });
 
             modelBuilder.Entity<ContactRole>(entity =>
