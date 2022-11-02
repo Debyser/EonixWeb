@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Repositories;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Models;
 
 namespace Infrastructure.Data
@@ -11,5 +12,7 @@ namespace Infrastructure.Data
         {
             _context = context;
         }
+
+        public async ValueTask<Address> GetByIdAsync(int id, CancellationToken cancellationToken = default) => await _context.Addresses.Where(Country => Country.Id == id).Include(p => p.Country).FirstOrDefaultAsync(cancellationToken);
     }
 }

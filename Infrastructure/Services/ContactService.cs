@@ -1,23 +1,49 @@
 ﻿using ApplicationCore.Repositories;
 using ApplicationCore.Services;
+using Infrastructure.Data;
 using Infrastructure.Entities.Exceptions;
+using System.Net;
 using WebApi.Models;
 
 namespace Infrastructure.Services
 {
     public class ContactService : IContactService
     {
-        private readonly IContactRepository _repository;
+        private readonly IContactRepository _contactRepository;
+        private readonly IAddressRepository _addressRepository;
 
         public ContactService(IContactRepository contactRepository, IAddressRepository addressRepository)
         {
-            _repository = contactRepository;
+            _contactRepository = contactRepository;
+            _addressRepository = addressRepository;
         }
-        public async ValueTask<int> CreateAsync(Contact model, CancellationToken cancellationToken = default)
+        public async ValueTask<int> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
-            _repository.Add(model);
-            await _repository.CommitAsync(cancellationToken);
-            return model.Id;
+
+            contact.Id = 0;
+            contact.Address.Id = 0;
+            contact.Contact2address = 0;
+            _addressRepository.Add(contact.Address);
+            await _addressRepository.CommitAsync(cancellationToken);
+
+            _contactRepository.Add(contact);
+            await _contactRepository.CommitAsync(cancellationToken);
+
+            return contact.Id;
+
+
+            // fix. SqlException: Cannot insert explicit value for identity column in table 'Address' when IDENTITY_INSERT is set to OFF.
+            //  * assign to 0 otherwise ValueGeneratedOnAdd() is not working
+            //address.Id = 0;
+            //address.Country.Id = 0;
+            //address.Address2country = 0;
+            //_countryRepository.Add(address.Country);
+            //await _countryRepository.CommitAsync(cancellationToken);
+
+            //_addressRepository.Add(address);
+            //await _addressRepository.CommitAsync(cancellationToken);
+
+            //return address.Id;
         }
 
         public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
@@ -25,14 +51,14 @@ namespace Infrastructure.Services
             var contact = await GetByIdAsync(id, cancellationToken);
             if (contact == null)
                 throw new ContactNotFoundException(id);
-            _repository.Remove(contact);
-            await _repository.CommitAsync(cancellationToken);
+            _contactRepository.Remove(contact);
+            await _contactRepository.CommitAsync(cancellationToken);
 
         }
 
         public async ValueTask<Contact> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var contact = await _repository.FindByIdAsync(id, cancellationToken);
+            var contact = await _contactRepository.FindByIdAsync(id, cancellationToken);
             if (contact == null)
                 throw new ContactNotFoundException(id);
             return contact;
@@ -43,8 +69,8 @@ namespace Infrastructure.Services
             var prevContact = await GetByIdAsync(id, cancellationToken);
             prevContact.Firstname = model.Firstname;
             prevContact.Lastname = model.Lastname;
-            _repository.Update(prevContact);
-            await _repository.CommitAsync(cancellationToken);
+            _contactRepository.Update(prevContact);
+            await _contactRepository.CommitAsync(cancellationToken);
         }
     }
 }

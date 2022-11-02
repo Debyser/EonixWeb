@@ -44,7 +44,7 @@ namespace Infrastructure.Services
 
         public async ValueTask<Address> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var address = await _addressRepository.FindByIdAsync(id, cancellationToken);
+            var address = await _addressRepository.GetByIdAsync(id, cancellationToken);
             if (address == null)
                 throw new AddressNotFoundException(id);
             return address;
