@@ -18,20 +18,16 @@ namespace WebApi.Extensions
 
         public static void ConfigureService(this IServiceCollection services)
         {
-            //services.AddScoped<ICountryService, CountryService>();
-            //services.AddScoped<IAddressService, AddressService>();
             var types = GetServices();
             foreach (var currService in types)
             {
-                var serviceInterface = currService.GetInterfaces().Where(p => p.Namespace.Contains("ApplicationCore")).FirstOrDefault();
+                var serviceInterface = currService.GetInterfaces().Where(p => p.Namespace.Contains("ApplicationCore.Services")).FirstOrDefault();
                 if (serviceInterface == null) continue;
                 Bind(serviceInterface, currService, ScopeLifeTime.Scoped, services);
             }
         }
         public static void ConfigureRepository(this IServiceCollection services)
         {
-            //services.AddScoped<ICountryRepository, CountryRepository>();
-            //services.AddScoped<IAddressRepository, AddressRepository>();
             var types = GetRepositories();
             foreach (var currService in types)
             {

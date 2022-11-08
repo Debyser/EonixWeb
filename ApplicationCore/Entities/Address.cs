@@ -8,6 +8,7 @@ namespace WebApi.Models
         public Address()
         {
             Companies = new HashSet<Company>();
+            Contacts = new HashSet<Contact>();
         }
 
         public int Id { get; set; }
@@ -19,5 +20,7 @@ namespace WebApi.Models
 
         public virtual Country Country { get; set; }
         public virtual ICollection<Company> Companies { get; set; }
+        public virtual ICollection<Contact> Contacts { get; set; }
+
     }
 }

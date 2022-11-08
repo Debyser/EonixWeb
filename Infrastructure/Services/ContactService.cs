@@ -24,7 +24,6 @@ namespace Infrastructure.Services
             _addressRepository.Add(contact.Address);
             await _addressRepository.CommitAsync(cancellationToken);
 
-            contact.Contact2address = contact.Address.Id;
             _contactRepository.Add(contact);
             await _contactRepository.CommitAsync(cancellationToken);
 

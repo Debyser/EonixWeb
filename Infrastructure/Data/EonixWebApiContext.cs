@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ApplicationCore.Entities;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using WebApi.Models;
 
-// The line to execute for database first in the package Manager Console :
-// Scaffold-DbContext "server=DELL-JASON\MSSQLSERVER2019;database=EonixWebApi;Integrated Security=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure
 namespace Infrastructure.Data
 {
     public partial class EonixWebApiContext : DbContext
@@ -86,7 +86,7 @@ namespace Infrastructure.Data
                     .IsUnicode(false)
                     .HasColumnName("name");
 
-                entity.HasOne(d => d.Company2addressNavigation)
+                entity.HasOne(d => d.Address)
                     .WithMany(p => p.Companies)
                     .HasForeignKey(d => d.Company2address)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -113,7 +113,11 @@ namespace Infrastructure.Data
                     .IsUnicode(false)
                     .HasColumnName("lastname");
 
-
+                entity.HasOne(d => d.Address)
+                    .WithMany(p => p.Contacts)
+                    .HasForeignKey(d => d.Contact2address)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("contact_contact2address_fkey");
             });
 
             modelBuilder.Entity<ContactRole>(entity =>

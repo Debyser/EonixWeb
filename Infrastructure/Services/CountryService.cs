@@ -8,9 +8,8 @@ namespace Infrastructure.Services
     public class CountryService : ICountryService
     {
         private readonly ICountryRepository _repository;
-        private readonly IAddressRepository _addressRepository;
 
-        public CountryService(ICountryRepository countryRepository, IAddressRepository addressRepository)
+        public CountryService(ICountryRepository countryRepository)
         {
             _repository = countryRepository;
         }

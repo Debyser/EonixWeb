@@ -14,7 +14,7 @@ namespace WebApi.Models
         public string Name { get; set; }
         public int Company2address { get; set; }
 
-        public virtual Address Company2addressNavigation { get; set; }
+        public virtual Address Address { get; set; }
         public virtual ICollection<ContactRole> ContactRoles { get; set; }
     }
 }
