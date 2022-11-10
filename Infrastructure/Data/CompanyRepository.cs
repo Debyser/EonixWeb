@@ -12,6 +12,16 @@ namespace Infrastructure.Data
             _context = context;
         }
 
+        public async ValueTask<IEnumerable<Company>> GetByFilterAsync(Company filter, CancellationToken cancellationToken = default)
+        {
+            return (!string.IsNullOrWhiteSpace(filter.Name)) ?
+                await _context.Companies
+                .Where(p => p.Name.StartsWith(filter.Name))
+                .OrderBy(p => p.Name)
+                .ToListAsync(cancellationToken) :
+                await _context.Companies.ToListAsync();
+        }
+
         public async ValueTask<Company> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _context.Companies

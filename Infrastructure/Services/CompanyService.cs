@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Repositories;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
 using WebApi.Models;
@@ -33,19 +34,24 @@ namespace Infrastructure.Services
 
         public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var contact = await GetByIdAsync(id, cancellationToken);
-            if (contact == null)
+            var company = await GetByIdAsync(id, cancellationToken);
+            if (company == null)
                 throw new CompanyNotFoundException(id);
-            _companyRepository.Remove(contact);
+            _companyRepository.Remove(company);
             await _companyRepository.CommitAsync(cancellationToken);
         }
 
+        public async ValueTask<IEnumerable<Company>> GetByFilterAsync(Company filter, CancellationToken cancellationToken = default)
+       => string.IsNullOrWhiteSpace(filter.Name) ?
+               await GetAllAsync(cancellationToken) :
+               await _companyRepository.GetByFilterAsync(filter, cancellationToken);
+
         public async ValueTask<Company> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var country = await _companyRepository.FindByIdAsync(id, cancellationToken);
-            if (country == null)
+            var company = await _companyRepository.FindByIdAsync(id, cancellationToken);
+            if (company == null)
                 throw new CompanyNotFoundException(id);
-            return country;
+            return company;
         }
 
         public async ValueTask ModifyAsync(int id, Company model, CancellationToken cancellationToken = default)
@@ -56,5 +62,9 @@ namespace Infrastructure.Services
             _companyRepository.Update(prevCompany);
             await _companyRepository.CommitAsync(cancellationToken);
         }
+
+        private async ValueTask<IEnumerable<Company>> GetAllAsync(CancellationToken cancellationToken = default)
+            => (await _companyRepository.GetAllAsync(cancellationToken)).OrderBy(p => p.Name);
+
     }
 }
