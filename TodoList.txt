@@ -1,0 +1,2 @@
+faire un ajout d'une company avec une liste de contacts 
+faire les transactions

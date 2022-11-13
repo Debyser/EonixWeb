@@ -1,5 +1,4 @@
 ﻿using ApplicationCore.Services;
-using Autofac.Core;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DataTransferObjects;

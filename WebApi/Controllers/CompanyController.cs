@@ -35,10 +35,17 @@ namespace WebApi.Controllers
             => Ok(await _companyService.CreateAsync(_mapper.Map<Company>(copmpany)));
 
         [HttpPut("{id:int}", Name = nameof(ModifyCompany))]
-        public async Task<IActionResult> ModifyCompany([FromRoute] int id, [FromBody] ContactForUpdateDto contactDto)
+        public async Task<IActionResult> ModifyCompany([FromRoute] int id, [FromBody] CompanyForUpdateDto  companyDto)
         {
-            //await _companyService.ModifyAsync(id, _mapper.Map<Contact>(contactDto));
+            await _companyService.ModifyAsync(id, _mapper.Map<Company>(companyDto));
             return Ok();
+        }
+
+        [HttpDelete("{id:int}", Name = nameof(DeleteCompany))]
+        public async Task<IActionResult> DeleteCompany([FromRoute] int id)
+        {
+            await _companyService.DeleteIdAsync(id);
+            return NoContent();
         }
     }
 }
