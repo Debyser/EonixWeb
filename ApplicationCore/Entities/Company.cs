@@ -1,8 +1,11 @@
 ﻿
 using ApplicationCore.Entities;
+using System.Diagnostics;
 
 namespace WebApi.Models
 {
+    [DebuggerDisplay("Name = {Name}")]
+
     public partial class Company : IEntityBase
     {
         public Company()

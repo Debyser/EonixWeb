@@ -1,7 +1,9 @@
 ﻿using ApplicationCore.Entities;
+using System.Diagnostics;
 
 namespace WebApi.Models
 {
+    [DebuggerDisplay("Lastname = {Lastname}; Firstname = {Firstname}")]
     public partial class Contact : IEntityBase
     {
         public Contact()

@@ -1,7 +1,5 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Services;
+﻿using ApplicationCore.Services;
 using AutoMapper;
-using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DataTransferObjects;
 using WebApi.Models;
@@ -15,14 +13,12 @@ namespace WebApi.Controllers
         private readonly IAddressService _addressService;
         private readonly ICompanyService _companyService;
         private readonly IMapper _mapper;
-        private ILoggerService _logger;
 
-        public CompanyController(IAddressService addressService, ICompanyService companyService, IMapper mapper, ILoggerService logger)
+        public CompanyController(IAddressService addressService, ICompanyService companyService, IMapper mapper)
         {
             _addressService = addressService;
             _companyService = companyService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpGet("", Name = nameof(GetCompanyByFilter))]

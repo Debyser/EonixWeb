@@ -1,8 +1,10 @@
 ﻿
 using ApplicationCore.Entities;
+using System.Diagnostics;
 
 namespace WebApi.Models
 {
+    [DebuggerDisplay("Zipcode = {Zipcode}, Street = {Street}")]
     public partial class Address : IEntityBase
     {
         public Address()

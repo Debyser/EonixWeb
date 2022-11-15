@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebApi.Models;
+﻿using WebApi.Models;
 
 namespace ApplicationCore.Repositories
 {
     public interface IContactRoleRepository : IRepository<ContactRole>
     {
+        ValueTask<ContactRole> GetByAsync(ContactRole contactRole, CancellationToken cancellationToken = default);
+
     }
 }

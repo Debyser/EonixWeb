@@ -1,8 +1,10 @@
 ﻿
 using ApplicationCore.Entities;
+using System.Diagnostics;
 
 namespace WebApi.Models
 {
+    [DebuggerDisplay("Name = {Name}; Iso3Code = {Iso3Code}")]
     public partial class Country : IEntityBase
     {
         public Country()
