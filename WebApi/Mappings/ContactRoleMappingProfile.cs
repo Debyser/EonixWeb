@@ -14,6 +14,12 @@ namespace WebApi.Mappings
                .ForMember(w => w.ContactRole2company, opt => opt.MapFrom(src => src.ContactRole2company))
                .ReverseMap();
 
+            CreateMap<ContactRoleForUpdateDto, ContactRole>()
+               .ForMember(w => w.Name, opt => opt.MapFrom(src => src.Name))
+               .ForMember(w => w.ContactRole2contact, opt => opt.MapFrom(src => src.ContactId))
+               .ForMember(w => w.ContactRole2company, opt => opt.MapFrom(src => src.CompanyId))
+               .ReverseMap();
+
             CreateMap<ContactRoleDto, ContactRole>()
                .ForMember(w => w.Name, opt => opt.MapFrom(src => src.Name))
                .ForMember(w => w.ContactRole2contactNavigation, opt => opt.MapFrom(src => src.Contact))
