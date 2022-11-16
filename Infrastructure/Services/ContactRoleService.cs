@@ -2,6 +2,7 @@
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
 using WebApi.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Infrastructure.Services
 {
@@ -24,6 +25,7 @@ namespace Infrastructure.Services
             var contact = await _contactRepository.GetByIdAsync(model.ContactRole2contact, cancellationToken);
             if (contact == null)
                 throw new ContactNotFoundException(model.Id);
+
             var company = await _companyRepository.FindByIdAsync(model.ContactRole2company, cancellationToken);
             if (company == null)
                 throw new CompanyNotFoundException(model.ContactRole2company);
@@ -34,19 +36,35 @@ namespace Infrastructure.Services
             return model.Id;
         }
 
-        public ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var contactRole = await _contactRoleRepository.FindByIdAsync(id, cancellationToken);
+            if (contactRole == null)
+                throw new ContactRoleNotFoundException(id);
+            _contactRoleRepository.Remove(contactRole);
+            await _contactRoleRepository.CommitAsync(cancellationToken);
         }
 
-        public ValueTask<ContactRole> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask<ContactRole> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var contactRole = await _contactRoleRepository.FindByIdAsync(id, cancellationToken);
+            if (contactRole == null)
+                throw new ContactRoleNotFoundException(id);
+            var company = await _companyRepository.FindByIdAsync(contactRole.ContactRole2company, cancellationToken);
+            contactRole.ContactRole2companyNavigation = company;
+
+            var contact = await _contactRepository.FindByIdAsync(contactRole.ContactRole2contact, cancellationToken);
+            contactRole.ContactRole2contactNavigation = contact;
+
+            return contactRole;
         }
 
-        public ValueTask ModifyAsync(int id, ContactRole model, CancellationToken cancellationToken = default)
+        public async ValueTask ModifyAsync(int id, ContactRole model, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var prevCompany = await GetByIdAsync(id, cancellationToken);
+            prevCompany.Name = model.Name;
+            _contactRoleRepository.Update(prevCompany);
+            await _companyRepository.CommitAsync(cancellationToken);
         }
     }
 }

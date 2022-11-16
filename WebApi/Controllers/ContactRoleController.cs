@@ -22,12 +22,12 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("", Name = nameof(CreateContactRole))]
-        public async Task<IActionResult> CreateContactRole([FromBody] ContactRoleDto contact)
+        public async Task<IActionResult> CreateContactRole([FromBody] ContactRoleForCreationDto contact)
            => Ok(await _contactRoleService.CreateAsync(_mapper.Map<ContactRole>(contact)));
 
-        //[HttpGet("{id:int}", Name = nameof(GetContactRoleById))]
-        //public async Task<IActionResult> GetCountryById([FromQuery] ContactRoleDto contactRoleDto)
-        //   => Ok(_mapper.Map<ContactRoleDto>(await _contactRoleService.GetByIdAsync(contactRoleDto)));
+        [HttpGet("{id:int}", Name = nameof(GetContactRoleById))]
+        public async Task<IActionResult> GetContactRoleById([FromRoute] int id)
+           => Ok(_mapper.Map<ContactRoleDto>(await _contactRoleService.GetByIdAsync(id)));
 
     }
 }

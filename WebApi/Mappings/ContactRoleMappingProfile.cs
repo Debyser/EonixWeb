@@ -8,10 +8,16 @@ namespace WebApi.Mappings
     {
         public ContactRoleMappingProfile()
         {
-            CreateMap<ContactRoleDto, ContactRole>()
+            CreateMap<ContactRoleForCreationDto, ContactRole>()
                .ForMember(w => w.Name, opt => opt.MapFrom(src => src.Name))
                .ForMember(w => w.ContactRole2contact, opt => opt.MapFrom(src => src.ContactRole2contact))
                .ForMember(w => w.ContactRole2company, opt => opt.MapFrom(src => src.ContactRole2company))
+               .ReverseMap();
+
+            CreateMap<ContactRoleDto, ContactRole>()
+               .ForMember(w => w.Name, opt => opt.MapFrom(src => src.Name))
+               .ForMember(w => w.ContactRole2contactNavigation, opt => opt.MapFrom(src => src.Contact))
+               .ForMember(w => w.ContactRole2companyNavigation, opt => opt.MapFrom(src => src.Company))
                .ReverseMap();
         }
     }

@@ -2,8 +2,9 @@
 {
     public record class ContactRoleDto
     {
-        public int ContactRole2company { get; init; }
-        public int ContactRole2contact { get; init; }
+        public int Id { get; init; }
+        public CompanyDto Company { get; init; }
+        public ContactDto Contact { get; init; }
         public string? Name { get; init; }
     }
 }

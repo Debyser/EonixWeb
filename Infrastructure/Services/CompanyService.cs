@@ -58,7 +58,6 @@ namespace Infrastructure.Services
         {
             var prevCompany = await GetByIdAsync(id, cancellationToken);
             prevCompany.Name = model.Name;
-            prevCompany.Name = model.Name;
             _companyRepository.Update(prevCompany);
             await _companyRepository.CommitAsync(cancellationToken);
         }
