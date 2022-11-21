@@ -8,7 +8,7 @@ namespace Infrastructure.Data
     public class DbRepository<T> : IRepository<T> where T : class, IEntityBase, new()
     {
         protected readonly DbContext DbContext;
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbSet<T> _dbSet;
 
         protected DbRepository(DbContext context)
         {
@@ -18,7 +18,7 @@ namespace Infrastructure.Data
 
         public List<string> Includes { get; private set; }
 
-        public void Add(T entity) => _dbSet.Add(entity);
+        public virtual void Add(T entity) => _dbSet.Add(entity);
 
         public async ValueTask CommitAsync(CancellationToken cancellationToken = default) => await DbContext.SaveChangesAsync(cancellationToken);
 
@@ -38,5 +38,8 @@ namespace Infrastructure.Data
             if (Includes == null) Includes = new List<string>();
             Includes.Add(include);
         }
+
+        public async ValueTask RollbackAsync(CancellationToken cancellationToken = default) 
+            => await DbContext.Database.RollbackTransactionAsync(cancellationToken);
     }
 }

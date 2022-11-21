@@ -11,6 +11,7 @@ namespace ApplicationCore.Repositories
         void Update(T entity);
         ValueTask<T> FindByIdAsync(int id, CancellationToken cancellationToken = default);
         ValueTask CommitAsync(CancellationToken cancellationToken = default);
+        ValueTask RollbackAsync(CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default);
     }

@@ -1,9 +1,8 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Repositories;
+﻿using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
 using WebApi.Models;
-
+// private readonly ConcurrentBag<EntityOperation<ContactRole>> _operations = new ConcurrentBag<EntityOperation<ContactRole>>(); // remplir ce bag
 namespace Infrastructure.Services
 {
     public class CompanyService : ICompanyService
@@ -30,6 +29,26 @@ namespace Infrastructure.Services
             await _companyRepository.CommitAsync(cancellationToken);
 
             return model.Id;
+        }
+
+        public async ValueTask<(IEnumerable<Company> companies, string ids)> CreateCompanyCollection(IEnumerable<Company> companyCollection, CancellationToken cancellationToken = default)
+        {
+            //if (companyCollection is null)
+            //    throw new CompanyCollectionBadRequest();
+
+            //foreach (var company in companyCollection)
+            //{
+            //    await CreateAsync(company, cancellationToken);
+            //}
+
+            //_repository.Save();
+
+            //var companyCollectionToReturn = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities);
+            //var ids = string.Join(",", companyCollectionToReturn.Select(c => c.Id));
+
+            //return (companies: companyCollectionToReturn, ids: ids);
+
+            throw new NotImplementedException();
         }
 
         public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
@@ -65,5 +84,22 @@ namespace Infrastructure.Services
         private async ValueTask<IEnumerable<Company>> GetAllAsync(CancellationToken cancellationToken = default)
             => (await _companyRepository.GetAllAsync(cancellationToken)).OrderBy(p => p.Name);
 
+        //private async ValueTask CreateAsync(Company model, CancellationToken cancellationToken = default)
+        //{
+        //    model.Id = 0;
+        //    model.Address.Id = 0;
+        //    model.Company2address = 0;
+        //    _addressRepository.Add(model.Address);
+        //    await _addressRepository.CommitAsync(cancellationToken);
+
+        //    _companyRepository.Add(model);
+        //    await _companyRepository.CommitAsync(cancellationToken);
+
+        //}
+
+        public ValueTask<(IEnumerable<Company> companies, string ids)> CreateCompanyCollection(IEnumerable<Company> companyCollection)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

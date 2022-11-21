@@ -18,15 +18,19 @@ namespace Infrastructure.Services
 
         public async ValueTask<int> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
-            contact.Id = 0;
-            contact.Address.Id = 0;
-            contact.Contact2address = 0;
-            _addressRepository.Add(contact.Address);
-            await _addressRepository.CommitAsync(cancellationToken);
-
-            _contactRepository.Add(contact);
-            await _contactRepository.CommitAsync(cancellationToken);
-
+            try
+            {
+                contact.Id = 0;
+                contact.Address.Id = 0;
+                contact.Contact2address = 0;
+                _contactRepository.Add(contact);
+                await _contactRepository.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await _contactRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
             return contact.Id;
         }
 
@@ -37,7 +41,6 @@ namespace Infrastructure.Services
                 throw new ContactNotFoundException(id);
             _contactRepository.Remove(contact);
             await _contactRepository.CommitAsync(cancellationToken);
-
         }
 
         public async ValueTask<Contact> GetByIdAsync(int id, CancellationToken cancellationToken = default)
