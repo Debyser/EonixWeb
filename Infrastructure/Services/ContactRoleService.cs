@@ -2,7 +2,6 @@
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
 using WebApi.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Infrastructure.Services
 {

@@ -1,2 +1,3 @@
-faire un ajout d'une company avec une liste de contacts 
+faire un ajout d'une company avec une liste de contacts  ,  page 9. 4 public record CompanyForCreationDto(string Name, string Address, string Country, IEnumerable<EmployeeForCreationDto> Employees);44 
+get contact in contactRepo Employee GetEmployee(Guid companyId, Guid id, bool trackChanges); GetEmployeeForCompany in controller ContactController [HttpGet("{id:guid}")]
 faire les transactions
