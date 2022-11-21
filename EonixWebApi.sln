@@ -11,6 +11,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationCore", "Applicat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{008EDCC3-FAF5-4C84-8FB6-BF393482FD92}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{492CBFE8-B2FF-4F78-9C0C-94A223D0BF0C}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Downloads\Address(3).sql = ..\..\..\Downloads\Address(3).sql
+		address.sql = address.sql
+		company.sql = company.sql
+		contact.sql = contact.sql
+		contact_role.sql = contact_role.sql
+		country.sql = country.sql
+		personData.sql = personData.sql
+		persons.sql = persons.sql
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{9C99A28B-3750-4AD4-8848-97D626318AB9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{03514226-6D5F-4363-9440-718C88215B85}"
+	ProjectSection(SolutionItems) = preProject
+		TodoList.txt = TodoList.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +48,10 @@ Global
 		{008EDCC3-FAF5-4C84-8FB6-BF393482FD92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{008EDCC3-FAF5-4C84-8FB6-BF393482FD92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{008EDCC3-FAF5-4C84-8FB6-BF393482FD92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C99A28B-3750-4AD4-8848-97D626318AB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C99A28B-3750-4AD4-8848-97D626318AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C99A28B-3750-4AD4-8848-97D626318AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C99A28B-3750-4AD4-8848-97D626318AB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +60,7 @@ Global
 		{D577F7E8-0149-4B00-8060-49A7171B8C09} = {9149D893-EF94-4CCC-9613-BA6769114890}
 		{2294FD51-D99C-44CB-8C8F-7CE28D2EA4D3} = {9149D893-EF94-4CCC-9613-BA6769114890}
 		{008EDCC3-FAF5-4C84-8FB6-BF393482FD92} = {9149D893-EF94-4CCC-9613-BA6769114890}
+		{9C99A28B-3750-4AD4-8848-97D626318AB9} = {9149D893-EF94-4CCC-9613-BA6769114890}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {853771C9-63B9-42DF-92B6-988C8399C82A}

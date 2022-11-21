@@ -1,6 +1,3 @@
-using AutoMapper;
-using EonixWebApi.WebApi.Extensions;
-using WebApi.Mappings;
 using NLog;
 using WebApi.Extensions;
 using ApplicationCore.Services;
@@ -8,20 +5,22 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
-var config = new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile(new PersonMappingProfile());
-});
+
 builder.Services.ConfigureLoggerService();
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 builder.Services.ConfigureSqlContext(builder.Configuration);
-builder.Services.ConfigurePersonRepository();
-builder.Services.ConfigurePersonService();
-builder.Services.AddSingleton<IMapper>(sp => config.CreateMapper());
-
+builder.Services.ConfigureRepository();
+builder.Services.ConfigureService();
+//var config = new MapperConfiguration(cfg =>
+//{
+//    cfg.AddProfile(new PersonMappingProfile());
+//});
+//builder.Services.AddSingleton<IMapper>(sp => config.CreateMapper());
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers(config => {
     config.RespectBrowserAcceptHeader = true;
+    config.ReturnHttpNotAcceptable = true; // We added the ReturnHttpNotAcceptable = true option, which tells the server that if the client tries to negotiate for the media type the server doesn’t support, it should return the 406 Not Acceptable status code.
 }).AddXmlDataContractSerializerFormatters();
 
 builder.Services.AddMvc().AddJsonOptions(o => 

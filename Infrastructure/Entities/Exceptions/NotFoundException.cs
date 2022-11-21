@@ -1,4 +1,4 @@
-﻿namespace EonixWebApi.Infrastructure.Exceptions
+﻿namespace Infrastructure.Entities.Exceptions
 {
     public abstract class NotFoundException : Exception
     {
