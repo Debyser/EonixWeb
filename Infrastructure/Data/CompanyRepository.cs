@@ -6,10 +6,21 @@ namespace Infrastructure.Data
 {
     public class CompanyRepository : DbRepository<Company>, ICompanyRepository
     {
-        private readonly EonixWebApiContext _context;
-        public CompanyRepository(EonixWebApiContext context) : base(context)
+        private readonly EonixDbContext _context;
+        private readonly IAddressRepository _addressRepository;
+
+        public CompanyRepository(EonixDbContext context, IAddressRepository addressRepository) : base(context)
         {
             _context = context;
+            _addressRepository = addressRepository;
+            _addressRepository.SetDbContext(context);
+        }
+
+        // new : erase the Add from DbRepository
+        public new void Add(Company entity)
+        {
+            _context.Add(entity);
+            _addressRepository.Add(entity.Address);
         }
 
         public async ValueTask<IEnumerable<Company>> GetByFilterAsync(Company filter, CancellationToken cancellationToken = default)

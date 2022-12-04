@@ -7,8 +7,8 @@ namespace Infrastructure.Data
 {
     public class CountryRepository : DbRepository<Country>, ICountryRepository
     {
-        private readonly EonixWebApiContext _context;
-        public CountryRepository(EonixWebApiContext context) : base(context)
+        private readonly EonixDbContext _context;
+        public CountryRepository(EonixDbContext context) : base(context)
         {
             _context = context; 
         }

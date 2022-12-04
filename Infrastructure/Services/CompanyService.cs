@@ -2,7 +2,7 @@
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
 using WebApi.Models;
-// private readonly ConcurrentBag<EntityOperation<ContactRole>> _operations = new ConcurrentBag<EntityOperation<ContactRole>>(); // remplir ce bag
+
 namespace Infrastructure.Services
 {
     public class CompanyService : ICompanyService
@@ -19,36 +19,20 @@ namespace Infrastructure.Services
 
         public async ValueTask<int> CreateAsync(Company model, CancellationToken cancellationToken = default)
         {
-            model.Id = 0;
-            model.Address.Id = 0;
-            model.Company2address = 0;
-            _addressRepository.Add(model.Address);
-            await _addressRepository.CommitAsync(cancellationToken);
-
-            _companyRepository.Add(model);
-            await _companyRepository.CommitAsync(cancellationToken);
-
+            try
+            {
+                model.Id = 0;
+                model.Address.Id = 0;
+                model.Company2address = 0;
+                _companyRepository.Add(model);
+                await _companyRepository.CommitAsync(cancellationToken);
+            }
+            catch (Exception)
+            {
+                await _companyRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
             return model.Id;
-        }
-
-        public async ValueTask<(IEnumerable<Company> companies, string ids)> CreateCompanyCollection(IEnumerable<Company> companyCollection, CancellationToken cancellationToken = default)
-        {
-            //if (companyCollection is null)
-            //    throw new CompanyCollectionBadRequest();
-
-            //foreach (var company in companyCollection)
-            //{
-            //    await CreateAsync(company, cancellationToken);
-            //}
-
-            //_repository.Save();
-
-            //var companyCollectionToReturn = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities);
-            //var ids = string.Join(",", companyCollectionToReturn.Select(c => c.Id));
-
-            //return (companies: companyCollectionToReturn, ids: ids);
-
-            throw new NotImplementedException();
         }
 
         public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
@@ -97,9 +81,24 @@ namespace Infrastructure.Services
 
         //}
 
-        public ValueTask<(IEnumerable<Company> companies, string ids)> CreateCompanyCollection(IEnumerable<Company> companyCollection)
+        public async ValueTask<(IEnumerable<Company> companies, string ids)> CreateCompanyCollection(IEnumerable<Company> companyCollection, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            if (companyCollection is null)
+                throw new CompanyCollectionBadRequest();
+
+            string ids = string.Empty;
+            try
+            {
+                foreach (var company in companyCollection) _companyRepository.Add(company);
+                await _companyRepository.CommitAsync(cancellationToken);
+                ids = string.Join(",", companyCollection.Select(c => c.Id));
+            }
+            catch
+            {
+                await _companyRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
+            return (companies: companyCollection, ids);
         }
     }
 }

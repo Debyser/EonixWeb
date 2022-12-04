@@ -7,7 +7,7 @@ namespace Infrastructure.Data
 {
     public class DbRepository<T> : IRepository<T> where T : class, IEntityBase, new()
     {
-        protected readonly DbContext DbContext;
+        private DbContext DbContext;
         protected readonly DbSet<T> _dbSet;
 
         protected DbRepository(DbContext context)
@@ -18,6 +18,10 @@ namespace Infrastructure.Data
 
         public List<string> Includes { get; private set; }
 
+        public void SetDbContext(object context)
+        {
+            DbContext = context as DbContext;
+        }
         public virtual void Add(T entity) => _dbSet.Add(entity);
 
         public async ValueTask CommitAsync(CancellationToken cancellationToken = default) => await DbContext.SaveChangesAsync(cancellationToken);
@@ -31,7 +35,7 @@ namespace Infrastructure.Data
             await _dbSet.ToListAsync(cancellationToken);
         public void Remove(T entity) => _dbSet.Remove(entity);
         public void RemoveById(int id) => Remove(_dbSet.Find(id));
-        public void Update(T entity) => DbContext.Entry(entity).State = EntityState.Modified;
+        public virtual void Update(T entity) => DbContext.Entry(entity).State = EntityState.Modified;
 
         public void AddInclude(string include)
         {

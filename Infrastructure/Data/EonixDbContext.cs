@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 using WebApi.Models;
 
 namespace Infrastructure.Data
 {
-    public partial class EonixWebApiContext : DbContext
+    public partial class EonixDbContext : DbContext
     {
-        public EonixWebApiContext()
+        public EonixDbContext()
         {
         }
 
-        public EonixWebApiContext(DbContextOptions<EonixWebApiContext> options)
+        public EonixDbContext(DbContextOptions<EonixDbContext> options)
             : base(options)
         {
         }

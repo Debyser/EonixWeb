@@ -4,6 +4,6 @@
     {
         public string? Name { get; init; }
         public AddressDto? Address { get; init; }
-        public IEnumerable<ContactForCreationDto> Contacts { get; init; }
+        public IEnumerable<ContactForCreationDto>? Contacts { get; init; }
     }
 }

@@ -1,3 +1,19 @@
-faire un ajout d'une company avec une liste de contacts  ,  page 9. 4 public record CompanyForCreationDto(string Name, string Address, string Country, IEnumerable<EmployeeForCreationDto> Employees);44 
+faire un ajout d'une company avec une liste de contacts  ,  
+
+page 9. 4 public record CompanyForCreationDto(string Name, string Address, string Country, IEnumerable<EmployeeForCreationDto> Employees);44 
 get contact in contactRepo Employee GetEmployee(Guid companyId, Guid id, bool trackChanges); GetEmployeeForCompany in controller ContactController [HttpGet("{id:guid}")]
-faire les transactions
+faire les transactions => done , plus qu'à l'appliquer partout 
+
+
+- faire le alter table pour le delete en cascade ou pas ???
+
+avant le token :
+
+faut gérer le pool, la connexion de manière + performante
+pour tracer les sessions 
+tu vas nommer la conn string ?? demander à Steph ce que ça veut dire
+
+faudrait une version pro des gestions des ressources , regarder dans Ef la gestion des connexions dans EF 
+
+1 tu fais le constat qu'a chaque query , il ouvre et ferme une connection
+2 tu trouves une solution pour améliorer via l'ioc

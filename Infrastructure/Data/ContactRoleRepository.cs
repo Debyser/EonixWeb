@@ -6,9 +6,9 @@ namespace Infrastructure.Data
 {
     public class ContactRoleRepository : DbRepository<ContactRole> , IContactRoleRepository
     {
-        private readonly EonixWebApiContext _context;
+        private readonly EonixDbContext _context;
 
-        public ContactRoleRepository(EonixWebApiContext context) : base(context)
+        public ContactRoleRepository(EonixDbContext context) : base(context)
         {
             _context = context;
         }

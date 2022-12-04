@@ -36,28 +36,39 @@ namespace Infrastructure.Services
 
         public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var contact = await GetByIdAsync(id, cancellationToken);
+            var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
             if (contact == null)
                 throw new ContactNotFoundException(id);
             _contactRepository.Remove(contact);
             await _contactRepository.CommitAsync(cancellationToken);
         }
 
-        public async ValueTask<Contact> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public ValueTask<Contact> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var contact = await _contactRepository.FindByIdAsync(id, cancellationToken);
-            if (contact == null)
-                throw new ContactNotFoundException(id);
-            return contact;
+            throw new NotImplementedException();
         }
 
         public async ValueTask ModifyAsync(int id, Contact model, CancellationToken cancellationToken = default)
         {
-            var prevContact = await GetByIdAsync(id, cancellationToken);
-            prevContact.Firstname = model.Firstname;
-            prevContact.Lastname = model.Lastname;
-            _contactRepository.Update(prevContact);
-            await _contactRepository.CommitAsync(cancellationToken);
+            try
+            {
+                var prevContact = await _contactRepository.GetByIdAsync(id, cancellationToken);
+                prevContact.Firstname = model.Firstname;
+                prevContact.Lastname = model.Lastname;
+                prevContact.Address.BoxNumber = model.Address.BoxNumber;
+                prevContact.Address.Zipcode = model.Address.Zipcode;
+                prevContact.Address.City = model.Address.City;
+                prevContact.Address.Country.Iso3Code = model.Address.Country.Iso3Code;
+                prevContact.Address.Country.Name = model.Address.Country.Name; ;
+
+                _contactRepository.Update(prevContact);
+                await _contactRepository.CommitAsync(cancellationToken);
+            }
+            catch 
+            {
+                await _contactRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
         }
     }
 }

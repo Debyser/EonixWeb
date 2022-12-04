@@ -1,6 +1,5 @@
 ﻿using ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 using WebApi.Models;
 
 namespace Infrastructure.Data
@@ -8,12 +7,13 @@ namespace Infrastructure.Data
     public class ContactRepository : DbRepository<Contact>, IContactRepository
     {
         private readonly IAddressRepository _addressRepository;
-        private readonly EonixWebApiContext _context;
+        private readonly EonixDbContext _context;
 
-        public ContactRepository(EonixWebApiContext context) : base(context)
+        public ContactRepository(EonixDbContext context, IAddressRepository addressRepository) : base(context)
         {
             _context = context;
-            _addressRepository = new AddressRepository(context);
+            _addressRepository = addressRepository;
+            _addressRepository.SetDbContext(context);
         }
 
         // new : erase the Add from DbRepository
@@ -23,26 +23,13 @@ namespace Infrastructure.Data
             _addressRepository.Add(entity.Address);
         }
 
-        public void CreateContactForCompany(int companyId, Contact contact, CancellationToken cancellationToken = default)
-        {
-        }
-
         public async ValueTask<Contact> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _context.Contacts
                 .Where(p => p.Id == id)
                 .Include(p => p.Address)
+                .Include(p => p.Address.Country)
                 .FirstOrDefaultAsync(cancellationToken);
-        }
-
-        void IContactRepository.CreateContactForCompany(int companyId, Contact contact, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        ValueTask<Contact> IContactRepository.GetByIdAsync(int id, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }

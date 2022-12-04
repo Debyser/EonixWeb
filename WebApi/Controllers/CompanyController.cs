@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Services;
+using Autofac.Core;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DataTransferObjects;
@@ -42,6 +43,14 @@ namespace WebApi.Controllers
         {
             await _companyService.DeleteIdAsync(id);
             return NoContent();
+        }
+
+        [HttpPost("collection")]
+        public async Task<IActionResult> CreateCompanyCollection([FromBody] IEnumerable<CompanyForCreationDto> companyCollection)
+        {
+            var result = await _companyService.CreateCompanyCollection(_mapper.Map<IEnumerable<Company>>(companyCollection));
+
+            return CreatedAtRoute("CompanyCollection", new { result.ids }, result.companies);
         }
     }
 }
