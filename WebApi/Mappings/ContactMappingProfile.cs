@@ -9,21 +9,31 @@ namespace WebApi.Mappings
         public ContactMappingProfile()
         {
             CreateMap<ContactForCreationDto, Contact>()
-            .ForMember(p => p.Firstname, opt => opt.MapFrom(p => p.Firstname))
-            .ForMember(p => p.Lastname, opt => opt.MapFrom(p => p.Lastname))
-            .ForMember(p => p.Address, opt => opt.MapFrom(p => p.Address))
+            .ForMember(dest => dest.Firstname, input => input.MapFrom(src => src.Firstname))
+            .ForMember(dest => dest.Lastname, input => input.MapFrom(src => src.Lastname))
+            .ForMember(dest => dest.Address, input => input.MapFrom(src => src.Address))
             .ReverseMap();
 
+
             CreateMap<ContactForUpdateDto, Contact>()
-            .ForMember(p => p.Firstname, opt => opt.MapFrom(p => p.Firstname))
-            .ForMember(p => p.Lastname, opt => opt.MapFrom(p => p.Lastname))
-            .ForMember(p => p.Address, opt => opt.MapFrom(p => p.Address))
+            .ForMember(dest => dest.Firstname, input => input.MapFrom(src => src.Firstname))
+            .ForMember(dest => dest.Lastname, input => input.MapFrom(src => src.Lastname))
+            .ForMember(dest => dest.Address, input => input.MapFrom(src => src.Address))
             .ReverseMap();
 
             CreateMap<ContactDto, Contact>()
-            .ForMember(p => p.Firstname, opt => opt.MapFrom(p => p.Firstname))
-            .ForMember(p => p.Lastname, opt => opt.MapFrom(p => p.Lastname))
+            .ForMember(dest => dest.Firstname, input => input.MapFrom(src => src.Firstname))
+            .ForMember(dest => dest.Lastname, input => input.MapFrom(src => src.Lastname))
             .ReverseMap();
+
+
+            CreateMap<ContactForCreationDto, ContactRole>()
+               .ForMember(dest => dest.Name, input => input.MapFrom(src => src.RoleName))
+               .ForPath(dest => dest.Contact.Firstname, input => input.MapFrom(src => src.Firstname))
+               .ForPath(dest => dest.Contact.Lastname, input => input.MapFrom(src => src.Lastname))
+               .ForPath(dest => dest.Contact.Address, input => input.MapFrom(src => src.Address))
+               .ReverseMap();
+
         }
     }
 }

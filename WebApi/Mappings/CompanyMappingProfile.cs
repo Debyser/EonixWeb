@@ -9,8 +9,8 @@ namespace WebApi.Mappings
         public CompanyMappingProfile()
         {
             CreateMap<Company, CompanyForCreationDto>()
-            .ForMember(w => w.Name, opt => opt.MapFrom(p => p.Name))
-            .ForMember(w => w.Address, opt => opt.MapFrom(p => p.Address))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(p => p.Name))
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(p => p.Address))
             .ReverseMap();
 
             CreateMap<Company, CompanyDto>()
@@ -20,6 +20,11 @@ namespace WebApi.Mappings
             CreateMap<Company, CompanyForUpdateDto>()
             .ForMember(w => w.Name, opt => opt.MapFrom(p => p.Name))
             .ReverseMap();
+
+            //CreateMap<CompanyForCreationDto, ContactRole>()
+            //   .ForPath(dest => dest.Company.Name, input => input.MapFrom(src => src.Name))
+            //   .ForPath(dest => dest.Company.Address, input => input.MapFrom(src => src.Address))
+            //   .ReverseMap();
         }
     }
 }

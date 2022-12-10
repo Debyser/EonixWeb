@@ -27,9 +27,21 @@ namespace WebApi.Controllers
             return Ok();
         }
 
+        //TODO: à changer et mettre un id de company et avoir un roleName dedans
         [HttpPost("", Name = nameof(CreateContact))]
         public async Task<IActionResult> CreateContact([FromBody] ContactForCreationDto contact)
             => Ok(await _contactService.CreateAsync(_mapper.Map<Contact>(contact)));
+
+        [HttpPost("", Name = nameof(CreateContactForCompany))]
+        public async Task<IActionResult> CreateContactForCompany(int companyId, [FromBody] ContactForCreationDto contact)
+        {
+            if (contact == null)
+                return BadRequest("ContactForCreationDto object is null");
+
+           // return Ok(await _contactService.CreateAsync(_mapper.Map<Contact>(contact)));
+            return Ok(await _contactService.CreateEmployeeForCompany(companyId,_mapper.Map<Contact>(contact)));
+
+        }
 
 
         [HttpGet("{id:int}", Name = nameof(GetContactById))]

@@ -9,8 +9,10 @@ namespace ApplicationCore.Repositories
         void Remove(T entity);
         void RemoveById(int id);
         void Update(T entity);
+        void SetDbContext(object context);
         ValueTask<T> FindByIdAsync(int id, CancellationToken cancellationToken = default);
         ValueTask CommitAsync(CancellationToken cancellationToken = default);
+        ValueTask RollbackAsync(CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default);
     }
