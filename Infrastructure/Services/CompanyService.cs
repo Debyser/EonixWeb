@@ -9,12 +9,13 @@ namespace Infrastructure.Services
     {
         private readonly ICompanyRepository _companyRepository;
         private readonly IAddressRepository _addressRepository;
+        private readonly IContactRoleRepository _contactRoleRepository;
 
-
-        public CompanyService(ICompanyRepository companyRepository, IAddressRepository addressRepository)
+        public CompanyService(ICompanyRepository companyRepository, IAddressRepository addressRepository, IContactRoleRepository contactRoleRepository)
         {
             _companyRepository = companyRepository;
             _addressRepository = addressRepository;
+            _contactRoleRepository = contactRoleRepository; 
         }
 
         public async ValueTask<int> CreateAsync(Company model, CancellationToken cancellationToken = default)
@@ -57,6 +58,17 @@ namespace Infrastructure.Services
             return company;
         }
 
+        public async ValueTask<IEnumerable<Company>> GetByIdsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+        {
+            if (ids == null)
+                throw new IdParametersBadRequestException();
+
+            var companies = await _companyRepository.FindByConditionAsync(x => ids.Contains(x.Id), cancellationToken);
+            if(ids.Count() != companies.Count())
+                throw new CollectionByIdsBadRequestException();
+            return companies;
+        }
+
         public async ValueTask ModifyAsync(int id, Company model, CancellationToken cancellationToken = default)
         {
             var prevCompany = await GetByIdAsync(id, cancellationToken);
@@ -67,19 +79,6 @@ namespace Infrastructure.Services
 
         private async ValueTask<IEnumerable<Company>> GetAllAsync(CancellationToken cancellationToken = default)
             => (await _companyRepository.GetAllAsync(cancellationToken)).OrderBy(p => p.Name);
-
-        //private async ValueTask CreateAsync(Company model, CancellationToken cancellationToken = default)
-        //{
-        //    model.Id = 0;
-        //    model.Address.Id = 0;
-        //    model.Company2address = 0;
-        //    _addressRepository.Add(model.Address);
-        //    await _addressRepository.CommitAsync(cancellationToken);
-
-        //    _companyRepository.Add(model);
-        //    await _companyRepository.CommitAsync(cancellationToken);
-
-        //}
 
         public async ValueTask<(IEnumerable<Company> companies, string ids)> CreateCompanyCollection(IEnumerable<Company> companyCollection, CancellationToken cancellationToken = default)
         {
@@ -99,6 +98,30 @@ namespace Infrastructure.Services
                 throw;
             }
             return (companies: companyCollection, ids);
+        }
+
+        public async ValueTask<Company> CreateCompanyAsync(Company company, CancellationToken cancellationToken = default)
+        {
+
+            try 
+            {
+                _companyRepository.Add(company);
+                foreach (var contactRole in company.ContactRoles)
+                {
+                    contactRole.Company.Name = company.Name; 
+                    contactRole.Company.Id = company.Id;
+                    _contactRoleRepository.Add(contactRole);
+                }
+                
+                await _companyRepository.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await _companyRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
+
+            return company;
         }
     }
 }

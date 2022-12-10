@@ -121,14 +121,14 @@ namespace Infrastructure.Data
             {
                 entity.ToTable("contact_role");
 
-                entity.HasIndex(e => new { e.ContactRole2company, e.ContactRole2contact, e.Name }, "contact_role_un")
+                entity.HasIndex(e => new { e.CompanyId, e.ContactId, e.Name }, "contact_role_un")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.ContactRole2company).HasColumnName("contact_role2company");
+                entity.Property(e => e.CompanyId).HasColumnName("contact_role2company");
 
-                entity.Property(e => e.ContactRole2contact).HasColumnName("contact_role2contact");
+                entity.Property(e => e.ContactId).HasColumnName("contact_role2contact");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -136,15 +136,15 @@ namespace Infrastructure.Data
                     .IsUnicode(false)
                     .HasColumnName("name");
 
-                entity.HasOne(d => d.ContactRole2companyNavigation)
+                entity.HasOne(d => d.Company)
                     .WithMany(p => p.ContactRoles)
-                    .HasForeignKey(d => d.ContactRole2company)
+                    .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("contact_role_contact_role2company_fkey");
 
-                entity.HasOne(d => d.ContactRole2contactNavigation)
+                entity.HasOne(d => d.Contact)
                     .WithMany(p => p.ContactRoles)
-                    .HasForeignKey(d => d.ContactRole2contact)
+                    .HasForeignKey(d => d.ContactId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("contact_role_contact_role2contact_fkey");
             });

@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
+using System.Threading;
 using WebApi.Models;
 
 namespace Infrastructure.Services
@@ -17,6 +18,24 @@ namespace Infrastructure.Services
         }
 
         public async ValueTask<int> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                contact.Id = 0;
+                contact.Address.Id = 0;
+                contact.Contact2address = 0;
+                _contactRepository.Add(contact);
+                await _contactRepository.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await _contactRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
+            return contact.Id;
+        }
+
+        public async ValueTask<int> CreateEmployeeForCompany(int companyId, Contact contact, CancellationToken cancellationToken = default)
         {
             try
             {

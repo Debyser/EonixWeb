@@ -1,10 +1,10 @@
-﻿namespace Shared.DataTransferObjects
+﻿namespace WebApi.ViewModels
 {
-    public record class ContactForCreationDto
+    public class ContactViewModel
     {
         public string? Lastname { get; init; }
         public string? Firstname { get; init; }
         public string? RoleName { get; init; }
-        public AddressDto? Address { get; set; }
+        public AddressViewModel? Address { get; set; }
     }
 }

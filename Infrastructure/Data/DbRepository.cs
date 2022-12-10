@@ -37,12 +37,6 @@ namespace Infrastructure.Data
         public void RemoveById(int id) => Remove(_dbSet.Find(id));
         public virtual void Update(T entity) => DbContext.Entry(entity).State = EntityState.Modified;
 
-        public void AddInclude(string include)
-        {
-            if (Includes == null) Includes = new List<string>();
-            Includes.Add(include);
-        }
-
         public async ValueTask RollbackAsync(CancellationToken cancellationToken = default) 
             => await DbContext.Database.RollbackTransactionAsync(cancellationToken);
     }

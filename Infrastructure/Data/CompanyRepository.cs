@@ -8,12 +8,15 @@ namespace Infrastructure.Data
     {
         private readonly EonixDbContext _context;
         private readonly IAddressRepository _addressRepository;
+        private readonly IContactRoleRepository _contactRoleRepository;
 
-        public CompanyRepository(EonixDbContext context, IAddressRepository addressRepository) : base(context)
+        public CompanyRepository(EonixDbContext context, IAddressRepository addressRepository , IContactRoleRepository contactRoleRepository) : base(context)
         {
             _context = context;
             _addressRepository = addressRepository;
+            _contactRoleRepository = contactRoleRepository;
             _addressRepository.SetDbContext(context);
+            _contactRoleRepository.SetDbContext(context);
         }
 
         // new : erase the Add from DbRepository
