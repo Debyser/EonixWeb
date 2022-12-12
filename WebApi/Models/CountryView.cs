@@ -1,6 +1,6 @@
-﻿namespace WebApi.ViewModels
+﻿namespace WebApi.Models
 {
-    public class CountryViewModel
+    internal class CountryView
     {
         public string? CountryAlpha3Code { get; set; }
         public string? Name { get; set; }

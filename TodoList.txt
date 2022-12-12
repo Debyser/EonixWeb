@@ -47,3 +47,18 @@ public void AddBookWithAuthors(BookVM book)
                 _context.SaveChanges();
             }
         }
+
+
+
+ - pas de loggerService , il faut utiliser les exception via des filters sur api (exceptionFilter)
+ - Ioc ajouter Fluent Validator
+        // TOdo: get companyById => tous ce qui est dans compagnie (list des contacts , name de la compagnie)
+ // todo : ajouter le numero de statut code directement en attribut
+
+
+ 1) virer tous les dto en VIEWMODEL
+ 2) pas de logger service , exception filter sur api : https://learn.microsoft.com/en-us/ef/core/performance/advanced-performance-topics?tabs=with-di%2Cwith-constant
+ 3) lire doc rest api standard
+ 4) rajouter le stack strace dans les logs
+ 5) connection pool
+ 6) bear token avec oauth2 

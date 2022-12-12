@@ -21,10 +21,6 @@ namespace WebApi.Mappings
             .ForMember(w => w.Name, opt => opt.MapFrom(p => p.Name))
             .ReverseMap();
 
-            //CreateMap<CompanyForCreationDto, ContactRole>()
-            //   .ForPath(dest => dest.Company.Name, input => input.MapFrom(src => src.Name))
-            //   .ForPath(dest => dest.Company.Address, input => input.MapFrom(src => src.Address))
-            //   .ReverseMap();
         }
     }
 }

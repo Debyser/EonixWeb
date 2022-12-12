@@ -1,11 +1,7 @@
 ﻿using ApplicationCore.Services;
-using Autofac.Core;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using NLog.Filters;
 using Shared.DataTransferObjects;
-using System.Collections.Generic;
 using WebApi.ModelBinders;
 using WebApi.Models;
 
@@ -34,13 +30,16 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetCompanyCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> ids)
            => Ok(_mapper.Map<IEnumerable<CompanyDto>>(await _companyService.GetByIdsAsync(ids)));
 
+
         [HttpPost("", Name = nameof(CreateCompany))]
+        // todo : ajouter le numero de statut code directement en attribut
         public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto companyVM)
         {
+            // configurer company mapper pour qu'il map la liste des contact roles
             var entity = _mapper.Map<Company>(companyVM);
             entity.ContactRoles = _mapper.Map<List<ContactForCreationDto>, List<ContactRole>>(companyVM.Contacts.ToList());
-            var createdCompany = await _companyService.CreateCompanyAsync(entity);
-            return CreatedAtRoute("CompanyById", new { id = createdCompany.Id }, createdCompany);
+            await _companyService.CreateCompanyAsync(entity);
+            return Ok();
         }
 
         [HttpPut("{id:int}", Name = nameof(ModifyCompany))]

@@ -35,7 +35,10 @@ namespace WebApi.Controllers
 
         [HttpGet("{id:int}", Name = nameof(GetCountryById))]
         public async Task<IActionResult> GetCountryById([FromRoute] int id)
-            => Ok(_mapper.Map<CountryDto>(await _countryService.GetByIdAsync(id)));
+        {
+            return Ok(_mapper.Map<CountryDto>(await _countryService.GetByIdAsync(id)));
+        }
+       
 
 
         [HttpGet("", Name = nameof(GetCountryByFilter))]
