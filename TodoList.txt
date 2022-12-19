@@ -65,3 +65,4 @@ public void AddBookWithAuthors(BookVM book)
  6) bear token avec oauth2 
  7) rajout d'une colonne Active pour suppression logique
  8) GetCompangyById
+ 9) Verb option Web Api
