@@ -1,8 +1,8 @@
 ﻿namespace WebApi.Models
 {
-    internal class CountryView
+    public class CountryView
     {
-        public string? CountryAlpha3Code { get; set; }
-        public string? Name { get; set; }
+        public string? CountryAlpha3Code { get; init; }
+        public string? Name { get; init; }
     }
 }

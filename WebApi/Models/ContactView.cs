@@ -1,6 +1,6 @@
 ﻿namespace WebApi.Models
 {
-    internal class ContactView
+    public class ContactView
     {
         public string? Lastname { get; init; }
         public string? Firstname { get; init; }

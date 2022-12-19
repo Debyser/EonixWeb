@@ -108,7 +108,6 @@ namespace Infrastructure.Services
                 _companyRepository.Add(company);
                 foreach (var contactRole in company.ContactRoles)
                 {
-                    contactRole.Company.Name = company.Name; 
                     contactRole.Company.Id = company.Id;
                     _contactRoleRepository.Add(contactRole);
                 }

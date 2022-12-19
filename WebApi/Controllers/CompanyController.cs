@@ -1,7 +1,6 @@
 ﻿using ApplicationCore.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Shared.DataTransferObjects;
 using WebApi.ModelBinders;
 using WebApi.Models;
 
@@ -22,28 +21,28 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
 
+        // Why calling the mapper here ? : because the service doesn't know the ViewModel
+        // So you do the mapping in the Application layer
         [HttpGet("", Name = nameof(GetCompanyByFilter))]
-        public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyDto filter)
-         => Ok(_mapper.Map<IEnumerable<CompanyDto>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
+        public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyView filter)
+         => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
 
         [HttpGet("collection/({ids})", Name = nameof(GetCompanyCollection))]
         public async Task<IActionResult> GetCompanyCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> ids)
-           => Ok(_mapper.Map<IEnumerable<CompanyDto>>(await _companyService.GetByIdsAsync(ids)));
+           => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByIdsAsync(ids)));
 
 
         [HttpPost("", Name = nameof(CreateCompany))]
         // todo : ajouter le numero de statut code directement en attribut
-        public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto companyVM)
+        public async Task<IActionResult> CreateCompany([FromBody] CompanyView companyVM)
         {
-            // configurer company mapper pour qu'il map la liste des contact roles
             var entity = _mapper.Map<Company>(companyVM);
-            entity.ContactRoles = _mapper.Map<List<ContactForCreationDto>, List<ContactRole>>(companyVM.Contacts.ToList());
-            await _companyService.CreateCompanyAsync(entity);
-            return Ok();
+            var createdCompany = await _companyService.CreateCompanyAsync(entity);
+            return CreatedAtRoute("CompanyById", new { id = createdCompany.Id }, createdCompany);
         }
 
         [HttpPut("{id:int}", Name = nameof(ModifyCompany))]
-        public async Task<IActionResult> ModifyCompany([FromRoute] int id, [FromBody] CompanyForUpdateDto  companyDto)
+        public async Task<IActionResult> ModifyCompany([FromRoute] int id, [FromBody] CompanyView companyDto)
         {
             await _companyService.ModifyAsync(id, _mapper.Map<Company>(companyDto));
             return Ok();
@@ -55,13 +54,5 @@ namespace WebApi.Controllers
             await _companyService.DeleteIdAsync(id);
             return NoContent();
         }
-
-        //[HttpPost("collection")]
-        //public async Task<IActionResult> CreateCompanyCollection([FromBody] CompanyForCreationDto companyCollection)
-        //{
-        //    var result = await _companyService.CreateCompanyCollection(_mapper.Map<IEnumerable<Company>>(companyCollection));
-
-        //    return CreatedAtRoute("CompanyCollection", new { result.ids }, result.companies);
-        //}
     }
 }

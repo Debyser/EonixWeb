@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Shared.DataTransferObjects;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using WebApi.Models;
 
 namespace WebApi.Mappings
@@ -8,19 +8,19 @@ namespace WebApi.Mappings
     {
         public CompanyMappingProfile()
         {
-            CreateMap<Company, CompanyForCreationDto>()
+            CreateMap<Company, CompanyView>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(p => p.Name))
-            .ForMember(dest => dest.Address, opt => opt.MapFrom(p => p.Address))
-            .ReverseMap();
+            .ForMember(dest => dest.Contacts, opt => opt.MapFrom(p => p.ContactRoles))
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(p => p.Address));
 
-            CreateMap<Company, CompanyDto>()
-            .ForMember(w => w.Name, opt => opt.MapFrom(p => p.Name))
-            .ReverseMap();
+            CreateMap<CompanyView, ContactRole>()
+                .ForPath(dest => dest.Company.Name, opt => opt.MapFrom(src => src.Name))
+                .ReverseMap();
 
-            CreateMap<Company, CompanyForUpdateDto>()
-            .ForMember(w => w.Name, opt => opt.MapFrom(p => p.Name))
-            .ReverseMap();
-
+            CreateMap<CompanyView, Company>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(p => p.Name))
+            .ForMember(dest => dest.ContactRoles, opt => opt.MapFrom(p=>p.Contacts))
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(p => p.Address));
         }
     }
 }

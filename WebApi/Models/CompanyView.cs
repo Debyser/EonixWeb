@@ -1,10 +1,10 @@
 ﻿namespace WebApi.Models
 {
-    internal class CompanyView
+    public class CompanyView
     {
-        public string? Name { get; set; }
-        public AddressView? Address { get; set; }
-        public IEnumerable<ContactView>? Contacts { get; set; }
+        public string? Name { get; init; }
+        public AddressView? Address { get; init; }
+        public IEnumerable<ContactView>? Contacts { get; init; }
 
     }
 }
