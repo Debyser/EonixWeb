@@ -21,6 +21,10 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("{id:int}", Name = nameof(GetCompanyById))]
+        public async Task<IActionResult> GetCompanyById([FromRoute] int id)
+            => Ok(_mapper.Map<CompanyView>(await _companyService.GetByIdAsync(id)));
+
         // Why calling the mapper here ? : because the service doesn't know the ViewModel
         // So you do the mapping in the Application layer
         [HttpGet("", Name = nameof(GetCompanyByFilter))]

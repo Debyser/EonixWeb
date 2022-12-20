@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
 using WebApi.Models;
 
 namespace WebApi.Mappings
@@ -19,7 +18,7 @@ namespace WebApi.Mappings
 
             CreateMap<CompanyView, Company>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(p => p.Name))
-            .ForMember(dest => dest.ContactRoles, opt => opt.MapFrom(p=>p.Contacts))
+            .ForMember(dest => dest.ContactRoles, opt => opt.MapFrom(p => p.Contacts))
             .ForMember(dest => dest.Address, opt => opt.MapFrom(p => p.Address));
         }
     }

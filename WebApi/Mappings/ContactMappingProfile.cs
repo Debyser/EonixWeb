@@ -17,20 +17,18 @@ namespace WebApi.Mappings
             CreateMap<ContactRole, ContactView>()
             .ForPath(dest => dest.Lastname, input => input.MapFrom(src => src.Contact.Lastname))
             .ForPath(dest => dest.Firstname, input => input.MapFrom(src => src.Contact.Firstname))
+            .ForPath(dest => dest.RoleName, input => input.MapFrom(src => src.Name))
             .ForPath(dest => dest.Address, input => input.MapFrom(src => src.Contact.Address));
 
             CreateMap<ContactView, Contact>()
             .ForMember(dest => dest.Firstname, input => input.MapFrom(src => src.Firstname))
             .ForMember(dest => dest.Lastname, input => input.MapFrom(src => src.Lastname))
-            .ForMember(dest => dest.Address, input => input.MapFrom(src => src.Address))
-            .ForMember(dest => dest.Id, input=> input.Ignore())
-            .ForMember(dest => dest.Contact2address, input=> input.Ignore());
+            .ForMember(dest => dest.Address, input => input.MapFrom(src => src.Address));
 
             CreateMap<Contact, ContactView>()
             .ForMember(dest => dest.Firstname, input => input.MapFrom(src => src.Firstname))
             .ForMember(dest => dest.Lastname, input => input.MapFrom(src => src.Lastname))
-            .ForMember(dest => dest.Address, input => input.MapFrom(src => src.Address))
-            .ForMember(dest => dest.RoleName, input => input.Ignore());
+            .ForMember(dest => dest.Address, input => input.MapFrom(src => src.Address));
 
 
            //CreateMap<List<ContactView>, List<Contact>>();

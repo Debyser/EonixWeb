@@ -1,7 +1,6 @@
 ﻿using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
-using System.Reflection.Metadata.Ecma335;
 using WebApi.Models;
 
 namespace Infrastructure.Services

@@ -26,10 +26,7 @@ namespace Infrastructure.Data
         public new void Add(Company entity)
         {
             _context.Add(entity);
-            foreach (var contactRole in entity.ContactRoles)
-            {
-                _contactRoleRepository.Add(contactRole);
-            }
+            foreach (var contactRole in entity.ContactRoles) _contactRoleRepository.Add(contactRole);
             _addressRepository.Add(entity.Address);
         }
 
@@ -47,7 +44,9 @@ namespace Infrastructure.Data
         {
             return await _context.Companies
                 .Where(p => p.Id == id)
+                .Include(p => p.ContactRoles).ThenInclude(x=>x.Contact).ThenInclude(x=>x.Address).ThenInclude(x=>x.Country)
                 .Include(p => p.Address)
+                .Include(p => p.Address.Country)
                 .FirstOrDefaultAsync(cancellationToken);
         }
     }

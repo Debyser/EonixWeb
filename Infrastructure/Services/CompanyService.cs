@@ -52,7 +52,7 @@ namespace Infrastructure.Services
 
         public async ValueTask<Company> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var company = await _companyRepository.FindByIdAsync(id, cancellationToken);
+            var company = await _companyRepository.GetByIdAsync(id, cancellationToken);
             if (company == null)
                 throw new CompanyNotFoundException(id);
             return company;
