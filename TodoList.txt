@@ -1,4 +1,8 @@
-faire un ajout d'une company avec une liste de contacts  ,  
+
+// The line to execute for database first in the package Manager Console :
+// Scaffold-DbContext "server=DELL-JASON\MSSQLSERVER2019;database=EonixWebApi;Integrated Security=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure
+
+
 
 page 9. 4 public record CompanyForCreationDto(string Name, string Address, string Country, IEnumerable<EmployeeForCreationDto> Employees);44 
 get contact in contactRepo Employee GetEmployee(Guid companyId, Guid id, bool trackChanges); GetEmployeeForCompany in controller ContactController [HttpGet("{id:guid}")]
@@ -37,3 +41,7 @@ faudrait une version pro des gestions des ressources , regarder dans Ef la gesti
  9) Verb option Web Api
  10) web socket 
  11) Http/2
+12) creation_time sur contact , zulu time ,  end to end , sans time zone,
+dans la db date / time sans time zone
+13) tu peux rajouter active sur toute les tables : done
+14) faire un Patch

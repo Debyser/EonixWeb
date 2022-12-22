@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApi.Models;
+// The line to execute for database first in the package Manager Console :
+// Scaffold-DbContext "server=DELL-JASON\MSSQLSERVER2019;database=EonixWebApi;Integrated Security=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure
 
 namespace Infrastructure.Data
 {
