@@ -19,3 +19,4 @@ CREATE TABLE contact_role (
 ALTER TABLE contact_role ADD CONSTRAINT contact_role_contact_role2company_fkey FOREIGN KEY (contact_role2company) REFERENCES company(id);
 ALTER TABLE contact_role ADD CONSTRAINT contact_role_contact_role2contact_fkey FOREIGN KEY (contact_role2contact) REFERENCES contact(id);
 
+ALTER TABLE EonixWebApi.dbo.contact_role ADD Active bit DEFAULT 1 NOT NULL;
