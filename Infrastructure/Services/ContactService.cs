@@ -1,7 +1,6 @@
 ﻿using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
-using System.Threading;
 using WebApi.Models;
 
 namespace Infrastructure.Services
@@ -62,9 +61,12 @@ namespace Infrastructure.Services
             await _contactRepository.CommitAsync(cancellationToken);
         }
 
-        public ValueTask<Contact> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        // est ce que je dois retourner le rolename ?
+        public async ValueTask<Contact> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
+            if (contact == null) throw new ContactNotFoundException(id);
+            return contact;
         }
 
         public async ValueTask ModifyAsync(int id, Contact model, CancellationToken cancellationToken = default)

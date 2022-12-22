@@ -1,7 +1,6 @@
 ﻿using ApplicationCore.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Shared.DataTransferObjects;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -21,7 +20,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id:int}", Name = nameof(ModifyContact))]
-        public async Task<IActionResult> ModifyContact([FromRoute] int id, [FromBody] ContactForUpdateDto contactDto)
+        public async Task<IActionResult> ModifyContact([FromRoute] int id, [FromBody] ContactView contactDto)
         {
             await _contactService.ModifyAsync(id, _mapper.Map<Contact>(contactDto));
             return Ok();
@@ -29,11 +28,11 @@ namespace WebApi.Controllers
 
         //TODO: à changer et mettre un id de company et avoir un roleName dedans
         [HttpPost("", Name = nameof(CreateContact))]
-        public async Task<IActionResult> CreateContact([FromBody] ContactForCreationDto contact)
+        public async Task<IActionResult> CreateContact([FromBody] ContactView contact)
             => Ok(await _contactService.CreateAsync(_mapper.Map<Contact>(contact)));
 
         [HttpPost("", Name = nameof(CreateContactForCompany))]
-        public async Task<IActionResult> CreateContactForCompany(int companyId, [FromBody] ContactForCreationDto contact)
+        public async Task<IActionResult> CreateContactForCompany(int companyId, [FromBody] ContactView contact)
         {
             if (contact == null)
                 return BadRequest("ContactForCreationDto object is null");
@@ -46,7 +45,7 @@ namespace WebApi.Controllers
 
         [HttpGet("{id:int}", Name = nameof(GetContactById))]
         public async Task<IActionResult> GetContactById([FromRoute] int id)
-            => Ok(_mapper.Map<ContactDto>(await _contactService.GetByIdAsync(id)));
+            => Ok(_mapper.Map<ContactView>(await _contactService.GetByIdAsync(id)));
 
 
         [HttpDelete("{id:int}", Name = nameof(DeleteContact))]

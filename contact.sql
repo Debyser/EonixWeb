@@ -17,3 +17,4 @@ CREATE TABLE contact (
 -- public.contact foreign keys
 
 ALTER TABLE contact ADD CONSTRAINT contact_contact2address_fkey FOREIGN KEY (contact2address) REFERENCES address(id);
+ALTER TABLE EonixWebApi.dbo.contact ADD Active bit DEFAULT 1 NOT NULL;

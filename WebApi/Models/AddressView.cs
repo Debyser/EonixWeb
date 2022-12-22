@@ -1,11 +1,13 @@
-﻿namespace WebApi.ViewModels
+﻿using WebApi.Models;
+
+namespace WebApi
 {
-    public class AddressViewModel
+    public class AddressView
     {
         public string? Zipcode { get; init; }
         public string? Street { get; init; }
         public string? BoxNumber { get; init; }
         public string? City { get; init; }
-        public CountryViewModel? Country { get; set; }
+        public CountryView? Country { get; init; }
     }
 }

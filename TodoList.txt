@@ -1,4 +1,8 @@
-faire un ajout d'une company avec une liste de contacts  ,  
+
+// The line to execute for database first in the package Manager Console :
+// Scaffold-DbContext "server=DELL-JASON\MSSQLSERVER2019;database=EonixWebApi;Integrated Security=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure
+
+
 
 page 9. 4 public record CompanyForCreationDto(string Name, string Address, string Country, IEnumerable<EmployeeForCreationDto> Employees);44 
 get contact in contactRepo Employee GetEmployee(Guid companyId, Guid id, bool trackChanges); GetEmployeeForCompany in controller ContactController [HttpGet("{id:guid}")]
@@ -6,6 +10,7 @@ faire les transactions => done , plus qu'à l'appliquer partout
 
 
 - faire le alter table pour le delete en cascade ou pas ???
+non , faire un delete logique ! rajout d'une colonne active à true par défaut
 
 avant le token :
 
@@ -19,31 +24,24 @@ faudrait une version pro des gestions des ressources , regarder dans Ef la gesti
 2 tu trouves une solution pour améliorer via l'ioc
 
 
-public void AddBookWithAuthors(BookVM book)
-        {
-            var _book = new Book()
-            {
-                Title = book.Title,
-                Description = book.Description,
-                IsRead = book.IsRead,
-                DateRead = book.IsRead ? book.DateRead.Value : null,
-                Rate = book.IsRead ? book.Rate.Value : null,
-                Genre = book.Genre,
-                CoverUrl = book.CoverUrl,
-                DateAdded = DateTime.Now,
-                PublisherId = book.PublisherId
-            };
-            _context.Books.Add(_book);
-            _context.SaveChanges();
+ - pas de loggerService , il faut utiliser les exception via des filters sur api (exceptionFilter)
+ - Ioc ajouter Fluent Validator
+        // TOdo: get companyById => tous ce qui est dans compagnie (list des contacts , name de la compagnie)
+ // todo : ajouter le numero de statut code directement en attribut
 
-            foreach (var id in book.AuthorIds)
-            {
-                var _book_author = new Book_Author()
-                {
-                    BookId = _book.Id,
-                    AuthorId = id
-                };
-                _context.Books_Authors.Add(_book_author);
-                _context.SaveChanges();
-            }
-        }
+
+ 1) virer tous les dto en VIEWMODEL : done 
+ 2) pas de logger service , exception filter sur api : https://learn.microsoft.com/en-us/ef/core/performance/advanced-performance-topics?tabs=with-di%2Cwith-constant
+ 3) lire doc rest api standard
+ 4) rajouter le stack strace dans les logs
+ 5) connection pool
+ 6) bear token avec oauth2 
+ 7) rajout d'une colonne Active pour suppression logique
+ 8) GetCompangyById : done
+ 9) Verb option Web Api
+ 10) web socket 
+ 11) Http/2
+12) creation_time sur contact , zulu time ,  end to end , sans time zone,
+dans la db date / time sans time zone
+13) tu peux rajouter active sur toute les tables : done
+14) faire un Patch

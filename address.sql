@@ -12,3 +12,4 @@
 -- public.address foreign keys
 
 ALTER TABLE address ADD CONSTRAINT address_address2country_fkey FOREIGN KEY (address2country) REFERENCES country(id);
+ALTER TABLE EonixWebApi.dbo.address ADD Active bit DEFAULT 1 NOT NULL;

@@ -19,3 +19,5 @@ CREATE TABLE country (
 	"name" varchar(50) NOT NULL,
 	CONSTRAINT country_pk PRIMARY KEY (id)
 );
+
+ALTER TABLE EonixWebApi.dbo.country ADD Active bit DEFAULT 1 NOT NULL;
