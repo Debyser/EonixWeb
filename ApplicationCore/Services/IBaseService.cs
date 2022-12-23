@@ -7,8 +7,6 @@ namespace ApplicationCore.Services
         ValueTask ModifyAsync(int id, T model, CancellationToken cancellationToken = default);
         ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default);
         ValueTask<T> GetByIdAsync(int id, CancellationToken cancellationToken = default);
-        //ValueTask<IEnumerable<T>> GetByIdsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default);
-        //ValueTask<IEnumerable<T>> GetByFilterAsync(T filter, CancellationToken cancellationToken = default);
 
     }
 }

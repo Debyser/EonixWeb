@@ -45,3 +45,10 @@ faudrait une version pro des gestions des ressources , regarder dans Ef la gesti
 dans la db date / time sans time zone
 13) tu peux rajouter active sur toute les tables : done
 14) faire un Patch
+15) cache sur les country
+16) get country by name 
+[09:21, 23/12/2022] Stéphane Ganhy: c'est pas la responsabilité de ton client final de rajouter un nouveau pays
+
+[09:21, 23/12/2022] Stéphane Ganhy: donc lecture seule sur Country
+[09:21, 23/12/2022] Stéphane Ganhy: il existe tu le renvois, il existe pas erreur business
+[09:21, 23/12/2022] Stéphane Ganhy: ce country n'existe pas

@@ -1,7 +1,7 @@
-﻿using ApplicationCore.Repositories;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
-using WebApi.Models;
 
 namespace Infrastructure.Services
 {

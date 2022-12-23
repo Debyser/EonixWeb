@@ -1,4 +1,4 @@
-﻿using WebApi.Models;
+﻿using ApplicationCore.Entities;
 
 namespace ApplicationCore.Services
 {

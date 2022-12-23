@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Services;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
@@ -38,22 +39,15 @@ namespace WebApi.Controllers
             return Ok(_mapper.Map<CountryView>(await _countryService.GetByIdAsync(id)));
         }
 
-        [HttpGet("", Name = nameof(GetCountryByFilter))]
-        public async Task<IActionResult> GetCountryByFilter([FromQuery] CountryView filter)
-            => Ok(_mapper.Map<IEnumerable<CountryView>>(await _countryService.GetByFilterAsync(_mapper.Map<Country>(filter))));
+        //[HttpGet("", Name = nameof(GetCountryByFilter))]
+        //public async Task<IActionResult> GetCountryByFilter([FromQuery] CountryView filter)
+        //    => Ok(_mapper.Map<IEnumerable<CountryView>>(await _countryService.GetByFilterAsync(_mapper.Map<Country>(filter))));
 
         [HttpDelete("{id:int}", Name = nameof(DeleteCountry))]
         public async Task<IActionResult> DeleteCountry([FromRoute] int id)
         {
             await _countryService.DeleteIdAsync(id);
             return NoContent();
-        }
-
-        [HttpGet("collection/({ids})", Name = "CountryCollection")] 
-        public IActionResult GetCountryCollection(IEnumerable<int> ids) 
-        { 
-            var countries = _countryService.GetByIdsAsync(ids);
-            return Ok(countries);
         }
     }
 }

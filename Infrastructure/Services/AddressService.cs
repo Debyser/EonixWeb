@@ -1,8 +1,8 @@
-﻿using ApplicationCore.Repositories;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Repositories;
 using ApplicationCore.Services;
-using Infrastructure.Data;
 using Infrastructure.Entities.Exceptions;
-using WebApi.Models;
+using System.Linq;
 
 namespace Infrastructure.Services
 {
@@ -10,11 +10,13 @@ namespace Infrastructure.Services
     {
         private readonly IAddressRepository _addressRepository;
         private readonly ICountryRepository _countryRepository;
+        private readonly ICountryService _countryService;
 
-        public AddressService(IAddressRepository addressRepository, ICountryRepository countryRepository)
+        public AddressService(IAddressRepository addressRepository, ICountryRepository countryRepository, ICountryService countryService)
         {
             _addressRepository = addressRepository;
             _countryRepository = countryRepository;
+            _countryService = countryService;
         }
 
         public async ValueTask<int> CreateAsync(Address address, CancellationToken cancellationToken = default)
@@ -26,6 +28,8 @@ namespace Infrastructure.Services
                 address.Id = 0;
                 address.Country.Id = 0;
                 address.Address2country = 0;
+                var countries = await _countryService.GetList(cancellationToken);
+                address.Country.Id = countries.FirstOrDefault(p => p.Name == address.Country.Name).Id;
                 _addressRepository.Add(address);
                 await _addressRepository.CommitAsync(cancellationToken);
             }

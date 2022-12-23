@@ -1,10 +1,9 @@
-﻿using WebApi.Models;
+﻿using ApplicationCore.Entities;
 
 namespace ApplicationCore.Services
 {
     public interface ICountryService : IBaseService<Country>
     {
-        ValueTask<IEnumerable<Country>> GetByIdsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default);
-        ValueTask<IEnumerable<Country>> GetByFilterAsync(Country filter, CancellationToken cancellationToken = default);
+        ValueTask<IEnumerable<Country>> GetList(CancellationToken cancellationToken = default);
     }
 }

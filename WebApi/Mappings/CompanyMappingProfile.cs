@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ApplicationCore.Entities;
+using AutoMapper;
 using WebApi.Models;
 
 namespace WebApi.Mappings

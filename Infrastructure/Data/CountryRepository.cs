@@ -1,7 +1,6 @@
-﻿using ApplicationCore.Repositories;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using WebApi.Models;
 
 namespace Infrastructure.Data
 {

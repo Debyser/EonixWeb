@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Services;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;

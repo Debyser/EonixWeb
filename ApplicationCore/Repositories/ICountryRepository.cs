@@ -1,5 +1,4 @@
 ﻿using ApplicationCore.Entities;
-using WebApi.Models;
 
 namespace ApplicationCore.Repositories
 {
