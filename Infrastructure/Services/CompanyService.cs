@@ -36,12 +36,18 @@ namespace Infrastructure.Services
             return model.Id;
         }
 
+ 
         public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
         {
             var company = await GetByIdAsync(id, cancellationToken);
             if (company == null)
-                throw new CompanyNotFoundException(id);
-            _companyRepository.Remove(company);
+                throw new CompanyNotFoundException(id);// à vérifier , est ce que leservice connait les business exception ?
+            // entity not found au lieu de CompanyNotFound
+            // stocker le message : company id not found
+            company.Active = false;
+            _companyRepository.Update(company); // dire que j'update que le champ Actif et pas toute l'entité
+            // pas de tracking car lourd , sans tracking trouver comment maj un champ
+            // lire code de Steph , minimum syndical
             await _companyRepository.CommitAsync(cancellationToken);
         }
 

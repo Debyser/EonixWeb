@@ -6,7 +6,5 @@ namespace ApplicationCore.Repositories
     {
         ValueTask<Company> GetByIdAsync(int id, CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<Company>> GetByFilterAsync(Company filter, CancellationToken cancellationToken = default);
-
-
     }
 }

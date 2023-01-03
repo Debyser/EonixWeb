@@ -23,12 +23,16 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id:int}", Name = nameof(GetCompanyById))]
+        [ProducesResponseType(typeof(CompanyView), 200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> GetCompanyById([FromRoute] int id)
             => Ok(_mapper.Map<CompanyView>(await _companyService.GetByIdAsync(id)));
 
         // Why calling the mapper here ? : because the service doesn't know the ViewModel
         // So you do the mapping in the Application layer
         [HttpGet("", Name = nameof(GetCompanyByFilter))]
+        [ProducesResponseType(typeof(IEnumerable<CompanyView>), 200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyView filter)
          => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
 
@@ -38,26 +42,37 @@ namespace WebApi.Controllers
 
 
         [HttpPost("", Name = nameof(CreateCompany))]
-        // todo : ajouter le numero de statut code directement en attribut
+        [ProducesResponseType(201)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
         public async Task<IActionResult> CreateCompany([FromBody] CompanyView companyVM)
         {
             var entity = _mapper.Map<Company>(companyVM);
             var createdCompany = await _companyService.CreateCompanyAsync(entity);
-            return CreatedAtRoute("CompanyById", new { id = createdCompany.Id }, createdCompany);
+            return Created(createdCompany.Id.ToString() , createdCompany);
         }
 
         [HttpPut("{id:int}", Name = nameof(ModifyCompany))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> ModifyCompany([FromRoute] int id, [FromBody] CompanyView companyDto)
         {
             await _companyService.ModifyAsync(id, _mapper.Map<Company>(companyDto));
             return Ok();
         }
 
-        [HttpDelete("{id:int}", Name = nameof(DeleteCompany))]
-        public async Task<IActionResult> DeleteCompany([FromRoute] int id)
-        {
-            await _companyService.DeleteIdAsync(id);
+        // retourner les delete subsequent
+        [HttpDelete("{id:int}", Name = nameof(DeleteCompanyById))]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> DeleteCompanyById([FromRoute] int id)
+        { 
+            await _companyService.DeleteIdAsync(id); 
             return NoContent();
         }
+
+
+        //TODO: DeleteContactById , et ma route sera plus spécifique
     }
 }
