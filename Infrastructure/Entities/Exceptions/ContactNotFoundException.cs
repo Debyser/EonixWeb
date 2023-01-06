@@ -2,7 +2,7 @@
 {
     internal class ContactNotFoundException : NotFoundException
     {
-        public ContactNotFoundException(int countryId) : base($"The country with id: {countryId} doesn't exist in the database.")
+        public ContactNotFoundException(long countryId) : base($"The country with id: {countryId} doesn't exist in the database.")
         {
 
         }

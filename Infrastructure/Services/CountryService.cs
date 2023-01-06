@@ -9,7 +9,7 @@ namespace Infrastructure.Services
     {
         private readonly ICountryRepository _repository;
         private static bool _cacheLoaded = false;
-        private static Dictionary<int, Country> _countries;
+        private static Dictionary<long, Country> _countries;
         private static readonly object _syncRoot = new object();
 
         public CountryService(ICountryRepository countryRepository)
@@ -18,37 +18,72 @@ namespace Infrastructure.Services
             LoadCache();
         }
 
-        public async ValueTask<Country> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        // todo : use long instead of int
+        public async ValueTask<Country> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
+            if (_countries.ContainsKey(id)) return _countries[id];
             var country = await _repository.FindByIdAsync(id, cancellationToken);
-            if (country == null) throw new CountryNotFoundException(id);
+            if (country == null) throw new CountryNotFoundException(id); // TOdo: entityNotfound
             return country;
         }
 
+        //TOdo
         public async ValueTask<IEnumerable<Country>> GetList(CancellationToken cancellationToken = default)
-            => (await _repository.GetAllAsync(cancellationToken)).OrderBy(p => p.Name);
+            => (await _repository.GetAllAsync(cancellationToken));
 
-        public ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default) 
+        public ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default) 
             => throw new NotImplementedException();
 
-        public ValueTask<int> CreateAsync(Country model, CancellationToken cancellationToken = default) 
+        public ValueTask<long> CreateAsync(Country model, CancellationToken cancellationToken = default) 
             => throw new NotImplementedException();
 
-        public ValueTask ModifyAsync(int countryId, Country country, CancellationToken cancellationToken = default)
+        public ValueTask ModifyAsync(long countryId, Country country, CancellationToken cancellationToken = default)
           => throw new NotImplementedException();
 
         private void LoadCache()
         {
-            lock (_syncRoot) 
+            if (_cacheLoaded) return; // for lock once
+            lock (_syncRoot)
             {
-                if (!_cacheLoaded)
-                {
-                    _countries = new Dictionary<int, Country>();
-                    var countries = _repository.GetAll();
-                    foreach (var country in countries) _countries.Add(country.Id, country);
-                    _cacheLoaded = true;
-                }
+                if (_cacheLoaded) return; // for security
+
+                _countries = new Dictionary<long, Country>();
+                var countries = _repository.GetAll();
+                foreach (var country in countries) _countries.Add(country.Id, country);
+                _cacheLoaded = true;
             }
         }
     }
 }
+
+/*
+ patter Singleton
+
+public sealed class Singleton
+{
+    private static readonly object Instancelock = new object();
+    private Singleton()
+    {
+    }
+    private static Singleton instance = null;
+
+    public static Singleton GetInstance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                lock (Instancelock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new Singleton();
+                    }
+                }
+            }
+            return instance;
+        }
+    }
+}
+ 
+ */

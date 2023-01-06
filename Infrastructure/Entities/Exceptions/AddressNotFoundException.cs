@@ -2,7 +2,7 @@
 {
     internal class AddressNotFoundException : NotFoundException
     {
-        public AddressNotFoundException(int countryId) : base($"The address with id: {countryId} doesn't exist in the database.")
+        public AddressNotFoundException(long countryId) : base($"The address with id: {countryId} doesn't exist in the database.")
         {
 
         }

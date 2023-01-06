@@ -37,7 +37,7 @@ namespace WebApi.Controllers
          => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
 
         [HttpGet("collection/({ids})", Name = nameof(GetCompanyCollection))]
-        public async Task<IActionResult> GetCompanyCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> ids)
+        public async Task<IActionResult> GetCompanyCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<long> ids)
            => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByIdsAsync(ids)));
 
 

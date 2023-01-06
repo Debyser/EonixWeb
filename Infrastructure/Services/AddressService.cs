@@ -19,7 +19,7 @@ namespace Infrastructure.Services
             _countryService = countryService;
         }
 
-        public async ValueTask<int> CreateAsync(Address address, CancellationToken cancellationToken = default)
+        public async ValueTask<long> CreateAsync(Address address, CancellationToken cancellationToken = default)
         {
             // fix. SqlException: Cannot insert explicit value for identity column in table 'Address' when IDENTITY_INSERT is set to OFF.
             //  * assign to 0 otherwise ValueGeneratedOnAdd() is not working
@@ -41,7 +41,7 @@ namespace Infrastructure.Services
             return address.Id;
         }
 
-        public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var address = await GetByIdAsync(id, cancellationToken);
             if (address == null)
@@ -50,7 +50,7 @@ namespace Infrastructure.Services
             await _addressRepository.CommitAsync(cancellationToken);
         }
 
-        public async ValueTask<Address> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var address = await _addressRepository.GetByIdAsync(id, cancellationToken);
             if (address == null)
@@ -58,7 +58,7 @@ namespace Infrastructure.Services
             return address;
         }
 
-        public async ValueTask ModifyAsync(int addressId, Address model, CancellationToken cancellationToken = default)
+        public async ValueTask ModifyAsync(long addressId, Address model, CancellationToken cancellationToken = default)
         {
             try
             {

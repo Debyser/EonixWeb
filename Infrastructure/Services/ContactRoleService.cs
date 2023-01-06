@@ -18,7 +18,7 @@ namespace Infrastructure.Services
             _contactRepository = contactRepository;
             _companyRepository = companyRepository;
         }
-        public async ValueTask<int> CreateAsync(ContactRole model, CancellationToken cancellationToken = default)
+        public async ValueTask<long> CreateAsync(ContactRole model, CancellationToken cancellationToken = default)
         {
             model.Id = 0;
             var contact = await _contactRepository.GetByIdAsync(model.ContactId, cancellationToken);
@@ -35,7 +35,7 @@ namespace Infrastructure.Services
             return model.Id;
         }
 
-        public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var contactRole = await _contactRoleRepository.FindByIdAsync(id, cancellationToken);
             if (contactRole == null)
@@ -44,7 +44,7 @@ namespace Infrastructure.Services
             await _contactRoleRepository.CommitAsync(cancellationToken);
         }
 
-        public async ValueTask<ContactRole> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask<ContactRole> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var contactRole = await _contactRoleRepository.FindByIdAsync(id, cancellationToken);
             if (contactRole == null)
@@ -58,7 +58,7 @@ namespace Infrastructure.Services
             return contactRole;
         }
 
-        public async ValueTask ModifyAsync(int id, ContactRole model, CancellationToken cancellationToken = default)
+        public async ValueTask ModifyAsync(long id, ContactRole model, CancellationToken cancellationToken = default)
         {
             var prevCompany = await GetByIdAsync(id, cancellationToken);
             prevCompany.Name = model.Name;

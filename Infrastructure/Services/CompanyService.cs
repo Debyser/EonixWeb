@@ -18,7 +18,7 @@ namespace Infrastructure.Services
             _contactRoleRepository = contactRoleRepository; 
         }
 
-        public async ValueTask<int> CreateAsync(Company model, CancellationToken cancellationToken = default)
+        public async ValueTask<long> CreateAsync(Company model, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Infrastructure.Services
         }
 
  
-        public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var company = await GetByIdAsync(id, cancellationToken);
             if (company == null)
@@ -56,7 +56,7 @@ namespace Infrastructure.Services
                await GetAllAsync(cancellationToken) :
                await _companyRepository.GetByFilterAsync(filter, cancellationToken);
 
-        public async ValueTask<Company> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask<Company> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var company = await _companyRepository.GetByIdAsync(id, cancellationToken);
             if (company == null)
@@ -64,7 +64,7 @@ namespace Infrastructure.Services
             return company;
         }
 
-        public async ValueTask<IEnumerable<Company>> GetByIdsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+        public async ValueTask<IEnumerable<Company>> GetByIdsAsync(IEnumerable<long> ids, CancellationToken cancellationToken = default)
         {
             if (ids == null)
                 throw new IdParametersBadRequestException();
@@ -75,7 +75,7 @@ namespace Infrastructure.Services
             return companies;
         }
 
-        public async ValueTask ModifyAsync(int id, Company model, CancellationToken cancellationToken = default)
+        public async ValueTask ModifyAsync(long id, Company model, CancellationToken cancellationToken = default)
         {
             var prevCompany = await GetByIdAsync(id, cancellationToken);
             prevCompany.Name = model.Name;

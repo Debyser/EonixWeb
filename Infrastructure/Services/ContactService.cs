@@ -16,7 +16,7 @@ namespace Infrastructure.Services
             _addressRepository = addressRepository;
         }
 
-        public async ValueTask<int> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
+        public async ValueTask<long> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace Infrastructure.Services
             return contact.Id;
         }
 
-        public async ValueTask<int> CreateEmployeeForCompany(int companyId, Contact contact, CancellationToken cancellationToken = default)
+        public async ValueTask<long> CreateEmployeeForCompany(long companyId, Contact contact, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace Infrastructure.Services
             return contact.Id;
         }
 
-        public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
             if (contact == null)
@@ -62,14 +62,14 @@ namespace Infrastructure.Services
         }
 
         // est ce que je dois retourner le rolename ?
-        public async ValueTask<Contact> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
             if (contact == null) throw new ContactNotFoundException(id);
             return contact;
         }
 
-        public async ValueTask ModifyAsync(int id, Contact model, CancellationToken cancellationToken = default)
+        public async ValueTask ModifyAsync(long id, Contact model, CancellationToken cancellationToken = default)
         {
             try
             {

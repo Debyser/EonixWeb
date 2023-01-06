@@ -2,7 +2,7 @@
 {
     public class CompanyNotFoundException : NotFoundException
     {
-        public CompanyNotFoundException(int countryId) : base($"The country with id: {countryId} doesn't exist in the database.")
+        public CompanyNotFoundException(long countryId) : base($"The country with id: {countryId} doesn't exist in the database.")
         {
 
         }

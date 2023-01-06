@@ -23,7 +23,7 @@ namespace Infrastructure.Data
             _addressRepository.Add(entity.Address);
         }
 
-        public async ValueTask<Contact> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             return await _context.Contacts
                 .Where(p => p.Id == id)
