@@ -18,23 +18,20 @@ namespace Infrastructure.Services
             LoadCache();
         }
 
-        // todo : use long instead of int
         public async ValueTask<Country> GetByIdAsync(long id, CancellationToken cancellationToken = default)
-        {
-            if (_countries.ContainsKey(id)) return _countries[id];
-            var country = await _repository.FindByIdAsync(id, cancellationToken);
-            if (country == null) throw new CountryNotFoundException(id); // TOdo: entityNotfound
-            return country;
-        }
+            => _countries.ContainsKey(id) ?
+               _countries[id] :
+               await _repository.FindByIdAsync(id, cancellationToken) ?? throw new CountryNotFoundException(id);
 
-        //TOdo
         public async ValueTask<IEnumerable<Country>> GetList(CancellationToken cancellationToken = default)
-            => (await _repository.GetAllAsync(cancellationToken));
+            =>  _countries == null || _countries.Count == 0 ?
+                await _repository.GetAllAsync(cancellationToken) :
+                _countries.Values;
 
-        public ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default) 
+        public ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
 
-        public ValueTask<long> CreateAsync(Country model, CancellationToken cancellationToken = default) 
+        public ValueTask<long> CreateAsync(Country model, CancellationToken cancellationToken = default)
             => throw new NotImplementedException();
 
         public ValueTask ModifyAsync(long countryId, Country country, CancellationToken cancellationToken = default)
