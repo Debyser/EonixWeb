@@ -57,7 +57,7 @@ dans la db date / time sans time zone
 18) recommencer le projet database en sauvant le profile en mettant directement short pour l'id 
 et ensuite rajouter la colonne iso_2_Code  
 et ensuite rajouter dans le post script les country
-
+19) cache country with Lazzy dans le ctor du country , si cache pas loadé , je le load
 
 si supprimer des contacts d'une compagnie , je supprime dans la table COntactRole mais pas contact
 

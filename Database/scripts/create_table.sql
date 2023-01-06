@@ -1,5 +1,5 @@
 ﻿
-	:r .\SchemaScript.sql
+	:r .\schema.sql
 	:r .\country.sql
 	:r .\address.sql
 	:r .\contact.sql

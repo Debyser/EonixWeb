@@ -71,7 +71,7 @@
     <None Include="scripts\contact.sql" />
     <None Include="scripts\company.sql" />
     <None Include="scripts\contact_role.sql" />
-    <None Include="scripts\SchemaScript.sql" />
+    <None Include="scripts\schema.sql" />
     <None Include="EonixWebApiTestSunday.publish.xml" />
     <None Include="CountryCode.csv" />
   </ItemGroup>

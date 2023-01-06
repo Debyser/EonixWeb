@@ -12,6 +12,8 @@ namespace Infrastructure.Data
             _context = context; 
         }
 
+        public IEnumerable<Country> GetAll() => _context.Countries.AsEnumerable();
+
         public async ValueTask<IEnumerable<Country>> GetByFilterAsync(Country filter, CancellationToken cancellationToken = default)
         {
             return (!string.IsNullOrWhiteSpace(filter.Name)) ? 
