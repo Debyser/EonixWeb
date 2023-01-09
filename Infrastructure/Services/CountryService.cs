@@ -21,12 +21,10 @@ namespace Infrastructure.Services
         public async ValueTask<Country> GetByIdAsync(long id, CancellationToken cancellationToken = default)
             => _countries.ContainsKey(id) ?
                _countries[id] :
-               await _repository.FindByIdAsync(id, cancellationToken) ?? throw new CountryNotFoundException(id);
+               await _repository.FindByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(nameof(Country),id);
 
-        public async ValueTask<IEnumerable<Country>> GetList(CancellationToken cancellationToken = default)
-            =>  _countries == null || _countries.Count == 0 ?
-                await _repository.GetAllAsync(cancellationToken) :
-                _countries.Values;
+        public async ValueTask<IEnumerable<Country>> GetList()
+            =>  await Task.Run(()=>_countries.Values);
 
         public ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
             => throw new NotImplementedException();

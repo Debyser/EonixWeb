@@ -56,18 +56,13 @@ namespace Infrastructure.Services
         {
             var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
             if (contact == null)
-                throw new ContactNotFoundException(id);
+                throw new EntityNotFoundException(nameof(Contact), id);
             _contactRepository.Remove(contact);
             await _contactRepository.CommitAsync(cancellationToken);
         }
 
-        // est ce que je dois retourner le rolename ?
-        public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
-        {
-            var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
-            if (contact == null) throw new ContactNotFoundException(id);
-            return contact;
-        }
+        public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default) 
+            => await _contactRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(nameof(Contact), id);
 
         public async ValueTask ModifyAsync(long id, Contact model, CancellationToken cancellationToken = default)
         {

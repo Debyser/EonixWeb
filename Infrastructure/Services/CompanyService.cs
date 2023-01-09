@@ -41,9 +41,7 @@ namespace Infrastructure.Services
         {
             var company = await GetByIdAsync(id, cancellationToken);
             if (company == null)
-                throw new CompanyNotFoundException(id);// à vérifier , est ce que leservice connait les business exception ?
-            // entity not found au lieu de CompanyNotFound
-            // stocker le message : company id not found
+                throw new EntityNotFoundException(nameof(Company), id);// à vérifier , est ce que leservice connait les business exception ?
             company.Active = false;
             _companyRepository.Update(company); // dire que j'update que le champ Actif et pas toute l'entité
             // pas de tracking car lourd , sans tracking trouver comment maj un champ
@@ -60,7 +58,7 @@ namespace Infrastructure.Services
         {
             var company = await _companyRepository.GetByIdAsync(id, cancellationToken);
             if (company == null)
-                throw new CompanyNotFoundException(id);
+                throw new EntityNotFoundException(nameof(Company), id);
             return company;
         }
 
