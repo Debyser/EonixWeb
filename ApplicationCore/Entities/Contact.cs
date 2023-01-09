@@ -1,7 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using System.Diagnostics;
 
-namespace WebApi.Models
+namespace ApplicationCore.Entities
 {
     [DebuggerDisplay("Lastname = {Lastname}; Firstname = {Firstname}")]
     public partial class Contact : IEntityBase
@@ -15,6 +15,9 @@ namespace WebApi.Models
         public string Lastname { get; set; }
         public string Firstname { get; set; }
         public int Contact2address { get; set; }
+        public bool? Active { get; set; }
+
+        public DateTime? CreationTime { get; set; }
 
         public virtual Address Address { get; set; }
 

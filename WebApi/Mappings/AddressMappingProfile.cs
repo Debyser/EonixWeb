@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using WebApi.Models;
+﻿using ApplicationCore.Entities;
+using AutoMapper;
 
 namespace WebApi.Mappings
 {
@@ -7,13 +7,13 @@ namespace WebApi.Mappings
     {
         public AddressMappingProfile()
         {
-            CreateMap<Address, AddressView>()
-            .ForMember(w => w.BoxNumber, opt => opt.MapFrom(p => p.BoxNumber))
-            .ForMember(w => w.Street, opt => opt.MapFrom(p => p.Street))
-            .ForMember(w => w.Zipcode, opt => opt.MapFrom(p => p.Zipcode))
-            .ForMember(w => w.City, opt => opt.MapFrom(p => p.City))
-            .ForMember(w => w.Country, opt => opt.MapFrom(p => p.Country))
-            .ReverseMap();
+            CreateMap<Address, AddressView>();
+            CreateMap<AddressView, Address>()
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => new Country()
+                { 
+                    Iso3Code = src.CountryCode,
+                    Name = src.CountryName
+                }));
         }
     }
 }

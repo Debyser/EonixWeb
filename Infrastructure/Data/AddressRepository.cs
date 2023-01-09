@@ -1,6 +1,7 @@
-﻿using ApplicationCore.Repositories;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Models;
+using System.Runtime.CompilerServices;
 
 namespace Infrastructure.Data
 {
@@ -28,7 +29,7 @@ namespace Infrastructure.Data
             _countryRepository.Update(entity.Country);
         }
 
-        public async ValueTask<Address> GetByIdAsync(int id, CancellationToken cancellationToken = default) 
+        public async ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default) 
             => await _context.Addresses.Where(p => p.Id == id).Include(p => p.Country).FirstOrDefaultAsync(cancellationToken);
     }
 }

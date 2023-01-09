@@ -1,8 +1,7 @@
 ﻿
-using ApplicationCore.Entities;
 using System.Diagnostics;
 
-namespace WebApi.Models
+namespace ApplicationCore.Entities
 {
     [DebuggerDisplay("Zipcode = {Zipcode}, Street = {Street}")]
     public partial class Address : IEntityBase
@@ -19,6 +18,7 @@ namespace WebApi.Models
         public string BoxNumber { get; set; }
         public string City { get; set; }
         public int Address2country { get; set; }
+        public bool? Active { get; set; }
 
         public virtual Country Country { get; set; }
         public virtual ICollection<Company> Companies { get; set; }

@@ -1,7 +1,7 @@
-﻿using ApplicationCore.Repositories;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
-using WebApi.Models;
 
 namespace Infrastructure.Services
 {
@@ -18,47 +18,38 @@ namespace Infrastructure.Services
             _contactRepository = contactRepository;
             _companyRepository = companyRepository;
         }
-        public async ValueTask<int> CreateAsync(ContactRole model, CancellationToken cancellationToken = default)
+        public async ValueTask<long> CreateAsync(ContactRole model, CancellationToken cancellationToken = default)
         {
             model.Id = 0;
             var contact = await _contactRepository.GetByIdAsync(model.ContactId, cancellationToken);
-            if (contact == null)
-                throw new ContactNotFoundException(model.Id);
-
+            if (contact == null) throw new EntityNotFoundException(nameof(Contact), model.Id);
             var company = await _companyRepository.FindByIdAsync(model.CompanyId, cancellationToken);
-            if (company == null)
-                throw new CompanyNotFoundException(model.CompanyId);
-
+            if (company == null) throw new EntityNotFoundException(nameof(Company), model.CompanyId);
             _contactRoleRepository.Add(model);
             await _contactRoleRepository.CommitAsync(cancellationToken);
-
             return model.Id;
         }
 
-        public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var contactRole = await _contactRoleRepository.FindByIdAsync(id, cancellationToken);
-            if (contactRole == null)
-                throw new ContactRoleNotFoundException(id);
+            if (contactRole == null) throw new EntityNotFoundException(nameof(ContactRole), id);
             _contactRoleRepository.Remove(contactRole);
             await _contactRoleRepository.CommitAsync(cancellationToken);
         }
 
-        public async ValueTask<ContactRole> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask<ContactRole> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var contactRole = await _contactRoleRepository.FindByIdAsync(id, cancellationToken);
-            if (contactRole == null)
-                throw new ContactRoleNotFoundException(id);
+            if (contactRole == null) throw new EntityNotFoundException(nameof(ContactRole), id);
             var company = await _companyRepository.FindByIdAsync(contactRole.CompanyId, cancellationToken);
             contactRole.Company = company;
-
             var contact = await _contactRepository.FindByIdAsync(contactRole.ContactId, cancellationToken);
             contactRole.Contact = contact;
-
             return contactRole;
         }
 
-        public async ValueTask ModifyAsync(int id, ContactRole model, CancellationToken cancellationToken = default)
+        public async ValueTask ModifyAsync(long id, ContactRole model, CancellationToken cancellationToken = default)
         {
             var prevCompany = await GetByIdAsync(id, cancellationToken);
             prevCompany.Name = model.Name;

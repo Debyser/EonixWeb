@@ -1,9 +1,9 @@
-﻿using WebApi.Models;
+﻿using ApplicationCore.Entities;
 
 namespace ApplicationCore.Services
 {
     public interface IContactService : IBaseService<Contact>
     {
-        ValueTask<int> CreateEmployeeForCompany(int companyId, Contact contact, CancellationToken cancellationToken = default);
+        ValueTask<long> CreateEmployeeForCompany(long companyId, Contact contact, CancellationToken cancellationToken = default);
     }
 }

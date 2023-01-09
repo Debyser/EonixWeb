@@ -1,7 +1,6 @@
-﻿using ApplicationCore.Repositories;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using WebApi.Models;
 
 namespace Infrastructure.Data
 {
@@ -12,6 +11,8 @@ namespace Infrastructure.Data
         {
             _context = context; 
         }
+
+        public IEnumerable<Country> GetAll() => _context.Countries.AsEnumerable();
 
         public async ValueTask<IEnumerable<Country>> GetByFilterAsync(Country filter, CancellationToken cancellationToken = default)
         {

@@ -10,6 +10,8 @@ CREATE TABLE contact (
 	lastname varchar(40) NOT NULL,
 	firstname varchar(40) NOT NULL,
 	contact2address int NOT NULL,
+	active bit DEFAULT 1 NOT NULL,
+	creation_time datetime NULL,
 	CONSTRAINT contact_pk PRIMARY KEY (id)
 );
 
@@ -17,4 +19,3 @@ CREATE TABLE contact (
 -- public.contact foreign keys
 
 ALTER TABLE contact ADD CONSTRAINT contact_contact2address_fkey FOREIGN KEY (contact2address) REFERENCES address(id);
-ALTER TABLE EonixWebApi.dbo.contact ADD Active bit DEFAULT 1 NOT NULL;

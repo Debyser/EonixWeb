@@ -7,10 +7,10 @@ namespace ApplicationCore.Repositories
     {
         void Add(T entity);
         void Remove(T entity);
-        void RemoveById(int id);
+        void RemoveById(long id);
         void Update(T entity);
         void SetDbContext(object context);
-        ValueTask<T> FindByIdAsync(int id, CancellationToken cancellationToken = default);
+        ValueTask<T> FindByIdAsync(long id, CancellationToken cancellationToken = default);
         ValueTask CommitAsync(CancellationToken cancellationToken = default);
         ValueTask RollbackAsync(CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);

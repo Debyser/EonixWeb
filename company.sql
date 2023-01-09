@@ -3,6 +3,7 @@ CREATE TABLE company (
 	id  INT IDENTITY(1,1),
 	"name" varchar(40) NOT NULL,
 	company2address INT NOT NULL,
+		active bit DEFAULT 1 NOT NULL,
 	CONSTRAINT company_pk PRIMARY KEY (id)
 );
 
@@ -10,4 +11,3 @@ CREATE TABLE company (
 -- public.company foreign keys
 
 ALTER TABLE company ADD CONSTRAINT company_company2address_fkey FOREIGN KEY (company2address) REFERENCES address(id);
-ALTER TABLE EonixWebApi.dbo.company ADD Active bit DEFAULT 1 NOT NULL;

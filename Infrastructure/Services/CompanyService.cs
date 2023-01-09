@@ -1,7 +1,7 @@
-﻿using ApplicationCore.Repositories;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
-using WebApi.Models;
 
 namespace Infrastructure.Services
 {
@@ -18,7 +18,7 @@ namespace Infrastructure.Services
             _contactRoleRepository = contactRoleRepository; 
         }
 
-        public async ValueTask<int> CreateAsync(Company model, CancellationToken cancellationToken = default)
+        public async ValueTask<long> CreateAsync(Company model, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -36,12 +36,16 @@ namespace Infrastructure.Services
             return model.Id;
         }
 
-        public async ValueTask DeleteIdAsync(int id, CancellationToken cancellationToken = default)
+ 
+        public async ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var company = await GetByIdAsync(id, cancellationToken);
             if (company == null)
-                throw new CompanyNotFoundException(id);
-            _companyRepository.Remove(company);
+                throw new EntityNotFoundException(nameof(Company), id);// à vérifier , est ce que leservice connait les business exception ?
+            company.Active = false;
+            _companyRepository.Update(company); // dire que j'update que le champ Actif et pas toute l'entité
+            // pas de tracking car lourd , sans tracking trouver comment maj un champ
+            // lire code de Steph , minimum syndical
             await _companyRepository.CommitAsync(cancellationToken);
         }
 
@@ -50,15 +54,15 @@ namespace Infrastructure.Services
                await GetAllAsync(cancellationToken) :
                await _companyRepository.GetByFilterAsync(filter, cancellationToken);
 
-        public async ValueTask<Company> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask<Company> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var company = await _companyRepository.GetByIdAsync(id, cancellationToken);
             if (company == null)
-                throw new CompanyNotFoundException(id);
+                throw new EntityNotFoundException(nameof(Company), id);
             return company;
         }
 
-        public async ValueTask<IEnumerable<Company>> GetByIdsAsync(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+        public async ValueTask<IEnumerable<Company>> GetByIdsAsync(IEnumerable<long> ids, CancellationToken cancellationToken = default)
         {
             if (ids == null)
                 throw new IdParametersBadRequestException();
@@ -69,7 +73,7 @@ namespace Infrastructure.Services
             return companies;
         }
 
-        public async ValueTask ModifyAsync(int id, Company model, CancellationToken cancellationToken = default)
+        public async ValueTask ModifyAsync(long id, Company model, CancellationToken cancellationToken = default)
         {
             var prevCompany = await GetByIdAsync(id, cancellationToken);
             prevCompany.Name = model.Name;

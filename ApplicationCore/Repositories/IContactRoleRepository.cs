@@ -1,10 +1,9 @@
-﻿using WebApi.Models;
+﻿using ApplicationCore.Entities;
 
 namespace ApplicationCore.Repositories
 {
     public interface IContactRoleRepository : IRepository<ContactRole>
     {
-        ValueTask<ContactRole> GetByAsync(ContactRole contactRole, CancellationToken cancellationToken = default);
 
     }
 }

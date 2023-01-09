@@ -1,6 +1,6 @@
-﻿using ApplicationCore.Repositories;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Models;
 
 namespace Infrastructure.Data
 {
@@ -40,7 +40,7 @@ namespace Infrastructure.Data
                 await _context.Companies.ToListAsync();
         }
 
-        public async ValueTask<Company> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async ValueTask<Company> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             return await _context.Companies
                 .Where(p => p.Id == id)

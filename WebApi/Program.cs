@@ -2,6 +2,7 @@ using NLog;
 using WebApi.Extensions;
 using ApplicationCore.Services;
 using System.Text.Json;
+using Autofac.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
@@ -12,6 +13,7 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepository();
 builder.Services.ConfigureService();
+// Register IAppCache as a singleton CachingService
 //var config = new MapperConfiguration(cfg =>
 //{
 //    cfg.AddProfile(new PersonMappingProfile());

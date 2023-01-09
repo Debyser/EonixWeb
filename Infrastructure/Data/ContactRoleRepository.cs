@@ -1,5 +1,5 @@
-﻿using ApplicationCore.Repositories;
-using WebApi.Models;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Repositories;
 
 namespace Infrastructure.Data
 {
@@ -20,10 +20,6 @@ namespace Infrastructure.Data
             _context.Add(entity);
             _contactRepository.Add(entity.Contact);
         }
-
-        public ValueTask<ContactRole> GetByAsync(ContactRole contactRole, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

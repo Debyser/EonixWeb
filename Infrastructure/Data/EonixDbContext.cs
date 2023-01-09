@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WebApi.Models;
+﻿using ApplicationCore.Entities;
+using Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 // The line to execute for database first in the package Manager Console :
 // Scaffold-DbContext "server=DELL-JASON\MSSQLSERVER2019;database=EonixWebApi;Integrated Security=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure
 
@@ -39,6 +40,11 @@ namespace Infrastructure.Data
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasColumnName("active")
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.Address2country).HasColumnName("address2country");
 
                 entity.Property(e => e.BoxNumber)
@@ -77,6 +83,11 @@ namespace Infrastructure.Data
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasColumnName("active")
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.Company2address).HasColumnName("company2address");
 
                 entity.Property(e => e.Name)
@@ -98,7 +109,16 @@ namespace Infrastructure.Data
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasColumnName("active")
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.Contact2address).HasColumnName("contact2address");
+
+                entity.Property(e => e.CreationTime)
+                    .HasColumnType("datetime")
+                    .HasColumnName("creation_time");
 
                 entity.Property(e => e.Firstname)
                     .IsRequired()
@@ -128,6 +148,11 @@ namespace Infrastructure.Data
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasColumnName("active")
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.CompanyId).HasColumnName("contact_role2company");
 
                 entity.Property(e => e.ContactId).HasColumnName("contact_role2contact");
@@ -156,6 +181,11 @@ namespace Infrastructure.Data
                 entity.ToTable("country");
 
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasColumnName("active")
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Iso3Code)
                     .IsRequired()
