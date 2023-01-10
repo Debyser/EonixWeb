@@ -1,7 +1,4 @@
-﻿/*
-TODO : 
-
-BULK INSERT SchemaTest.[country]
+﻿BULK INSERT SchemaTest.[country]
         FROM 'C:\Demo\CountryCode.csv'
             WITH
     (
@@ -9,6 +6,3 @@ BULK INSERT SchemaTest.[country]
                 ROWTERMINATOR = '\n',
 				FIRSTROW=2
     )
-GO
-
-*/

@@ -5,10 +5,9 @@ CREATE TABLE [SchemaTest].[address] (
     [street]          VARCHAR (50) NOT NULL,
     [box_number]      VARCHAR (30) NOT NULL,
     [city]            VARCHAR (40) NULL,
-    [address2country] INT          NOT NULL,
+    [address2country] SMALLINT          NOT NULL,
     [active]          BIT          DEFAULT ((1)) NOT NULL,
     CONSTRAINT [address_pk] PRIMARY KEY CLUSTERED ([id] ASC),
-    --CONSTRAINT [address_address2country_fkey] FOREIGN KEY ([address2country]) REFERENCES [SchemaTest].[country] ([id])
 );
 
 GO

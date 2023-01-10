@@ -72,8 +72,8 @@
     <None Include="scripts\company.sql" />
     <None Include="scripts\contact_role.sql" />
     <None Include="scripts\schema.sql" />
-    <None Include="EonixWebApiTestSunday.publish.xml" />
     <None Include="CountryCode.csv" />
+    <None Include="Eonix.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="scripts\create_table.sql" />

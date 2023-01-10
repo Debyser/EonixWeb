@@ -68,3 +68,12 @@ ne pas mettre une clé unique sur table COntact : nom + prénom + email car si le 
 rajouter une colonne contact_id => string
 unicité de l'addresse ce sont les géolocalisations
 company_id => string , clé fonctionelle
+
+
+drop table schemaTest.contact_role  
+drop table schemaTest.contact  
+drop table schemaTest.company  
+drop table schemaTest.address  
+drop table schemaTest.country 
+
+drop schema schemaTest

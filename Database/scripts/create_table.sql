@@ -5,3 +5,4 @@
 	:r .\contact.sql
 	:r .\company.sql
 	:r .\contact_role.sql
+	:r .\insert_country.sql
