@@ -23,17 +23,13 @@ namespace Infrastructure.Services
                _countries[id] :
                await _repository.FindByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(nameof(Country),id);
 
-        public async ValueTask<IEnumerable<Country>> GetList()
-            =>  await Task.Run(()=>_countries.Values);
+        public async ValueTask<IEnumerable<Country>> GetListAsync() =>  await Task.Run(()=>_countries.Values);
 
-        public ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        public ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public ValueTask<long> CreateAsync(Country model, CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        public ValueTask<long> CreateAsync(Country model, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public ValueTask ModifyAsync(long countryId, Country country, CancellationToken cancellationToken = default)
-          => throw new NotImplementedException();
+        public ValueTask ModifyAsync(long countryId, Country country, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
         private void LoadCache()
         {
@@ -50,35 +46,3 @@ namespace Infrastructure.Services
         }
     }
 }
-
-/*
- patter Singleton
-
-public sealed class Singleton
-{
-    private static readonly object Instancelock = new object();
-    private Singleton()
-    {
-    }
-    private static Singleton instance = null;
-
-    public static Singleton GetInstance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                lock (Instancelock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new Singleton();
-                    }
-                }
-            }
-            return instance;
-        }
-    }
-}
- 
- */

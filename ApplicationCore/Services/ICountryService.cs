@@ -4,6 +4,6 @@ namespace ApplicationCore.Services
 {
     public interface ICountryService : IBaseService<Country>
     {
-        ValueTask<IEnumerable<Country>> GetList();
+        ValueTask<IEnumerable<Country>> GetListAsync();
     }
 }

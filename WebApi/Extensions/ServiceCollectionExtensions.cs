@@ -12,9 +12,9 @@ namespace WebApi.Extensions
         private static readonly object _syncRoot = new object();
 
         private static ScopeLifeTime _defaultScore = ScopeLifeTime.Scoped;
-        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
+        public static void RegisterDbContext(this IServiceCollection services, IConfiguration configuration) =>
            services.AddDbContext<EonixDbContext>(opts =>
-           opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("WebApi")), ServiceLifetime.Transient);
+           opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("WebApi")));
 
         public static void ConfigureService(this IServiceCollection services)
         {

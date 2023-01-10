@@ -4,9 +4,8 @@ using ApplicationCore.Entities;
 namespace ApplicationCore.Entities
 {
     // Contact Role = détail du db design
-    public partial class ContactRole : IEntityBase
+    public partial class ContactRole : EntityBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public bool? Active { get; set; }
 

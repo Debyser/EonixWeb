@@ -24,7 +24,7 @@ namespace Infrastructure.Services
             {
                 model.Id = 0;
                 model.Address.Id = 0;
-                model.Company2address = 0;
+                model.AddressId = 0;
                 _companyRepository.Add(model);
                 await _companyRepository.CommitAsync(cancellationToken);
             }

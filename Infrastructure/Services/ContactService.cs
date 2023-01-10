@@ -22,7 +22,7 @@ namespace Infrastructure.Services
             {
                 contact.Id = 0;
                 contact.Address.Id = 0;
-                contact.Contact2address = 0;
+                contact.AddressId = 0;
                 _contactRepository.Add(contact);
                 await _contactRepository.CommitAsync(cancellationToken);
             }
@@ -40,7 +40,7 @@ namespace Infrastructure.Services
             {
                 contact.Id = 0;
                 contact.Address.Id = 0;
-                contact.Contact2address = 0;
+                contact.AddressId = 0;
                 _contactRepository.Add(contact);
                 await _contactRepository.CommitAsync(cancellationToken);
             }

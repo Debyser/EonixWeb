@@ -10,7 +10,7 @@ LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nl
 builder.Services.ConfigureLoggerService();
 builder.Services.AddControllers().AddNewtonsoftJson();
 
-builder.Services.ConfigureSqlContext(builder.Configuration);
+builder.Services.RegisterDbContext(builder.Configuration);
 builder.Services.ConfigureRepository();
 builder.Services.ConfigureService();
 // Register IAppCache as a singleton CachingService

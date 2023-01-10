@@ -27,8 +27,8 @@ namespace Infrastructure.Services
             {
                 address.Id = 0;
                 address.Country.Id = 0;
-                address.Address2country = 0;
-                var countries = await _countryService.GetList();
+                address.CountryId = 0;
+                var countries = await _countryService.GetListAsync();
                 address.Country.Id = countries.FirstOrDefault(p => p.Name == address.Country.Name).Id;
                 _addressRepository.Add(address);
                 await _addressRepository.CommitAsync(cancellationToken);
@@ -63,7 +63,7 @@ namespace Infrastructure.Services
             try
             {
                 var prevAddress = await GetByIdAsync(addressId, cancellationToken);
-                var prevCountry = await _countryRepository.FindByIdAsync(prevAddress.Address2country, cancellationToken);
+                var prevCountry = await _countryRepository.FindByIdAsync(prevAddress.CountryId, cancellationToken);
                 prevAddress.Street = model.Street;
                 prevAddress.BoxNumber = model.BoxNumber;
                 prevAddress.City = model.City;

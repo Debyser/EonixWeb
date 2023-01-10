@@ -26,6 +26,6 @@ namespace WebApi.Controllers
 
         [HttpGet("", Name = nameof(GetCountries))]
         public async Task<IActionResult> GetCountries()
-             => Ok(_mapper.Map<IEnumerable<CountryView>>(await _countryService.GetList()));
+             => Ok(_mapper.Map<IEnumerable<CountryView>>(await _countryService.GetListAsync()));
     }
 }

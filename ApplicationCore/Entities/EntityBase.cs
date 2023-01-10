@@ -5,6 +5,6 @@ namespace ApplicationCore.Entities
     public class EntityBase : IEntityBase
     {
         [Column("Id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
     }
 }
