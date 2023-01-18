@@ -1,5 +1,4 @@
-﻿GO
-CREATE TABLE [SchemaTest].[address] (
+﻿CREATE TABLE [dbo].[address] (
     [id]              INT          IDENTITY (1, 1) NOT NULL,
     [zipcode]         VARCHAR (20) NOT NULL,
     [street]          VARCHAR (50) NOT NULL,
@@ -7,9 +6,8 @@ CREATE TABLE [SchemaTest].[address] (
     [city]            VARCHAR (40) NULL,
     [address2country] SMALLINT          NOT NULL,
     [active]          BIT          DEFAULT ((1)) NOT NULL,
-    CONSTRAINT [address_pk] PRIMARY KEY CLUSTERED ([id] ASC),
+    CONSTRAINT [pk_address] PRIMARY KEY CLUSTERED ([id] ASC)
 );
 
 GO
-IF OBJECT_ID('myschema.[address_address2country_fkey]') IS NULL 
-	ALTER TABLE [SchemaTest].[address]  ADD CONSTRAINT [address_address2country_fkey]  FOREIGN KEY ([address2country]) REFERENCES [SchemaTest].[country](id);
+ALTER TABLE [address]  ADD CONSTRAINT [address_address2country_fkey]  FOREIGN KEY ([address2country]) REFERENCES [country](id);

@@ -24,7 +24,7 @@
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultCollation>French_CI_AS</DefaultCollation>
     <DefaultFilegroup>PRIMARY</DefaultFilegroup>
-    <DefaultSchema>jason_erp</DefaultSchema>
+    <DefaultSchema>dbo</DefaultSchema>
     <GenerateCreateScript>False</GenerateCreateScript>
     <IncludeSchemaNameInFileName>True</IncludeSchemaNameInFileName>
   </PropertyGroup>
@@ -66,19 +66,17 @@
     <Folder Include="scripts" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="scripts\country.sql" />
-    <None Include="scripts\address.sql" />
-    <None Include="scripts\contact.sql" />
-    <None Include="scripts\company.sql" />
-    <None Include="scripts\contact_role.sql" />
-    <None Include="scripts\schema.sql" />
     <None Include="CountryCode.csv" />
-    <None Include="Eonix.publish.xml" />
+    <None Include="Database.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PreDeploy Include="scripts\create_table.sql" />
+    <Build Include="scripts\dbo.contact.sql" />
+    <Build Include="scripts\dbo.country.sql" />
+    <Build Include="scripts\dbo.address.sql" />
+    <Build Include="scripts\dbo.contact_role.sql" />
+    <Build Include="scripts\dbo.company.sql" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="scripts\insert_country.sql" />
+    <PostDeploy Include="insert_into_country.sql" />
   </ItemGroup>
 </Project>
