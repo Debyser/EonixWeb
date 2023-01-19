@@ -5,6 +5,7 @@
     [contact2address] INT          NOT NULL,
     [active]          BIT          DEFAULT ((1)) NOT NULL,
     [creation_time]   DATETIME     NULL,
+    [phone_number] VARCHAR(30) NULL, 
     CONSTRAINT [pk_contact] PRIMARY KEY CLUSTERED ([id] ASC),
  
 );

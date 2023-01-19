@@ -15,6 +15,7 @@ namespace Infrastructure.Data.Configuration
             builder.Property(e => e.CreationTime).HasColumnType("datetime").HasColumnName("creation_time");
             builder.Property(e => e.Firstname).IsRequired().HasMaxLength(40).IsUnicode(false).HasColumnName("first_name");
             builder.Property(e => e.Lastname).IsRequired().HasMaxLength(40).IsUnicode(false).HasColumnName("last_name");
+            builder.Property(e => e.PhoneNumber).HasMaxLength(30).IsUnicode(false).HasColumnName("phone_number");
             builder.HasOne(d => d.Address).WithMany().HasForeignKey(d => d.AddressId).HasConstraintName("contact_contact2address_fkey");
         }
     }

@@ -75,6 +75,7 @@
     <Build Include="scripts\dbo.address.sql" />
     <Build Include="scripts\dbo.contact_role.sql" />
     <Build Include="scripts\dbo.company.sql" />
+    <Build Include="dbo.IndexCountryName.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="insert_into_country.sql" />

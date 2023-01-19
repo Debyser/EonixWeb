@@ -9,7 +9,7 @@ namespace ApplicationCore.Entities
         public string Name { get; set; }
         public bool? Active { get; set; }
 
-        public int AddressId { get; set; }
+        public long AddressId { get; set; }
 
         public Address Address { get; set; }
         public IEnumerable<ContactRole> ContactRoles { get; set; }

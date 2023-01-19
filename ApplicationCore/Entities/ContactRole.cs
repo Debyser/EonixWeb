@@ -10,9 +10,9 @@ namespace ApplicationCore.Entities
         public bool? Active { get; set; }
 
         // navigation variables
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
         public virtual Company Company { get; set; }
-        public int ContactId { get; set; }
+        public long ContactId { get; set; }
         public virtual Contact Contact { get; set; }
     }
 }

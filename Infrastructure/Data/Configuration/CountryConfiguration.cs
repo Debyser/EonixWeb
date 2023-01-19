@@ -14,11 +14,9 @@ namespace Infrastructure.Data.Configuration
             /* Warning
                By convention, a property named Id or <type name>Id will be configured as the primary key of an entity.
             */
-            builder.Property(e => e.Id).HasColumnName("id");
+            builder.Property(e => e.Id).HasColumnName("id").HasColumnType("SMALLINT"); 
 
             builder.HasKey(e => e.Id); // Define the PK 
-
-            builder.Property(e => e.Active).IsRequired() .HasColumnName("active").HasDefaultValueSql("((1))");
 
             builder.Property(e => e.Iso2Code).IsRequired().HasMaxLength(2).IsUnicode(false).HasColumnName("iso_2_code");
 

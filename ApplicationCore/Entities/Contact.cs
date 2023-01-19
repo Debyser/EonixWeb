@@ -7,7 +7,8 @@ namespace ApplicationCore.Entities
     {
         public string Lastname { get; set; }
         public string Firstname { get; set; }
-        public int AddressId { get; set; }
+        public string PhoneNumber { get; set; }
+        public long AddressId { get; set; }
         public bool? Active { get; set; }
 
         public DateTime? CreationTime { get; set; }
