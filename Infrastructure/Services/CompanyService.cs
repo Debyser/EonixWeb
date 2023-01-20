@@ -41,7 +41,7 @@ namespace Infrastructure.Services
         {
             var company = await GetByIdAsync(id, cancellationToken);
             if (company == null)
-                throw new EntityNotFoundException(nameof(Company), id);// à vérifier , est ce que leservice connait les business exception ?
+                throw new EntityNotFoundException(typeof(Company), id);// à vérifier , est ce que leservice connait les business exception ?
             company.Active = false;
             _companyRepository.Update(company); // dire que j'update que le champ Actif et pas toute l'entité
             // pas de tracking car lourd , sans tracking trouver comment maj un champ
@@ -58,7 +58,7 @@ namespace Infrastructure.Services
         {
             var company = await _companyRepository.GetByIdAsync(id, cancellationToken);
             if (company == null)
-                throw new EntityNotFoundException(nameof(Company), id);
+                throw new EntityNotFoundException(typeof(Company), id);
             return company;
         }
 
@@ -106,7 +106,6 @@ namespace Infrastructure.Services
 
         public async ValueTask<Company> CreateCompanyAsync(Company company, CancellationToken cancellationToken = default)
         {
-
             try 
             {
                 _companyRepository.Add(company);
@@ -115,7 +114,6 @@ namespace Infrastructure.Services
                     contactRole.Company.Id = company.Id;
                     _contactRoleRepository.Add(contactRole);
                 }
-                
                 await _companyRepository.CommitAsync(cancellationToken);
             }
             catch

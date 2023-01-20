@@ -1,7 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 
 namespace Infrastructure.Data
 {
@@ -14,19 +13,16 @@ namespace Infrastructure.Data
         {
             _context = context;
             _countryRepository = countryRepository;
-            _countryRepository.SetDbContext(context);
         }
 
         public new void Add(Address entity)
         {
             _context.Add(entity);
-            _countryRepository.Add(entity.Country);
         }
 
         public new void Update(Address entity) 
         {
             _context.Update(entity);
-            _countryRepository.Update(entity.Country);
         }
 
         public async ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default) 

@@ -11,8 +11,7 @@ namespace Infrastructure.Data.Configuration
         {
             builder.ToTable("contact_role");
 
-            builder.HasIndex(e => new { e.CompanyId, e.ContactId, e.Name }, "contact_role_un").IsUnique();
-            builder.Property(e => e.Id).HasColumnName("id");
+            builder.Property(e => e.Id).HasColumnName("id").HasConversion<int>();
 
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Active).IsRequired().HasColumnName("active").HasDefaultValueSql("((1))");

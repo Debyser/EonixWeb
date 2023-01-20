@@ -11,7 +11,7 @@ namespace Infrastructure.Data.Configuration
 
             builder.ToTable("company");
 
-            builder.Property(e => e.Id).HasColumnName("id");
+            builder.Property(e => e.Id).HasColumnName("id").HasConversion<int>();
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Active).IsRequired().HasColumnName("active").HasDefaultValueSql("((1))");

@@ -2,25 +2,31 @@
 using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
+using System.Net;
 
 namespace Infrastructure.Services
 {
     public class ContactService : IContactService
     {
         private readonly IContactRepository _contactRepository;
-        private readonly IAddressRepository _addressRepository;
+        private readonly ICountryService _countryService;
 
-        public ContactService(IContactRepository contactRepository, IAddressRepository addressRepository)
+
+        public ContactService(IContactRepository contactRepository, IAddressRepository addressRepository, ICountryService countryService)
         {
             _contactRepository = contactRepository;
-            _addressRepository = addressRepository;
+            _countryService = countryService;
         }
 
         public async ValueTask<long> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
             try
             {
+                var country = await _countryService.GetByIdAsync(contact.Address.Country.Id, cancellationToken);
+                if (country == null) throw new EntityNotFoundException(typeof(Country), contact.Address.Country.Id);
+
                 contact.Id = 0;
+                contact.Address.CountryId = country.Id;
                 contact.Address.Id = 0;
                 contact.AddressId = 0;
                 _contactRepository.Add(contact);
@@ -41,6 +47,7 @@ namespace Infrastructure.Services
                 contact.Id = 0;
                 contact.Address.Id = 0;
                 contact.AddressId = 0;
+                contact.CreationTime = DateTime.UtcNow;
                 _contactRepository.Add(contact);
                 await _contactRepository.CommitAsync(cancellationToken);
             }
@@ -56,13 +63,13 @@ namespace Infrastructure.Services
         {
             var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
             if (contact == null)
-                throw new EntityNotFoundException(nameof(Contact), id);
+                throw new EntityNotFoundException(typeof(Contact), id);
             _contactRepository.Remove(contact);
             await _contactRepository.CommitAsync(cancellationToken);
         }
 
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default) 
-            => await _contactRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(nameof(Contact), id);
+            => await _contactRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Contact), id);
 
         public async ValueTask ModifyAsync(long id, Contact model, CancellationToken cancellationToken = default)
         {

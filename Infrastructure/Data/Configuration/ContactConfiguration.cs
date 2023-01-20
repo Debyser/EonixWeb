@@ -9,7 +9,7 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Contact> builder)
         {
             builder.ToTable("contact");
-            builder.Property(e => e.Id).HasColumnName("id");
+            builder.Property(e => e.Id).HasColumnName("id").HasConversion<int>();
             builder.Property(e => e.Active).IsRequired().HasColumnName("active").HasDefaultValueSql("((1))");
             builder.Property(e => e.AddressId).HasColumnName("contact2address");
             builder.Property(e => e.CreationTime).HasColumnType("datetime").HasColumnName("creation_time");

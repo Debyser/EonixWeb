@@ -30,9 +30,6 @@ namespace WebApi.Mappings
             .ForMember(dest => dest.Firstname, input => input.MapFrom(src => src.Firstname))
             .ForMember(dest => dest.Lastname, input => input.MapFrom(src => src.Lastname))
             .ForMember(dest => dest.Address, input => input.MapFrom(src => src.Address));
-
-
-           //CreateMap<List<ContactView>, List<Contact>>();
         }
     }
 }

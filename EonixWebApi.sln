@@ -12,14 +12,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{008EDCC3-FAF5-4C84-8FB6-BF393482FD92}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{492CBFE8-B2FF-4F78-9C0C-94A223D0BF0C}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\Downloads\Address(3).sql = ..\..\..\Downloads\Address(3).sql
-		address.sql = address.sql
-		company.sql = company.sql
-		contact.sql = contact.sql
-		contact_role.sql = contact_role.sql
-		personData.sql = personData.sql
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{03514226-6D5F-4363-9440-718C88215B85}"
 	ProjectSection(SolutionItems) = preProject

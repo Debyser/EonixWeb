@@ -19,8 +19,10 @@ namespace Infrastructure.Data
         // new : erase the Add from DbRepository
         public new void Add(Contact entity)
         {
+            entity.CreationTime = DateTime.UtcNow;
             _context.Add(entity);
             _addressRepository.Add(entity.Address);
+            _context.Entry(entity.Address.Country).State = EntityState.Unchanged; // because we don't want to add/update country
         }
 
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)

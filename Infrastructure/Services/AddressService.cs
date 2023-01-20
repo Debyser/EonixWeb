@@ -10,13 +10,11 @@ namespace Infrastructure.Services
     {
         private readonly IAddressRepository _addressRepository;
         private readonly ICountryRepository _countryRepository;
-        private readonly ICountryService _countryService;
 
         public AddressService(IAddressRepository addressRepository, ICountryRepository countryRepository, ICountryService countryService)
         {
             _addressRepository = addressRepository;
             _countryRepository = countryRepository;
-            _countryService = countryService;
         }
 
         public async ValueTask<long> CreateAsync(Address address, CancellationToken cancellationToken = default)
@@ -28,8 +26,7 @@ namespace Infrastructure.Services
                 address.Id = 0;
                 address.Country.Id = 0;
                 address.CountryId = 0;
-                var countries = await _countryService.GetListAsync();
-                address.Country.Id = countries.FirstOrDefault(p => p.Name == address.Country.Name).Id;
+          
                 _addressRepository.Add(address);
                 await _addressRepository.CommitAsync(cancellationToken);
             }
@@ -45,7 +42,7 @@ namespace Infrastructure.Services
         {
             var address = await GetByIdAsync(id, cancellationToken);
             if (address == null)
-                throw new EntityNotFoundException(nameof(Address),id);
+                throw new EntityNotFoundException(typeof(Address),id);
             _addressRepository.Remove(address);
             await _addressRepository.CommitAsync(cancellationToken);
         }
@@ -54,7 +51,7 @@ namespace Infrastructure.Services
         {
             var address = await _addressRepository.GetByIdAsync(id, cancellationToken);
             if (address == null)
-                throw new EntityNotFoundException(nameof(Address), id);
+                throw new EntityNotFoundException(typeof(Address), id);
             return address;
         }
 

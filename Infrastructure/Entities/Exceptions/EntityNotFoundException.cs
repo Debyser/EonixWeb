@@ -2,7 +2,7 @@
 {
     public class EntityNotFoundException : NotFoundException
     {
-        public EntityNotFoundException(string entityName, long id) : base($"The {entityName} with id {id} doesn't exist in the database.")
+        public EntityNotFoundException(Type type, long id) : base($"The {type.Name} with id {id} doesn't exist in the database.")
         {
         }
     }

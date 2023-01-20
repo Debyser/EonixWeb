@@ -29,34 +29,24 @@ faudrait une version pro des gestions des ressources , regarder dans Ef la gesti
         // TOdo: get companyById => tous ce qui est dans compagnie (list des contacts , name de la compagnie)
  // todo : ajouter le numero de statut code directement en attribut
 
-
- 1) virer tous les dto en VIEWMODEL : done 
  2) pas de logger service , exception filter sur api : https://learn.microsoft.com/en-us/ef/core/performance/advanced-performance-topics?tabs=with-di%2Cwith-constant
  3) lire doc rest api standard
  4) rajouter le stack strace dans les logs
  5) connection pool
  6) bear token avec oauth2 
- 7) rajout d'une colonne Active pour suppression logique : done
- 8) GetCompangyById : done
  9) Verb option Web Api
  10) web socket 
  11) Http/2
-12) creation_time sur contact , zulu time ,  end to end , sans time zone,
+
+12) creation_time sur contact , zulu time ,  end to end , sans time zone, 
+
 dans la db date / time sans time zone
 13) tu peux rajouter active sur toute les tables : done
 14) faire un Patch
-15) cache sur les country
 16) get country by name 
-[09:21, 23/12/2022] Stéphane Ganhy: c'est pas la responsabilité de ton client final de rajouter un nouveau pays
-
-[09:21, 23/12/2022] Stéphane Ganhy: donc lecture seule sur Country
-[09:21, 23/12/2022] Stéphane Ganhy: il existe tu le renvois, il existe pas erreur business
-[09:21, 23/12/2022] Stéphane Ganhy: ce country n'existe pas
 
 17) rajouter des clé business sur les tables
-18) recommencer le projet database en sauvant le profile en mettant directement short pour l'id 
-et ensuite rajouter la colonne iso_2_Code  
-et ensuite rajouter dans le post script les country
+
 19) cache country with Lazzy dans le ctor du country , si cache pas loadé , je le load
 
 si supprimer des contacts d'une compagnie , je supprime dans la table COntactRole mais pas contact
@@ -64,16 +54,6 @@ si supprimer des contacts d'une compagnie , je supprime dans la table COntactRol
 ne pas mettre une clé unique sur table COntact : nom + prénom + email car si le contact change de boîte il change d'email et donc
 ça invalide le fait qu'un même contact puisse travailler pour plusieurs boites
 
-
 rajouter une colonne contact_id => string
 unicité de l'addresse ce sont les géolocalisations
 company_id => string , clé fonctionelle
-
-
-drop table schemaTest.contact_role  
-drop table schemaTest.contact  
-drop table schemaTest.company  
-drop table schemaTest.address  
-drop table schemaTest.country 
-
-drop schema schemaTest

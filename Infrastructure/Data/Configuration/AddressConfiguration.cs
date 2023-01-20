@@ -10,8 +10,8 @@ namespace Infrastructure.Data.Configuration
         {
             builder.ToTable("address");
 
-            builder.Property(e => e.Id).HasColumnName("id");
-            builder.Property(e => e.Id).ValueGeneratedOnAdd();
+            builder.Property(e => e.Id).HasColumnName("id").HasConversion<int>();
+            //builder.Property(e => e.Id).ValueGeneratedOnAdd();
             
             builder.HasKey(p => p.Id);
             builder.Property(e => e.Active).IsRequired().HasColumnName("active").HasDefaultValueSql("((1))");
