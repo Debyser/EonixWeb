@@ -2,7 +2,6 @@
 using ApplicationCore.Repositories;
 using ApplicationCore.Services;
 using Infrastructure.Entities.Exceptions;
-using System.Net;
 
 namespace Infrastructure.Services
 {
@@ -22,13 +21,13 @@ namespace Infrastructure.Services
         {
             try
             {
-                var country = await _countryService.GetByIdAsync(contact.Address.Country.Id, cancellationToken);
+                var country = await _countryService.GetByIdAsync(contact.Address.CountryId, cancellationToken);
                 if (country == null) throw new EntityNotFoundException(typeof(Country), contact.Address.Country.Id);
 
                 contact.Id = 0;
-                contact.Address.CountryId = country.Id;
                 contact.Address.Id = 0;
                 contact.AddressId = 0;
+                contact.Address.Country = null; // to prevent to add a country
                 _contactRepository.Add(contact);
                 await _contactRepository.CommitAsync(cancellationToken);
             }

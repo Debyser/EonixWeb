@@ -7,14 +7,11 @@ namespace WebApi.Mappings
     {
         public AddressMappingProfile()
         {
-            CreateMap<Address, AddressView>()
-                .ForPath(dest => dest.Country, input => input.MapFrom(src => src.Country)).ReverseMap();
-            //CreateMap<AddressView, Address>()
-            //    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => new Country()
-            //    { 
-            //        Iso3Code = src.CountryCode,
-            //        Name = src.Country
-            //    }));
+            CreateMap<AddressView, Address>();
+                //.ForPath(dest => dest.CountryId, input => input.MapFrom(src => src.Country.Id));
+            //.ForMember(dest => dest.Country, act => act.Ignore()) WHy not add this line here ?
+            // because auto mapper has the responsability for juste the mappping , it doest not know 
+            // how the db works
         }
     }
 }

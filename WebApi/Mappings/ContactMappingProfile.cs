@@ -21,15 +21,8 @@ namespace WebApi.Mappings
             .ForPath(dest => dest.RoleName, input => input.MapFrom(src => src.Name))
             .ForPath(dest => dest.Address, input => input.MapFrom(src => src.Contact.Address));
 
-            CreateMap<ContactView, Contact>()
-            .ForMember(dest => dest.Firstname, input => input.MapFrom(src => src.Firstname))
-            .ForMember(dest => dest.Lastname, input => input.MapFrom(src => src.Lastname))
-            .ForMember(dest => dest.Address, input => input.MapFrom(src => src.Address));
-
-            CreateMap<Contact, ContactView>()
-            .ForMember(dest => dest.Firstname, input => input.MapFrom(src => src.Firstname))
-            .ForMember(dest => dest.Lastname, input => input.MapFrom(src => src.Lastname))
-            .ForMember(dest => dest.Address, input => input.MapFrom(src => src.Address));
+            CreateMap<ContactView, Contact>().ReverseMap();
+       
         }
     }
 }

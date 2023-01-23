@@ -8,7 +8,8 @@ namespace WebApi.Mappings
     {
         public CountryMappingProfile()
         {
-            CreateMap<Country, CountryView>().ReverseMap();
+            // CreateMap<Country, CountryView>().ReverseMap();
+            CreateMap<CountryView, Country>();
         }
     }
 }
