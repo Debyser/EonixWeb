@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Entities.Exceptions
+﻿namespace ApplicationCore.Exceptions
 {
     public sealed class IdParametersBadRequestException : BadRequestException 
     { 

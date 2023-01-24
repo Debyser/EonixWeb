@@ -1,7 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Repositories;
 using ApplicationCore.Services;
-using Infrastructure.Entities.Exceptions;
+using ApplicationCore.Exceptions;
 
 namespace Infrastructure.Services
 {
@@ -22,8 +22,6 @@ namespace Infrastructure.Services
             try
             {
                 var country = await _countryService.GetByIdAsync(contact.Address.CountryId, cancellationToken);
-                if (country == null) throw new EntityNotFoundException(typeof(Country), contact.Address.Country.Id);
-
                 contact.Id = 0;
                 contact.Address.Id = 0;
                 contact.AddressId = 0;
@@ -60,10 +58,7 @@ namespace Infrastructure.Services
 
         public async ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
         {
-            var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
-            if (contact == null)
-                throw new EntityNotFoundException(typeof(Contact), id);
-            _contactRepository.Remove(contact);
+            _contactRepository.RemoveById(id);
             await _contactRepository.CommitAsync(cancellationToken);
         }
 
