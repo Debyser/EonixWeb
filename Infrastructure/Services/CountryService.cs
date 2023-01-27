@@ -27,9 +27,9 @@ namespace Infrastructure.Services
 
         public ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public ValueTask<long> CreateAsync(Country model, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public ValueTask<long> CreateAsync(Country country, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public ValueTask ModifyAsync(long countryId, Country country, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public ValueTask ModifyAsync(long id, Country country, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
         private void LoadCache()
         {

@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[contact_role] (
-    [id]                   INT          IDENTITY (1, 1) NOT NULL,
+    [id]                   INT          IDENTITY (2000, 1) NOT NULL,
     [contact_role2company] INT          NOT NULL,
     [contact_role2contact] INT          NOT NULL,
     [name]                 VARCHAR (40) NOT NULL,

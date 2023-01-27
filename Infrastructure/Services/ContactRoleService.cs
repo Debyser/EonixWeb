@@ -1,7 +1,7 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Exceptions;
 using ApplicationCore.Repositories;
 using ApplicationCore.Services;
-using Infrastructure.Entities.Exceptions;
 
 namespace Infrastructure.Services
 {

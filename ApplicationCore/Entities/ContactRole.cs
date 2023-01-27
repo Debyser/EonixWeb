@@ -1,6 +1,4 @@
 ﻿
-using ApplicationCore.Entities;
-
 namespace ApplicationCore.Entities
 {
     // Contact Role = détail du db design

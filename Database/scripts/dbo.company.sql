@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[company] (
-    [id]              INT          IDENTITY (1, 1) NOT NULL,
+    [id]              INT          IDENTITY (2000, 1) NOT NULL,
     [name]            VARCHAR (40) NOT NULL,
     [company2address] INT          NOT NULL,
     [active]          BIT          DEFAULT ((1)) NOT NULL,

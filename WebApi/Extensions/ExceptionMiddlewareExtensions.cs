@@ -1,5 +1,5 @@
-﻿using ApplicationCore.Services;
-using Infrastructure.Entities.Exceptions;
+﻿using ApplicationCore.Exceptions;
+using ApplicationCore.Services;
 using Microsoft.AspNetCore.Diagnostics;
 using WebApi.Models;
 

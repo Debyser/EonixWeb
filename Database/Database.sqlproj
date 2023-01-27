@@ -78,6 +78,6 @@
     <Build Include="dbo.IndexCountryName.sql" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="insert_into_country.sql" />
+    <PostDeploy Include="insert_into.sql" />
   </ItemGroup>
 </Project>
