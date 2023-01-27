@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [contact] (
-    [id]              INT          IDENTITY (1, 1) NOT NULL,
+    [id]              INT          IDENTITY (2000, 1) NOT NULL,
     [last_name]        VARCHAR (40) NOT NULL,
     [first_name]       VARCHAR (40) NOT NULL,
     [contact2address] INT          NOT NULL,
