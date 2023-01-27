@@ -1,4 +1,5 @@
-﻿
+﻿using ApplicationCore.Exceptions;
+
 namespace ApplicationCore.Services
 {
     public interface IBaseService<T> where T : class
