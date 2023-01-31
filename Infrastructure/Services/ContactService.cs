@@ -8,20 +8,17 @@ namespace Infrastructure.Services
     public class ContactService : IContactService
     {
         private readonly IContactRepository _contactRepository;
-        private readonly ICountryService _countryService;
 
 
-        public ContactService(IContactRepository contactRepository, IAddressRepository addressRepository, ICountryService countryService)
+        public ContactService(IContactRepository contactRepository)
         {
             _contactRepository = contactRepository;
-            _countryService = countryService;
         }
 
         public async ValueTask<long> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
             try
             {
-                var country = await _countryService.GetByIdAsync(contact.Address.CountryId, cancellationToken);
                 contact.Id = 0;
                 contact.Address.Id = 0;
                 contact.AddressId = 0;
