@@ -15,12 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{49
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{03514226-6D5F-4363-9440-718C88215B85}"
 	ProjectSection(SolutionItems) = preProject
+		Docker.txt = Docker.txt
 		TodoList.txt = TodoList.txt
 	EndProjectSection
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{9322DAE2-6A9C-4B08-AE64-E0A45A109B4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{4E2E8727-0CDE-4608-9626-72C05B7772D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{4E2E8727-0CDE-4608-9626-72C05B7772D8}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{064A74D8-D1F9-4C50-A699-8084279DE37C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +53,10 @@ Global
 		{4E2E8727-0CDE-4608-9626-72C05B7772D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E2E8727-0CDE-4608-9626-72C05B7772D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E2E8727-0CDE-4608-9626-72C05B7772D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{064A74D8-D1F9-4C50-A699-8084279DE37C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{064A74D8-D1F9-4C50-A699-8084279DE37C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{064A74D8-D1F9-4C50-A699-8084279DE37C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{064A74D8-D1F9-4C50-A699-8084279DE37C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

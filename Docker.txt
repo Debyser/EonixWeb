@@ -1,0 +1,8 @@
+- Add Docker support
+- Add machin Orchestro et choisir Linux Container
+- ouvrir powershell dans visual studio
+- docker build -t jddocker:v1 -f WebApi/Dockerfile .
+- docker run --rm -p 5000:5000 -p 5001:5001 -e ASPNETCORE_HTTP_PORT=https://+:5001 -e ASPNETCORE_URLS=http://+:5000 jddocker:v1
+
+-t : pour le tag => nom de l'image
+
