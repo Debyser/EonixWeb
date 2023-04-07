@@ -2,7 +2,7 @@
 // The line to execute for database first in the package Manager Console :
 // Scaffold-DbContext "server=DELL-JASON\MSSQLSERVER2019;database=EonixWebApi;Integrated Security=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure
 
-
+addresse of Swagger : https://localhost:7201/swagger/index.html
 
 page 9. 4 public record CompanyForCreationDto(string Name, string Address, string Country, IEnumerable<EmployeeForCreationDto> Employees);44 
 get contact in contactRepo Employee GetEmployee(Guid companyId, Guid id, bool trackChanges); GetEmployeeForCompany in controller ContactController [HttpGet("{id:guid}")]
@@ -57,3 +57,10 @@ ne pas mettre une clé unique sur table COntact : nom + prénom + email car si le 
 rajouter une colonne contact_id => string
 unicité de l'addresse ce sont les géolocalisations
 company_id => string , clé fonctionelle
+
+Command dos tips or powershell
+
+
+The backslash (\) is used to nicely format the command arguments on separate lines for bash-like shells. 
+For CMD you can use the caret symbol (^) instead of (/),
+and for PowerShell you can use the backtick symbol (`) instead.

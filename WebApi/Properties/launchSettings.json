@@ -22,7 +22,7 @@
         "commandName": "Docker",
         "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/country",
         "publishAllPorts": true,
-        "useSSL": true
+        "useSSL": false
       }
     }
   }

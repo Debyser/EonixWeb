@@ -2,7 +2,6 @@ using NLog;
 using WebApi.Extensions;
 using ApplicationCore.Services;
 using System.Text.Json;
-using Autofac.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
@@ -13,6 +12,9 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.RegisterDbContext(builder.Configuration);
 builder.Services.ConfigureRepository();
 builder.Services.ConfigureService();
+
+//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 // Register IAppCache as a singleton CachingService
 //var config = new MapperConfiguration(cfg =>
 //{
@@ -35,7 +37,11 @@ builder.Services.AddMvc().AddJsonOptions(o =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build(); //the Build method builds the WebApplication and registers all the services added with IOC
+app.MapHealthChecks("/health");
+
 var logger = app.Services.GetRequiredService<ILoggerService>(); 
 app.ConfigureExceptionHandler(logger);
 

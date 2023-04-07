@@ -1,8 +1,72 @@
-- Add Docker support
-- Add machin Orchestro et choisir Linux Container
-- ouvrir powershell dans visual studio
-- docker build -t jddocker:v1 -f WebApi/Dockerfile .
-- docker run --rm -p 5000:5000 -p 5001:5001 -e ASPNETCORE_HTTP_PORT=https://+:5001 -e ASPNETCORE_URLS=http://+:5000 jddocker:v1
+the dockerFile
+>>>>>>>
+#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+# Build Stage
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
+WORKDIR /source
+COPY . .
+
+RUN dotnet restore "WebApi/WebApi.csproj" --disable-parallel
+RUN dotnet publish "WebApi/WebApi.csproj" -c release -o /app --no-restore
+
+# Serve Stage
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
+WORKDIR /app
+COPY --from=build /app ./
+
+EXPOSE 5000
+
+ENTRYPOINT ["dotnet", "WebApi.dll"]
+<<<<<<<<
+
 
 -t : pour le tag => nom de l'image
 
+
+- ajouter variable env dans secret
+
+to add a container with only sql server:
+---------------------------------------
+
+1) create a docker-compose.yml file and copy-paste this below
+
+version: '3.4'
+
+services:
+
+  sqldb:
+    container_name: sql-server-db
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    ports:
+      - "1433:1433"
+    environment:
+        SA_PASSWORD: "Semlex_753"
+        ACCEPT_EULA: "Y"
+
+
+copy backup in the instance of sql server Docker :
+--------------------------------------------------
+
+- docker exec -it sql-server-db  mkdir /var/opt/mssql/backup
+- docker cp EonixWebApi_20230222.bak sql-server-db:/var/opt/mssql/backup
+- docker cp EonixWebApi_log.ldf sql-server-db:/var/opt/mssql/backup
+- docker cp EonixWebApi.mdf sql-server-db:/var/opt/mssql/backup
+
+remove file :docker exec <container> rm -rf <YourFile>
+docker exec sql-server-db rm -rf /var/opt/mssql/backup/EonixWebApi.mdf
+remove file : docker exec sql-server-db rm -rf /var/opt/mssql/backup/EonixWebApi_log.ldf
+
+
+SOLUTION POUR RESTORER VIA COMMANDE SQL
+---------------------------------------
+
+
+RESTORE FILELISTONLY FROM DISK = N'/var/opt/mssql/backup\EonixWebApi_20230222.bak';
+
+RESTORE DATABASE EonixWebApi  
+FROM DISK = '/var/opt/mssql/backup/EonixWebApi_20230222.bak'   
+WITH MOVE 'EonixWebApi' TO '/var/opt/mssql/data/EonixWebApi.mdf',       
+MOVE 'EonixWebApi_log' TO '/var/opt/mssql/data/EonixWebApi_log.ldf' 
+
+ATTENTION : ou j'ai perdu du temps c'est que je n'avais pas mis le bon dossier 'data' pour les fichiers .mdf et .ldf
