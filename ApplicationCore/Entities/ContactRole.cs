@@ -9,6 +9,7 @@ namespace ApplicationCore.Entities
 
         // navigation variables
         public long CompanyId { get; set; }
+
         public virtual Company Company { get; set; }
         public long ContactId { get; set; }
         public virtual Contact Contact { get; set; }

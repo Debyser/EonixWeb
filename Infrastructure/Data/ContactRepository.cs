@@ -26,12 +26,14 @@ namespace Infrastructure.Data
 
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
-            return await _context.Contacts
+            var contact = await _context.Contacts
                 .Where(p => p.Id == id)
-                //.Include(p => p.ContactRoles)
+                .Include(p => p.ContactRoles)
                 .Include(p => p.Address)
                 .Include(p => p.Address.Country)
+                .Include(p => p.ContactRoles)
                 .FirstOrDefaultAsync(cancellationToken);
+            return contact;
         }
     }
 }
