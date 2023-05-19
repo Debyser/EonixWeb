@@ -24,6 +24,7 @@ namespace Infrastructure.Data
             //_context.Entry(entity.Address.Country).State = EntityState.Unchanged; // because we don't want to add/update country
         }
 
+        //TODO: rajouter le n'id de la company , non ? car trop de contact role
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var contact = await _context.Contacts
