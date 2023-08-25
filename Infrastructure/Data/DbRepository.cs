@@ -29,6 +29,9 @@ namespace Infrastructure.Data
         public async ValueTask<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default)
             => await _dbSet.Where(expression).AsNoTracking().ToListAsync();
 
+        public async ValueTask<T> FindSingleByConditionAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default)
+            => await _dbSet.Where(expression).AsNoTracking().FirstOrDefaultAsync();
+
         public async ValueTask<T> FindByIdAsync(long id, CancellationToken cancellationToken = default) => await _dbSet.FindAsync(new object[] { (int)id }, cancellationToken);
 
         public async ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default) => await _dbSet.AsNoTracking().ToListAsync(cancellationToken);

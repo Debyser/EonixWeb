@@ -6,5 +6,6 @@ namespace ApplicationCore.Services
     {
         ValueTask<IEnumerable<Country>> GetListAsync();
         Country GetById(long id);
+        ValueTask<Country> GetByName(string name);
     }
 }

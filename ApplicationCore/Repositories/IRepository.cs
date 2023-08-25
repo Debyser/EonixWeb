@@ -15,5 +15,6 @@ namespace ApplicationCore.Repositories
         ValueTask RollbackAsync(CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default);
+        ValueTask<T> FindSingleByConditionAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default);
     }
 }
