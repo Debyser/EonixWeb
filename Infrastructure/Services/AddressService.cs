@@ -2,19 +2,18 @@
 using ApplicationCore.Exceptions;
 using ApplicationCore.Repositories;
 using ApplicationCore.Services;
-using System.Linq;
 
 namespace Infrastructure.Services
 {
     public class AddressService : IAddressService
     {
         private readonly IAddressRepository _addressRepository;
-        private readonly ICountryRepository _countryRepository;
+        private readonly ICountryService _countryService;
 
-        public AddressService(IAddressRepository addressRepository, ICountryRepository countryRepository, ICountryService countryService)
+        public AddressService(IAddressRepository addressRepository, ICountryService countryService)
         {
             _addressRepository = addressRepository;
-            _countryRepository = countryRepository;
+            _countryService = countryService;
         }
 
         public async ValueTask<long> CreateAsync(Address address, CancellationToken cancellationToken = default)
@@ -24,9 +23,11 @@ namespace Infrastructure.Services
             try
             {
                 address.Id = 0;
-                address.Country.Id = 0;
-                address.CountryId = 0;
-          
+
+                var country = await _countryService.GetByIdAsync(address.Country.Id, cancellationToken);
+                address.CountryId = country.Id;
+                address.Country = null; // to no add new country
+
                 _addressRepository.Add(address);
                 await _addressRepository.CommitAsync(cancellationToken);
             }
@@ -42,8 +43,10 @@ namespace Infrastructure.Services
         {
             var address = await GetByIdAsync(id, cancellationToken);
             if (address == null)
-                throw new EntityNotFoundException(typeof(Address),id);
-            _addressRepository.Remove(address);
+                throw new EntityNotFoundException(typeof(Address), id);
+
+            address.Active = false;
+            _addressRepository.Update(address);
             await _addressRepository.CommitAsync(cancellationToken);
         }
 
@@ -60,16 +63,18 @@ namespace Infrastructure.Services
             try
             {
                 var prevAddress = await GetByIdAsync(addressId, cancellationToken);
-                var prevCountry = await _countryRepository.FindByIdAsync(prevAddress.CountryId, cancellationToken);
+
                 prevAddress.Street = model.Street;
                 prevAddress.BoxNumber = model.BoxNumber;
                 prevAddress.City = model.City;
                 prevAddress.Zipcode = model.Zipcode;
                 //
-                prevCountry.Iso3Code = model.Country.Iso3Code;
-                prevCountry.Name = model.Country.Name;
+                var updatedCountry = await _countryService.GetByIdAsync(model.Country.Id, cancellationToken);
+                if (updatedCountry == null)
+                    throw new EntityNotFoundException(typeof(Country), model.Country.Id);
+
+                prevAddress.Country = updatedCountry;
                 // update
-                //_countryRepository.Update(prevCountry);
                 _addressRepository.Update(prevAddress);
                 await _addressRepository.CommitAsync(cancellationToken);
             }

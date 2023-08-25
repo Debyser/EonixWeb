@@ -39,7 +39,7 @@ namespace Infrastructure.Services
                 if (_cacheLoaded) return; // for security
 
                 var countries = _repository.GetAll().ToList();
-                _countries = new Dictionary<long, Country>(countries.Count+ countries.Count);
+                _countries = new Dictionary<long, Country>(countries.Count + countries.Count);
 
                 foreach (var country in countries) _countries.Add(country.Id, country);
                 _cacheLoaded = true;

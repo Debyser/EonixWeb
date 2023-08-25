@@ -29,9 +29,8 @@ namespace Infrastructure.Data
         {
             var contact = await _context.Contacts
                 .Where(p => p.Id == id)
-                .Include(p => p.ContactRoles)
                 .Include(p => p.Address)
-                .Include(p => p.Address.Country)
+                .ThenInclude(p => p.Country)
                 .Include(p => p.ContactRoles)
                 .FirstOrDefaultAsync(cancellationToken);
             return contact;
