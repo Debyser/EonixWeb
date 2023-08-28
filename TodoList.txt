@@ -38,14 +38,10 @@ faudrait une version pro des gestions des ressources , regarder dans Ef la gesti
  10) web socket 
  11) Http/2
 
-12) creation_time sur contact , zulu time ,  end to end , sans time zone, dans la db date / time sans time zone => done
-13) tu peux rajouter active sur toute les tables => done
 14) faire un Patch
-16) get country by name 
 
 17) rajouter des clé business sur les tables
 
-19) cache country with Lazzy dans le ctor du country , si cache pas loadé , je le load
 
 si supprimer des contacts d'une compagnie , je supprime dans la table COntactRole mais pas contact
 

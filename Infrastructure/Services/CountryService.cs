@@ -27,8 +27,11 @@ namespace Infrastructure.Services
 
         public async ValueTask<Country> GetByName(string name)
         {
-            var country = _countries.Values.FirstOrDefault(x => x.Name == name);
-            return country ?? await _repository.FindSingleByConditionAsync(p => p.Name == name) ?? throw new EntityNotFoundException(typeof(Country), name);
+            var country = _countries.Values.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
+            return
+                country ??
+                await _repository.FindSingleByConditionAsync(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase)) ??
+                throw new EntityNotFoundException(typeof(Country), name);
         }
 
         public ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default) => throw new NotImplementedException();

@@ -32,6 +32,7 @@ namespace Infrastructure.Data
                 .Include(p => p.Address)
                 .ThenInclude(p => p.Country)
                 .Include(p => p.ContactRoles)
+                .ThenInclude(p => p.Company)
                 .FirstOrDefaultAsync(cancellationToken);
             return contact;
         }
