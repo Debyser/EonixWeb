@@ -51,12 +51,7 @@ namespace Infrastructure.Services
         }
 
         public async ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default)
-        {
-            var address = await _addressRepository.GetByIdAsync(id, cancellationToken);
-            if (address == null)
-                throw new EntityNotFoundException(typeof(Address), id);
-            return address;
-        }
+            => await _addressRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Address), id);
 
         public async ValueTask ModifyAsync(long addressId, Address model, CancellationToken cancellationToken = default)
         {

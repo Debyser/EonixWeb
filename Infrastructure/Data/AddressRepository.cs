@@ -17,7 +17,7 @@ namespace Infrastructure.Data
 
         public new void Update(Address entity) => _context.Update(entity);// still relevant ?
 
-        public async ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default) 
+        public async ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default)
             => await _context.Addresses.Where(p => p.Id == id).Include(p => p.Country).FirstOrDefaultAsync(cancellationToken);
     }
 }

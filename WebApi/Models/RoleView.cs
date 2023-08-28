@@ -5,5 +5,7 @@
         public long Id { get; init; }
         public string Name { get; init; }
         public bool Active { get; init; }
+
+        public CompanyView Company { get; init; }
     }
 }

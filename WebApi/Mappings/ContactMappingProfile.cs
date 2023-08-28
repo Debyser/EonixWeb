@@ -8,22 +8,8 @@ namespace WebApi.Mappings
     {
         public ContactMappingProfile()
         {
-            // <src , dest >
-            CreateMap<ContactView, ContactRole>()
-            .ForMember(dest => dest.Name, input => input.MapFrom(src => src.RoleName))
-            .ForPath(dest => dest.Contact.Firstname, input => input.MapFrom(src => src.Firstname))
-            .ForPath(dest => dest.Contact.Lastname, input => input.MapFrom(src => src.Lastname))
-            .ForPath(dest => dest.Contact.Address, input => input.MapFrom(src => src.Address));
-
-
-            CreateMap<ContactRole, ContactView>()
-            .ForPath(dest => dest.Lastname, input => input.MapFrom(src => src.Contact.Lastname))
-            .ForPath(dest => dest.Firstname, input => input.MapFrom(src => src.Contact.Firstname))
-            .ForPath(dest => dest.RoleName, input => input.MapFrom(src => src.Name))
-            .ForPath(dest => dest.Address, input => input.MapFrom(src => src.Contact.Address));
-
-            CreateMap<ContactView, Contact>().ReverseMap();
-
+            CreateMap<Contact, ContactView>()
+            .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.ContactRoles));
         }
     }
 }
