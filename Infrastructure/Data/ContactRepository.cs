@@ -7,13 +7,16 @@ namespace Infrastructure.Data
     public class ContactRepository : DbRepository<Contact>, IContactRepository
     {
         private readonly IAddressRepository _addressRepository;
+        private readonly IContactRoleRepository _contactRoleRepository;
         private readonly EonixDbContext _context;
 
-        public ContactRepository(EonixDbContext context, IAddressRepository addressRepository) : base(context)
+        public ContactRepository(EonixDbContext context, IAddressRepository addressRepository, IContactRoleRepository contactRoleRepository) : base(context)
         {
             _context = context;
             _addressRepository = addressRepository;
+            _contactRoleRepository = contactRoleRepository;
             _addressRepository.SetDbContext(context);
+            _contactRoleRepository.SetDbContext(context);
         }
 
         public new void Add(Contact entity)
@@ -21,10 +24,9 @@ namespace Infrastructure.Data
             entity.CreationTime = DateTime.UtcNow;
             _context.Add(entity);
             _addressRepository.Add(entity.Address);
-            //_context.Entry(entity.Address.Country).State = EntityState.Unchanged; // because we don't want to add/update country
+            _contactRoleRepository.Add(entity.ContactRoles, entity);
         }
 
-        //TODO: rajouter le n'id de la company , non ? car trop de contact role
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var contact = await _context.Contacts

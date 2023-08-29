@@ -10,6 +10,11 @@ namespace WebApi.Mappings
         {
             CreateMap<Contact, ContactView>()
             .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.ContactRoles));
+
+            CreateMap<ContactView, Contact>()
+            .ForMember(dest => dest.ContactRoles, opt => opt.MapFrom(src => src.Roles));
+
+
         }
     }
 }

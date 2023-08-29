@@ -13,8 +13,8 @@ namespace ApplicationCore.Entities
 
         public DateTime? CreationTime { get; set; }
 
-        public  Address Address { get; set; }
+        public Address Address { get; set; }
 
-        public IEnumerable<ContactRole> ContactRoles { get; set; }
+        public List<ContactRole> ContactRoles { get; set; }
     }
 }

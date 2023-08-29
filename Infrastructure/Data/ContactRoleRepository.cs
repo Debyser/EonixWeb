@@ -1,25 +1,29 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class ContactRoleRepository : DbRepository<ContactRole> , IContactRoleRepository
+    public class ContactRoleRepository : DbRepository<ContactRole>, IContactRoleRepository
     {
         private readonly EonixDbContext _context;
-        private readonly IContactRepository _contactRepository;
 
-        public ContactRoleRepository(EonixDbContext context, IContactRepository contactRepository) : base(context)
+        public ContactRoleRepository(EonixDbContext context) : base(context)
         {
             _context = context;
-            _contactRepository = contactRepository;
-            _contactRepository.SetDbContext(context);
         }
 
-        public new void Add(ContactRole entity) 
+        public void Add(List<ContactRole> contactRoles, Contact contact)
         {
-            _context.Add(entity);
-            _contactRepository.Add(entity.Contact);
+            if (contactRoles == null) return;
+            foreach (var contactRole in contactRoles)
+            {
+                if (contactRole.CompanyId <= 0) continue;
+                _context.Entry(contactRole.Company).State = EntityState.Unchanged;
+                contactRole.Contact = contact;
+                contactRole.Active = true;
+                _context.Add(contactRole);
+            }
         }
-       
     }
 }
