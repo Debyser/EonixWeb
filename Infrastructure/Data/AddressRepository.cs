@@ -13,7 +13,18 @@ namespace Infrastructure.Data
             _context = context;
         }
 
-        public new void Add(Address entity) => _context.Add(entity); // still relevant ?
+        public new void Add(Address entity)
+        {
+            if (entity == null) return;
+            // Attach existing country for address
+            if (entity.Country == null || entity.Country.Id == 0)
+                return;
+
+            _context.Attach(entity.Country);
+
+            // Add address
+            _context.Add(entity);
+        }
 
         public new void Update(Address entity) => _context.Update(entity);// still relevant ?
 

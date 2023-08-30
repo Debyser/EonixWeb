@@ -22,6 +22,7 @@ namespace Infrastructure.Data
         {
             DbContext = context as DbContext;
         }
+
         public virtual void Add(T entity) => _dbSet.Add(entity);
 
         public async ValueTask CommitAsync(CancellationToken cancellationToken = default) => await DbContext.SaveChangesAsync(cancellationToken);
@@ -41,5 +42,7 @@ namespace Infrastructure.Data
         public virtual void Update(T entity) => DbContext.Entry(entity).State = EntityState.Modified;
 
         public async ValueTask RollbackAsync(CancellationToken cancellationToken = default) => await DbContext.Database.RollbackTransactionAsync(cancellationToken);
+
+
     }
 }

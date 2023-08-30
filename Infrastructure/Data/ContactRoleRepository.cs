@@ -1,6 +1,5 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
@@ -13,16 +12,18 @@ namespace Infrastructure.Data
             _context = context;
         }
 
-        public void Add(List<ContactRole> contactRoles, Contact contact)
+        public void Add(List<ContactRole> contactRoles)
         {
-            if (contactRoles == null) return;
-            foreach (var contactRole in contactRoles)
+            foreach (var role in contactRoles)
             {
-                if (contactRole.CompanyId <= 0) continue;
-                _context.Entry(contactRole.Company).State = EntityState.Unchanged;
-                contactRole.Contact = contact;
-                contactRole.Active = true;
-                _context.Add(contactRole);
+                if (role.Company == null || role.Company.Id == 0) continue;
+                // Check if the company is already tracked
+                var existingCompany = _context.Companies.Local.FirstOrDefault(c => c.Id == role.Company.Id);
+                if (existingCompany == null)// Attach existing company
+                    _context.Attach(role.Company);
+                else // Use the existing tracked company
+                    role.Company = existingCompany;
+                _context.Add(role);
             }
         }
     }

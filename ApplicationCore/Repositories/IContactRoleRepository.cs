@@ -4,6 +4,6 @@ namespace ApplicationCore.Repositories
 {
     public interface IContactRoleRepository : IRepository<ContactRole>
     {
-        void Add(List<ContactRole> contactRoles, Contact contact);
+        void Add(List<ContactRole> contactRoles);
     }
 }

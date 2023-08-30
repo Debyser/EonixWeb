@@ -8,25 +8,18 @@ namespace Infrastructure.Data
     {
         private readonly EonixDbContext _context;
         private readonly IAddressRepository _addressRepository;
-        private readonly IContactRoleRepository _contactRoleRepository;
-        private readonly IContactRepository _contactRepository;
 
-        public CompanyRepository(EonixDbContext context, IAddressRepository addressRepository, IContactRoleRepository contactRoleRepository, IContactRepository contactRepository) : base(context)
+        public CompanyRepository(EonixDbContext context, IAddressRepository addressRepository) : base(context)
         {
             _context = context;
             _addressRepository = addressRepository;
-            _contactRoleRepository = contactRoleRepository;
-            _contactRepository = contactRepository;
             _addressRepository.SetDbContext(context);
-            _contactRoleRepository.SetDbContext(context);
-            _contactRepository.SetDbContext(_context);
         }
 
         // new : erase the Add from DbRepository
         public new void Add(Company entity)
         {
             _context.Add(entity);
-            foreach (var contactRole in entity.ContactRoles) _contactRoleRepository.Add(contactRole);
             _addressRepository.Add(entity.Address);
         }
 
@@ -44,7 +37,7 @@ namespace Infrastructure.Data
         {
             return await _context.Companies
                 .Where(p => p.Id == id)
-                .Include(p => p.ContactRoles).ThenInclude(x=>x.Contact).ThenInclude(x=>x.Address).ThenInclude(x=>x.Country)
+                .Include(p => p.ContactRoles).ThenInclude(x => x.Contact).ThenInclude(x => x.Address).ThenInclude(x => x.Country)
                 .Include(p => p.Address)
                 .Include(p => p.Address.Country)
                 .FirstOrDefaultAsync(cancellationToken);

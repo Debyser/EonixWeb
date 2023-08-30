@@ -8,40 +8,24 @@ namespace Infrastructure.Services
     public class ContactService : IContactService
     {
         private readonly IContactRepository _contactRepository;
-        private readonly IContactRoleRepository _contactRoleRepository;
 
-
-        public ContactService(IContactRepository contactRepository, IContactRoleRepository contactRoleRepository)
+        public ContactService(IContactRepository contactRepository)
         {
             _contactRepository = contactRepository;
-            _contactRoleRepository = contactRoleRepository;
         }
 
         public async ValueTask<long> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
             try
             {
-                contact.Id = 0;
-                contact.Address.Id = 0;
-                contact.AddressId = 0;
-                contact.Address.Country = null; // to prevent to add a country
+                //contact.Id = 0;
+                //contact.Address.Id = 0;
+                //contact.AddressId = 0;
+                //contact.Address.Country = null; // to prevent to add a country
                 contact.Active = true;
                 _contactRepository.Add(contact);
                 await _contactRepository.CommitAsync(cancellationToken);
 
-                //// Maintenant que le contact principal a un ID, vous pouvez créer les ContactRoles associés
-                //foreach (var contactRole in contact.ContactRoles)
-                //{
-                //    // Assurez-vous que l'ID de la company existe (correspond à une company existante dans la base de données)
-                //    if (contactRole.Company.Id > 0)
-                //    {
-                //        contactRole.Contact = contact;
-                //        contactRole.Active = true;
-                //        _contactRoleRepository.Add(contactRole);
-                //    }
-                //}
-
-                //await _contactRoleRepository.CommitAsync(cancellationToken);
             }
             catch (Exception ex)
             {
