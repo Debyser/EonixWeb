@@ -24,7 +24,7 @@ namespace Infrastructure.Data
             //entity.CreationTime = DateTime.UtcNow;
             entity.CreationTime = DateTime.UtcNow;
 
-            _contactRoleRepository.Add(entity.ContactRoles);
+            _contactRoleRepository.Add(entity.ContactRoles.ToList());
             //foreach (var role in entity.ContactRoles)
             //{
             //    if (role.Company != null && role.Company.Id != 0)

@@ -5,7 +5,7 @@ namespace ApplicationCore.Entities
     public partial class ContactRole : EntityBase
     {
         public string Name { get; set; }
-        public bool? Active { get; set; }
+        public bool Active { get; set; }
 
         // navigation variables
         public long CompanyId { get; set; }

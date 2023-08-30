@@ -7,7 +7,7 @@ namespace ApplicationCore.Entities
     public partial class Company : EntityBase
     {
         public string Name { get; set; }
-        public bool? Active { get; set; }
+        public bool Active { get; set; }
 
         public long AddressId { get; set; }
 
