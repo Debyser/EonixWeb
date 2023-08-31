@@ -11,8 +11,7 @@ namespace Infrastructure.Data.Configuration
             builder.ToTable("address");
 
             builder.Property(e => e.Id).HasColumnName("id").HasConversion<int>();
-            //builder.Property(e => e.Id).ValueGeneratedOnAdd();
-            
+
             builder.HasKey(p => p.Id);
             builder.Property(e => e.Active).IsRequired().HasColumnName("active").HasDefaultValueSql("((1))");
             builder.Property(e => e.CountryId).HasColumnName("address2country").IsRequired();
