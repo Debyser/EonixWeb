@@ -24,7 +24,7 @@ namespace Infrastructure.Services
                 await _contactRepository.CommitAsync(cancellationToken);
 
             }
-            catch (Exception ex)
+            catch
             {
                 await _contactRepository.RollbackAsync(cancellationToken);
                 throw;
@@ -52,18 +52,12 @@ namespace Infrastructure.Services
 
         public async ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
         {
-            try
-            {
-                var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
-                contact.Active = false;
-                _contactRepository.Update(contact);
-                await _contactRepository.CommitAsync(cancellationToken);
-            }
-            catch (Exception)
-            {
-                await _contactRepository.RollbackAsync(cancellationToken);
-                throw;
-            }
+            var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
+            if (contact == null) throw new EntityNotFoundException(typeof(Contact), id);
+
+            contact.Active = false;
+            _contactRepository.Update(contact);
+            await _contactRepository.CommitAsync(cancellationToken);
         }
 
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
@@ -74,6 +68,7 @@ namespace Infrastructure.Services
             try
             {
                 var prevContact = await _contactRepository.GetByIdAsync(id, cancellationToken);
+                if (prevContact == null) throw new EntityNotFoundException(typeof(Contact), id);
                 prevContact.Firstname = model.Firstname;
                 prevContact.Lastname = model.Lastname;
                 prevContact.Address.BoxNumber = model.Address.BoxNumber;
@@ -91,7 +86,5 @@ namespace Infrastructure.Services
                 throw;
             }
         }
-
-        //TODO: create IActionResult GetEmployeesForCompany(Guid companyId)
     }
 }

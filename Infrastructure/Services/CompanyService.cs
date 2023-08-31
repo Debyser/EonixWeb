@@ -15,7 +15,7 @@ namespace Infrastructure.Services
         {
             _companyRepository = companyRepository;
             _addressRepository = addressRepository;
-            _contactRoleRepository = contactRoleRepository; 
+            _contactRoleRepository = contactRoleRepository;
         }
 
         public async ValueTask<long> CreateAsync(Company model, CancellationToken cancellationToken = default)
@@ -28,7 +28,7 @@ namespace Infrastructure.Services
                 _companyRepository.Add(model);
                 await _companyRepository.CommitAsync(cancellationToken);
             }
-            catch (Exception)
+            catch
             {
                 await _companyRepository.RollbackAsync(cancellationToken);
                 throw;
@@ -36,17 +36,25 @@ namespace Infrastructure.Services
             return model.Id;
         }
 
- 
+
         public async ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
         {
-            var company = await GetByIdAsync(id, cancellationToken);
-            if (company == null)
-                throw new EntityNotFoundException(typeof(Company), id);// à vérifier , est ce que leservice connait les business exception ?
-            company.Active = false;
-            _companyRepository.Update(company); // dire que j'update que le champ Actif et pas toute l'entité
-            // pas de tracking car lourd , sans tracking trouver comment maj un champ
-            // lire code de Steph , minimum syndical
-            await _companyRepository.CommitAsync(cancellationToken);
+            try
+            {
+                var company = await GetByIdAsync(id, cancellationToken);
+                if (company == null)
+                    throw new EntityNotFoundException(typeof(Company), id);// à vérifier , est ce que leservice connait les business exception ?
+                company.Active = false;
+                _companyRepository.Update(company); // dire que j'update que le champ Actif et pas toute l'entité
+                                                    // pas de tracking car lourd , sans tracking trouver comment maj un champ
+                                                    // lire code de Steph , minimum syndical
+                await _companyRepository.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await _companyRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
         }
 
         public async ValueTask<IEnumerable<Company>> GetByFilterAsync(Company filter, CancellationToken cancellationToken = default)
@@ -55,12 +63,8 @@ namespace Infrastructure.Services
                await _companyRepository.GetByFilterAsync(filter, cancellationToken);
 
         public async ValueTask<Company> GetByIdAsync(long id, CancellationToken cancellationToken = default)
-        {
-            var company = await _companyRepository.GetByIdAsync(id, cancellationToken);
-            if (company == null)
-                throw new EntityNotFoundException(typeof(Company), id);
-            return company;
-        }
+            => await _companyRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Company), id);
+
 
         public async ValueTask<IEnumerable<Company>> GetByIdsAsync(IEnumerable<long> ids, CancellationToken cancellationToken = default)
         {
@@ -68,21 +72,29 @@ namespace Infrastructure.Services
                 throw new IdParametersBadRequestException();
 
             var companies = await _companyRepository.FindByConditionAsync(x => ids.Contains(x.Id), cancellationToken);
-            if(ids.Count() != companies.Count())
+            if (ids.Count() != companies.Count())
                 throw new CollectionByIdsBadRequestException();
             return companies;
         }
 
         public async ValueTask ModifyAsync(long id, Company model, CancellationToken cancellationToken = default)
         {
-            var prevCompany = await GetByIdAsync(id, cancellationToken);
-            prevCompany.Name = model.Name;
-            _companyRepository.Update(prevCompany);
-            await _companyRepository.CommitAsync(cancellationToken);
-        }
+            try
+            {
+                var prevCompany = await GetByIdAsync(id, cancellationToken);
+                if (prevCompany == null) throw new EntityNotFoundException(typeof(Company), id);
 
-        private async ValueTask<IEnumerable<Company>> GetAllAsync(CancellationToken cancellationToken = default)
-            => (await _companyRepository.GetAllAsync(cancellationToken)).OrderBy(p => p.Name);
+                prevCompany.Name = model.Name;
+                _companyRepository.Update(prevCompany);
+                await _companyRepository.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await _companyRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
+
+        }
 
         public async ValueTask<(IEnumerable<Company> companies, string ids)> CreateCompanyCollection(IEnumerable<Company> companyCollection, CancellationToken cancellationToken = default)
         {
@@ -106,7 +118,7 @@ namespace Infrastructure.Services
 
         public async ValueTask<Company> CreateCompanyAsync(Company company, CancellationToken cancellationToken = default)
         {
-            try 
+            try
             {
                 _companyRepository.Add(company);
                 foreach (var contactRole in company.ContactRoles)
@@ -124,5 +136,8 @@ namespace Infrastructure.Services
 
             return company;
         }
+
+        private async ValueTask<IEnumerable<Company>> GetAllAsync(CancellationToken cancellationToken = default)
+          => (await _companyRepository.GetAllAsync(cancellationToken)).OrderBy(p => p.Name);
     }
 }
