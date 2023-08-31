@@ -25,26 +25,6 @@ namespace Infrastructure.Data
             entity.CreationTime = DateTime.UtcNow;
 
             _contactRoleRepository.Add(entity.ContactRoles.ToList());
-            //foreach (var role in entity.ContactRoles)
-            //{
-            //    if (role.Company != null && role.Company.Id != 0)
-            //    {
-            //        // Check if the company is already tracked
-            //        var existingCompany = _context.Companies.Local.FirstOrDefault(c => c.Id == role.Company.Id);
-            //        if (existingCompany == null)
-            //        {
-            //            // Attach existing company
-            //            _context.Attach(role.Company);
-            //        }
-            //        else
-            //        {
-            //            // Use the existing tracked company
-            //            role.Company = existingCompany;
-            //        }
-            //    }
-            //    _contactRoleRepository.Add(role);
-            //}
-
             _addressRepository.Add(entity.Address);
 
             // Add contact

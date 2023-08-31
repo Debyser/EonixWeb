@@ -18,9 +18,6 @@ namespace Infrastructure.Services
         {
             try
             {
-                //contact.Id = 0;
-                //contact.Address.Id = 0;
-                //contact.AddressId = 0;
                 //contact.Address.Country = null; // to prevent to add a country
                 contact.Active = true;
                 _contactRepository.Add(contact);

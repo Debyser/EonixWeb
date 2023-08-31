@@ -1,4 +1,8 @@
-﻿namespace Infrastructure.Data.Configuration
+﻿using ApplicationCore.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Infrastructure.Data.Configuration
 {
     public class AddressConfiguration : IEntityTypeConfiguration<Address>
     {
