@@ -1,6 +1,5 @@
 ﻿using ApplicationCore.Entities;
 using System.Linq.Expressions;
-
 namespace ApplicationCore.Repositories
 {
     public interface IRepository<T> where T : class, IEntityBase, new()
@@ -15,5 +14,6 @@ namespace ApplicationCore.Repositories
         ValueTask RollbackAsync(CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default);
+        ValueTask<T> FindSingleByConditionAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default);
     }
 }

@@ -7,7 +7,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CountryController :  ControllerBase
+    public class CountryController : ControllerBase
     {
         private readonly ICountryService _countryService;
         private readonly IMapper _mapper;
@@ -21,11 +21,15 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id:int}", Name = nameof(GetCountryById))]
-        public async Task<IActionResult> GetCountryById([FromRoute] int id) 
+        public async Task<IActionResult> GetCountryById([FromRoute] long id)
             => Ok(_mapper.Map<CountryView>(await _countryService.GetByIdAsync(id)));
 
+        //[HttpGet("", Name = nameof(GetCountries))]
+        //public async Task<IActionResult> GetCountries()
+        //     => Ok(_mapper.Map<IEnumerable<CountryView>>(await _countryService.GetListAsync()));
+
         [HttpGet("", Name = nameof(GetCountries))]
-        public async Task<IActionResult> GetCountries()
-             => Ok(_mapper.Map<IEnumerable<CountryView>>(await _countryService.GetList()));
+        public List<string> GetCountries()
+            => new List<string>{"azerty","azerto"};
     }
 }

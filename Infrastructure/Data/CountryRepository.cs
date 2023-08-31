@@ -9,23 +9,19 @@ namespace Infrastructure.Data
         private readonly EonixDbContext _context;
         public CountryRepository(EonixDbContext context) : base(context)
         {
-            _context = context; 
+            _context = context;
+            //_context.AttachRange(_context.Countries);
         }
 
-        public IEnumerable<Country> GetAll() => _context.Countries.AsEnumerable();
 
-        public async ValueTask<IEnumerable<Country>> GetByFilterAsync(Country filter, CancellationToken cancellationToken = default)
+        // Why Adding AsNotTracking ? :
+        // The instance of entity type cannot be tracked because another instance with the same key value for {'Id'}
+        // is already being tracked
+        public IEnumerable<Country> GetAll()
         {
-            return (!string.IsNullOrWhiteSpace(filter.Name)) ? 
-                await _context.Countries
-                .Where(p => p.Name.StartsWith(filter.Name))
-                .OrderBy(p => p.Name)
-                .ToListAsync(cancellationToken)              : 
-                await _context.Countries.ToListAsync();
+            return _context.Countries.AsNoTracking().AsEnumerable();
+
         }
 
-        //TODO : create 9.6 Model binding in API
-        public async ValueTask<IEnumerable<Country>> GetByIds(IEnumerable<int> ids, CancellationToken cancellationToken = default)
-            => await _context.Countries.Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);
     }
 }

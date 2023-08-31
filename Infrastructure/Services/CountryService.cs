@@ -1,7 +1,7 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Exceptions;
 using ApplicationCore.Repositories;
 using ApplicationCore.Services;
-using Infrastructure.Entities.Exceptions;
 
 namespace Infrastructure.Services
 {
@@ -17,23 +17,30 @@ namespace Infrastructure.Services
             _repository = countryRepository;
             LoadCache();
         }
-
+        // TODO : have a get by id non async for the address where no exception is thrown
         public async ValueTask<Country> GetByIdAsync(long id, CancellationToken cancellationToken = default)
             => _countries.ContainsKey(id) ?
                _countries[id] :
-               await _repository.FindByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(nameof(Country),id);
+               await _repository.FindByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Country), id);
 
-        public async ValueTask<IEnumerable<Country>> GetList()
-            =>  await Task.Run(()=>_countries.Values);
+        public async ValueTask<IEnumerable<Country>> GetListAsync() => await Task.Run(() => _countries.Values);
 
-        public ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        public async ValueTask<Country> GetByName(string name)
+        {
+            var country = _countries.Values.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
+            return
+                country ??
+                await _repository.FindSingleByConditionAsync(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase)) ??
+                throw new EntityNotFoundException(typeof(Country), name);
+        }
 
-        public ValueTask<long> CreateAsync(Country model, CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        public ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public ValueTask ModifyAsync(long countryId, Country country, CancellationToken cancellationToken = default)
-          => throw new NotImplementedException();
+        public ValueTask<long> CreateAsync(Country country, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+        public ValueTask ModifyAsync(long id, Country country, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+        public Country GetById(long id) => _countries.ContainsKey(id) ? _countries[id] : null;
 
         private void LoadCache()
         {
@@ -42,43 +49,12 @@ namespace Infrastructure.Services
             {
                 if (_cacheLoaded) return; // for security
 
-                _countries = new Dictionary<long, Country>();
-                var countries = _repository.GetAll();
+                var countries = _repository.GetAll().ToList();
+                _countries = new Dictionary<long, Country>(countries.Count + countries.Count);
+
                 foreach (var country in countries) _countries.Add(country.Id, country);
                 _cacheLoaded = true;
             }
         }
     }
 }
-
-/*
- patter Singleton
-
-public sealed class Singleton
-{
-    private static readonly object Instancelock = new object();
-    private Singleton()
-    {
-    }
-    private static Singleton instance = null;
-
-    public static Singleton GetInstance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                lock (Instancelock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new Singleton();
-                    }
-                }
-            }
-            return instance;
-        }
-    }
-}
- 
- */

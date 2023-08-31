@@ -1,21 +1,18 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Exceptions;
 using ApplicationCore.Repositories;
 using ApplicationCore.Services;
-using Infrastructure.Entities.Exceptions;
-using System.Linq;
 
 namespace Infrastructure.Services
 {
     public class AddressService : IAddressService
     {
         private readonly IAddressRepository _addressRepository;
-        private readonly ICountryRepository _countryRepository;
         private readonly ICountryService _countryService;
 
-        public AddressService(IAddressRepository addressRepository, ICountryRepository countryRepository, ICountryService countryService)
+        public AddressService(IAddressRepository addressRepository, ICountryService countryService)
         {
             _addressRepository = addressRepository;
-            _countryRepository = countryRepository;
             _countryService = countryService;
         }
 
@@ -26,10 +23,11 @@ namespace Infrastructure.Services
             try
             {
                 address.Id = 0;
-                address.Country.Id = 0;
-                address.Address2country = 0;
-                var countries = await _countryService.GetList();
-                address.Country.Id = countries.FirstOrDefault(p => p.Name == address.Country.Name).Id;
+
+                var country = await _countryService.GetByIdAsync(address.Country.Id, cancellationToken);
+                address.CountryId = country.Id;
+                address.Country = null; // to no add new country
+
                 _addressRepository.Add(address);
                 await _addressRepository.CommitAsync(cancellationToken);
             }
@@ -45,34 +43,33 @@ namespace Infrastructure.Services
         {
             var address = await GetByIdAsync(id, cancellationToken);
             if (address == null)
-                throw new EntityNotFoundException(nameof(Address),id);
-            _addressRepository.Remove(address);
+                throw new EntityNotFoundException(typeof(Address), id);
+
+            address.Active = false;
+            _addressRepository.Update(address);
             await _addressRepository.CommitAsync(cancellationToken);
         }
 
         public async ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default)
-        {
-            var address = await _addressRepository.GetByIdAsync(id, cancellationToken);
-            if (address == null)
-                throw new EntityNotFoundException(nameof(Address), id);
-            return address;
-        }
+            => await _addressRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Address), id);
 
         public async ValueTask ModifyAsync(long addressId, Address model, CancellationToken cancellationToken = default)
         {
             try
             {
                 var prevAddress = await GetByIdAsync(addressId, cancellationToken);
-                var prevCountry = await _countryRepository.FindByIdAsync(prevAddress.Address2country, cancellationToken);
+
                 prevAddress.Street = model.Street;
                 prevAddress.BoxNumber = model.BoxNumber;
                 prevAddress.City = model.City;
                 prevAddress.Zipcode = model.Zipcode;
                 //
-                prevCountry.Iso3Code = model.Country.Iso3Code;
-                prevCountry.Name = model.Country.Name;
+                var updatedCountry = await _countryService.GetByIdAsync(model.Country.Id, cancellationToken);
+                if (updatedCountry == null)
+                    throw new EntityNotFoundException(typeof(Country), model.Country.Id);
+
+                prevAddress.Country = updatedCountry;
                 // update
-                //_countryRepository.Update(prevCountry);
                 _addressRepository.Update(prevAddress);
                 await _addressRepository.CommitAsync(cancellationToken);
             }

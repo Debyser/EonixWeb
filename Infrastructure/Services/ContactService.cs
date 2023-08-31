@@ -1,32 +1,33 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Exceptions;
 using ApplicationCore.Repositories;
 using ApplicationCore.Services;
-using Infrastructure.Entities.Exceptions;
 
 namespace Infrastructure.Services
 {
     public class ContactService : IContactService
     {
         private readonly IContactRepository _contactRepository;
-        private readonly IAddressRepository _addressRepository;
 
-        public ContactService(IContactRepository contactRepository, IAddressRepository addressRepository)
+        public ContactService(IContactRepository contactRepository)
         {
             _contactRepository = contactRepository;
-            _addressRepository = addressRepository;
         }
 
         public async ValueTask<long> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
             try
             {
-                contact.Id = 0;
-                contact.Address.Id = 0;
-                contact.Contact2address = 0;
+                //contact.Id = 0;
+                //contact.Address.Id = 0;
+                //contact.AddressId = 0;
+                //contact.Address.Country = null; // to prevent to add a country
+                contact.Active = true;
                 _contactRepository.Add(contact);
                 await _contactRepository.CommitAsync(cancellationToken);
+
             }
-            catch
+            catch (Exception ex)
             {
                 await _contactRepository.RollbackAsync(cancellationToken);
                 throw;
@@ -40,7 +41,7 @@ namespace Infrastructure.Services
             {
                 contact.Id = 0;
                 contact.Address.Id = 0;
-                contact.Contact2address = 0;
+                contact.AddressId = 0;
                 _contactRepository.Add(contact);
                 await _contactRepository.CommitAsync(cancellationToken);
             }
@@ -54,15 +55,22 @@ namespace Infrastructure.Services
 
         public async ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
         {
-            var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
-            if (contact == null)
-                throw new EntityNotFoundException(nameof(Contact), id);
-            _contactRepository.Remove(contact);
-            await _contactRepository.CommitAsync(cancellationToken);
+            try
+            {
+                var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
+                contact.Active = false;
+                _contactRepository.Update(contact);
+                await _contactRepository.CommitAsync(cancellationToken);
+            }
+            catch (Exception)
+            {
+                await _contactRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
         }
 
-        public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default) 
-            => await _contactRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(nameof(Contact), id);
+        public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
+            => await _contactRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Contact), id);
 
         public async ValueTask ModifyAsync(long id, Contact model, CancellationToken cancellationToken = default)
         {
@@ -80,11 +88,13 @@ namespace Infrastructure.Services
                 _contactRepository.Update(prevContact);
                 await _contactRepository.CommitAsync(cancellationToken);
             }
-            catch 
+            catch
             {
                 await _contactRepository.RollbackAsync(cancellationToken);
                 throw;
             }
         }
+
+        //TODO: create IActionResult GetEmployeesForCompany(Guid companyId)
     }
 }

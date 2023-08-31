@@ -8,31 +8,41 @@ namespace WebApi.Mappings
     {
         public ContactMappingProfile()
         {
-            CreateMap<ContactView, ContactRole>()
-            .ForMember(dest => dest.Name, input => input.MapFrom(src => src.RoleName))
-            .ForPath(dest => dest.Contact.Firstname, input => input.MapFrom(src => src.Firstname))
-            .ForPath(dest => dest.Contact.Lastname, input => input.MapFrom(src => src.Lastname))
-            .ForPath(dest => dest.Contact.Address, input => input.MapFrom(src => src.Address));
-
-
-            CreateMap<ContactRole, ContactView>()
-            .ForPath(dest => dest.Lastname, input => input.MapFrom(src => src.Contact.Lastname))
-            .ForPath(dest => dest.Firstname, input => input.MapFrom(src => src.Contact.Firstname))
-            .ForPath(dest => dest.RoleName, input => input.MapFrom(src => src.Name))
-            .ForPath(dest => dest.Address, input => input.MapFrom(src => src.Contact.Address));
-
-            CreateMap<ContactView, Contact>()
-            .ForMember(dest => dest.Firstname, input => input.MapFrom(src => src.Firstname))
-            .ForMember(dest => dest.Lastname, input => input.MapFrom(src => src.Lastname))
-            .ForMember(dest => dest.Address, input => input.MapFrom(src => src.Address));
-
             CreateMap<Contact, ContactView>()
-            .ForMember(dest => dest.Firstname, input => input.MapFrom(src => src.Firstname))
-            .ForMember(dest => dest.Lastname, input => input.MapFrom(src => src.Lastname))
-            .ForMember(dest => dest.Address, input => input.MapFrom(src => src.Address));
+            .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.ContactRoles.Select(role => new RoleView
+            {
+                Id = role.Id,
+                Name = role.Name,
+                Active = role.Active,
+                Company = role.Company != null ? new CompanyView
+                {
+                    Id = role.CompanyId,
+                    Name = role.Company.Name,
+                    Address = role.Company.Address != null ? new AddressView
+                    {
+                        BoxNumber = role.Company.Address.BoxNumber,
+                        City = role.Company.Address.City,
+                        Street = role.Company.Address.Street,
+                        Zipcode = role.Company.Address.Zipcode,
+                        Country = role.Company.Address.Country != null ? new CountryView
+                        {
+                            Id = role.Company.Address.Country.Id,
+                            Name = role.Company.Address.Country.Name
+                        } : null,
+                    } : null
+                } : null
+            })));
 
+            // mettre default!;
+            // language en 10 pas en 11
 
-           //CreateMap<List<ContactView>, List<Contact>>();
+            //CreateMap<Contact, ContactView>()
+            //.ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.ContactRoles.Select(role => new RoleView
+            //{
+            //    Id = role.Id,
+            //    Name = role.Name,
+            //    Active = role.Active.HasValue ? role.Active.Value : null,
+            //})));
         }
     }
 }

@@ -1,35 +1,34 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 
 namespace Infrastructure.Data
 {
     public class AddressRepository : DbRepository<Address>, IAddressRepository
     {
         private readonly EonixDbContext _context;
-        private readonly ICountryRepository _countryRepository;
 
         public AddressRepository(EonixDbContext context, ICountryRepository countryRepository) : base(context)
         {
             _context = context;
-            _countryRepository = countryRepository;
-            _countryRepository.SetDbContext(context);
         }
 
         public new void Add(Address entity)
         {
+            if (entity == null) return;
+            // Attach existing country for address
+            if (entity.Country == null || entity.Country.Id == 0)
+                return;
+
+            _context.Attach(entity.Country);
+
+            // Add address
             _context.Add(entity);
-            _countryRepository.Add(entity.Country);
         }
 
-        public new void Update(Address entity) 
-        {
-            _context.Update(entity);
-            _countryRepository.Update(entity.Country);
-        }
+        public new void Update(Address entity) => _context.Update(entity);// still relevant ?
 
-        public async ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default) 
+        public async ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default)
             => await _context.Addresses.Where(p => p.Id == id).Include(p => p.Country).FirstOrDefaultAsync(cancellationToken);
     }
 }
