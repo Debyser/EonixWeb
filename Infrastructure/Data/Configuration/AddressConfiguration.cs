@@ -1,8 +1,4 @@
-﻿using ApplicationCore.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Infrastructure.Data.Configuration
+﻿namespace Infrastructure.Data.Configuration
 {
     public class AddressConfiguration : IEntityTypeConfiguration<Address>
     {
@@ -11,6 +7,7 @@ namespace Infrastructure.Data.Configuration
             builder.ToTable("address");
 
             builder.Property(e => e.Id).HasColumnName("id").HasConversion<int>();
+            //builder.Property(e => e.Id).ValueGeneratedOnAdd();
 
             builder.HasKey(p => p.Id);
             builder.Property(e => e.Active).IsRequired().HasColumnName("active").HasDefaultValueSql("((1))");

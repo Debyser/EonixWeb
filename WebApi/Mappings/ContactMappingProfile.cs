@@ -1,8 +1,4 @@
-﻿using ApplicationCore.Entities;
-using AutoMapper;
-using WebApi.Models;
-
-namespace WebApi.Mappings
+﻿namespace WebApi.Mappings
 {
     public class ContactMappingProfile : Profile
     {
