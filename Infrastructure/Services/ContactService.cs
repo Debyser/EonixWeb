@@ -58,7 +58,6 @@ namespace Infrastructure.Services
                 if (contact == null) throw new EntityNotFoundException(typeof(Contact), id);
 
                 contact.Active = false;
-                _contactRepository.Update(contact);
                 await _contactRepository.CommitAsync(cancellationToken);
             }
             catch
