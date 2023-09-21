@@ -34,7 +34,7 @@ namespace Infrastructure.Data
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             var contact = await _context.Contacts
-                .Where(p => p.Id == id)
+                .Where(p => p.Id == id && p.Active)
                 .Include(p => p.Address)
                     .ThenInclude(p => p.Country)
                 .Include(p => p.ContactRoles)
@@ -43,6 +43,45 @@ namespace Infrastructure.Data
                             .ThenInclude(p => p.Country)
                 .FirstOrDefaultAsync(cancellationToken);
             return contact;
+        }
+
+        public async ValueTask Update(long id, Contact model, CancellationToken cancellationToken = default)
+        {
+            var prevContact = await GetByIdAsync(id, cancellationToken);
+            if (prevContact != null)
+            {
+                if (prevContact.ContactRoles != null)
+                {
+                    foreach (var prevRole in prevContact.ContactRoles)
+                    {
+                        var currentContacRole = model.ContactRoles.FirstOrDefault(p => p.Id == prevRole.Id);
+                        if (currentContacRole == null) continue;
+                        prevRole.ContactId = id;
+                        prevRole.Name = currentContacRole.Name;
+                        prevRole.Active = currentContacRole.Active;
+                    }
+                }
+
+                prevContact.Address.BoxNumber = model.Address.BoxNumber;
+                prevContact.Address.Zipcode = model.Address.Zipcode;
+                prevContact.Address.Street = model.Address.Street;
+                prevContact.Address.BoxNumber = model.Address.BoxNumber;
+                prevContact.Address.City = model.Address.City;
+                prevContact.Firstname = model.Firstname;
+                prevContact.Lastname = model.Lastname;
+                prevContact.PhoneNumber = model.PhoneNumber;
+            }
+        }
+
+        private void AttachOrUpdateCompany(ContactRole role)
+        {
+            if (role.Company == null || role.Company.Id == 0) return;
+
+            var existingCompany = _context.Companies.Local.FirstOrDefault(c => c.Id == role.Company.Id);
+            if (existingCompany == null)
+                _context.Attach(role.Company);
+            else
+                role.Company = existingCompany;
         }
     }
 }

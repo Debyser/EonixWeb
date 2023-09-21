@@ -2,11 +2,12 @@
 {
     public class ContactView
     {
-        public string Lastname { get; init; }
-        public string PhoneNumber { get; init; }
-        public string Firstname { get; init; }
+        public long Id { get; set; }
+        public string Lastname { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Firstname { get; set; }
 
-        public IEnumerable<RoleView> Roles { get; init; }  // Include roles associated with the contact
-        public AddressView Address { get; init; }
+        public IEnumerable<RoleView> Roles { get; set; }  // Include roles associated with the contact
+        public AddressView Address { get; set; }
     }
 }

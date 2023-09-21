@@ -52,12 +52,20 @@ namespace Infrastructure.Services
 
         public async ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default)
         {
-            var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
-            if (contact == null) throw new EntityNotFoundException(typeof(Contact), id);
+            try
+            {
+                var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
+                if (contact == null) throw new EntityNotFoundException(typeof(Contact), id);
 
-            contact.Active = false;
-            _contactRepository.Update(contact);
-            await _contactRepository.CommitAsync(cancellationToken);
+                contact.Active = false;
+                _contactRepository.Update(contact);
+                await _contactRepository.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await _contactRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
         }
 
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
@@ -67,20 +75,13 @@ namespace Infrastructure.Services
         {
             try
             {
-                var prevContact = await _contactRepository.GetByIdAsync(id, cancellationToken);
-                if (prevContact == null) throw new EntityNotFoundException(typeof(Contact), id);
-                prevContact.Firstname = model.Firstname;
-                prevContact.Lastname = model.Lastname;
-                prevContact.Address.BoxNumber = model.Address.BoxNumber;
-                prevContact.Address.Zipcode = model.Address.Zipcode;
-                prevContact.Address.City = model.Address.City;
-                prevContact.Address.Country.Iso3Code = model.Address.Country.Iso3Code;
-                prevContact.Address.Country.Name = model.Address.Country.Name; ;
+                //var prevContact = await _contactRepository.GetByIdAsync(id, cancellationToken);
+                //if (prevContact == null) throw new EntityNotFoundException(typeof(Contact), id);
 
-                _contactRepository.Update(prevContact);
+                await _contactRepository.Update(id, model, cancellationToken);
                 await _contactRepository.CommitAsync(cancellationToken);
             }
-            catch
+            catch (Exception ex)
             {
                 await _contactRepository.RollbackAsync(cancellationToken);
                 throw;
@@ -88,3 +89,9 @@ namespace Infrastructure.Services
         }
     }
 }
+
+/*
+SqlException: The UPDATE statement conflicted with the FOREIGN KEY constraint "contact_role_contact_role2contact_fkey". 
+The conflict occurred in database "eonix", table "dbo.contact", column 'id'.
+ 
+ */

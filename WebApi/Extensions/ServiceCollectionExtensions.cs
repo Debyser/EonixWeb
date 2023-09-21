@@ -13,7 +13,11 @@ namespace WebApi.Extensions
 
         private static ScopeLifeTime _defaultScore = ScopeLifeTime.Scoped;
         public static void RegisterDbContext(this IServiceCollection services, IConfiguration configuration) =>
-        services.AddDbContext<EonixDbContext>(opts => opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("WebApi")));
+        services.AddDbContext<EonixDbContext>(opts =>
+        {
+            opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("WebApi"));
+            opts.EnableSensitiveDataLogging();
+        });
 
         public static void ConfigureService(this IServiceCollection services)
         {

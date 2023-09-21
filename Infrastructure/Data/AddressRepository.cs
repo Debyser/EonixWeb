@@ -21,14 +21,21 @@ namespace Infrastructure.Data
                 return;
 
             _context.Attach(entity.Country);
-
             // Add address
             _context.Add(entity);
         }
 
-        public new void Update(Address entity) => _context.Update(entity);// still relevant ?
+        public async new ValueTask Update(Address entity)
+        {
+            var address = await GetByIdAsync(entity.Id);
+
+            address.Street = entity.Street;
+            address.City = entity.City;
+            address.BoxNumber = entity.BoxNumber;
+            address.Zipcode = entity.Zipcode;
+        }
 
         public async ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default)
-            => await _context.Addresses.Where(p => p.Id == id).Include(p => p.Country).FirstOrDefaultAsync(cancellationToken);
+            => await _context.Addresses.Where(p => p.Id == id && p.Active).Include(p => p.Country).FirstOrDefaultAsync(cancellationToken);
     }
 }
