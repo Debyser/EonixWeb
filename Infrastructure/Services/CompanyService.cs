@@ -18,6 +18,8 @@ namespace Infrastructure.Services
             _contactRoleRepository = contactRoleRepository;
         }
 
+        public async ValueTask<IEnumerable<Company>> GetAllAsync() => await _companyRepository.GetAllAsync();
+
         public async ValueTask<long> CreateAsync(Company model, CancellationToken cancellationToken = default)
         {
             try
@@ -139,5 +141,7 @@ namespace Infrastructure.Services
 
         private async ValueTask<IEnumerable<Company>> GetAllAsync(CancellationToken cancellationToken = default)
           => (await _companyRepository.GetAllAsync(cancellationToken)).OrderBy(p => p.Name);
+
+
     }
 }

@@ -25,14 +25,15 @@ namespace Infrastructure.Data
             _context.Add(entity);
         }
 
-        public async new ValueTask Update(Address entity)
+        public void Update(Address prevAddress, Address currentAddress)
         {
-            var address = await GetByIdAsync(entity.Id);
-
-            address.Street = entity.Street;
-            address.City = entity.City;
-            address.BoxNumber = entity.BoxNumber;
-            address.Zipcode = entity.Zipcode;
+            if (currentAddress == null) return;
+            Update(prevAddress);
+            prevAddress.BoxNumber = currentAddress.BoxNumber;
+            prevAddress.Zipcode = currentAddress.Zipcode;
+            prevAddress.Street = currentAddress.Street;
+            prevAddress.BoxNumber = currentAddress.BoxNumber;
+            prevAddress.City = currentAddress.City;
         }
 
         public async ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default)

@@ -23,7 +23,7 @@ namespace Infrastructure.Data
         {
             entity.CreationTime = DateTime.UtcNow;
 
-            _contactRoleRepository.Add(entity.ContactRoles.ToList());
+            _contactRoleRepository.Add(entity.ContactRoles);
             _addressRepository.Add(entity.Address);
 
             // Add contact
@@ -46,31 +46,13 @@ namespace Infrastructure.Data
         public async ValueTask Update(long id, Contact model, CancellationToken cancellationToken = default)
         {
             var prevContact = await GetByIdAsync(id, cancellationToken);
-            _context.Entry(prevContact).State = EntityState.Modified;
-            if (prevContact != null)
-            {
-                if (prevContact.ContactRoles != null)
-                {
-                    foreach (var role in model.ContactRoles)
-                    {
-                        var prevContacRole = prevContact.ContactRoles.FirstOrDefault(p => p.Id == role.Id);
-                        if (prevContacRole == null) continue;
-                        _context.Entry(prevContacRole).State = EntityState.Modified;
-                        prevContacRole.Name = role.Name;
-                        prevContacRole.Active = role.Active;
-                    }
-                }
+            Update(prevContact);
+            _contactRoleRepository.Update(prevContact.ContactRoles, model.ContactRoles);
+            _addressRepository.Update(prevContact.Address, model.Address);
 
-                _context.Entry(prevContact.Address).State = EntityState.Modified;
-                prevContact.Address.BoxNumber = model.Address.BoxNumber;
-                prevContact.Address.Zipcode = model.Address.Zipcode;
-                prevContact.Address.Street = model.Address.Street;
-                prevContact.Address.BoxNumber = model.Address.BoxNumber;
-                prevContact.Address.City = model.Address.City;
-                prevContact.Firstname = model.Firstname;
-                prevContact.Lastname = model.Lastname;
-                prevContact.PhoneNumber = model.PhoneNumber;
-            }
+            prevContact.Firstname = model.Firstname;
+            prevContact.Lastname = model.Lastname;
+            prevContact.PhoneNumber = model.PhoneNumber;
         }
 
         #region Tracking way

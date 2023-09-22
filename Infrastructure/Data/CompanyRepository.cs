@@ -16,6 +16,9 @@ namespace Infrastructure.Data
             _addressRepository.SetDbContext(context);
         }
 
+        public new async ValueTask<IEnumerable<Company>> GetAllAsync(CancellationToken cancellationToken = default)
+            => await _context.Companies.AsNoTracking().Include(p => p.Address).ThenInclude(p => p.Country).ToListAsync(cancellationToken);
+
         // new : erase the Add from DbRepository
         public new void Add(Company entity)
         {

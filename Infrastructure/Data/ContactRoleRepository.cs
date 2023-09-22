@@ -13,7 +13,7 @@ namespace Infrastructure.Data
             _context = context;
         }
 
-        public void Add(List<ContactRole> contactRoles)
+        public void Add(IEnumerable<ContactRole> contactRoles)
         {
             foreach (var role in contactRoles)
             {
@@ -27,19 +27,16 @@ namespace Infrastructure.Data
             throw new NotImplementedException();
         }
 
-        public async ValueTask Update(IEnumerable<ContactRole> contactRoles)
+        public void Update(IEnumerable<ContactRole> prevContactRoles, IEnumerable<ContactRole> currentContactRoles)
         {
-            if (contactRoles == null) return;
-
-            var prevContactRoles = await GetListById(contactRoles.Select(x => x.Id).ToArray());
-            if (prevContactRoles == null) return;
-            foreach (var prevRole in prevContactRoles)
+            if (currentContactRoles == null) return;
+            foreach (var role in currentContactRoles)
             {
-                var currentContacRole = contactRoles.FirstOrDefault(p => p.Id == prevRole.Id);
-                if (currentContacRole == null) continue;
-                AttachOrUpdateCompany(prevRole);
-                prevRole.Name = currentContacRole.Name;
-                _context.Update(prevRole);
+                var prevContacRole = prevContactRoles.FirstOrDefault(p => p.Id == role.Id);
+                if (prevContacRole == null) continue;
+                Update(prevContacRole);
+                prevContacRole.Name = role.Name;
+                prevContacRole.Active = role.Active;
             }
         }
 

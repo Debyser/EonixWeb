@@ -23,6 +23,5 @@ namespace WebApi.Mappings
                 .ForPath(dest => dest.CompanyId, opt => opt.MapFrom(src => src.Company.Id))
                 .ForMember(dest => dest.Contact, opt => opt.Ignore());
         }
-        // version de language ? avec le .net 6 tu peux faire du 11 
     }
 }

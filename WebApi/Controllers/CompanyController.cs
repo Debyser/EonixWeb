@@ -30,11 +30,19 @@ namespace WebApi.Controllers
 
         // Why calling the mapper here ? : because the service doesn't know the ViewModel
         // So you do the mapping in the Application layer
-        [HttpGet("", Name = nameof(GetCompanyByFilter))]
+        //[HttpGet("", Name = nameof(GetCompanyByFilter))]
+        //[ProducesResponseType(typeof(IEnumerable<CompanyView>), 200)]
+        //[ProducesResponseType(404)]
+        //public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyView filter)
+        // => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
+
+
+        [HttpGet("", Name = nameof(GetCompanies))]
         [ProducesResponseType(typeof(IEnumerable<CompanyView>), 200)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyView filter)
-         => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
+        public async Task<IActionResult> GetCompanies()
+            => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetAllAsync()));
+
 
         [HttpGet("collection/({ids})", Name = nameof(GetCompanyCollection))]
         public async Task<IActionResult> GetCompanyCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<long> ids)
@@ -49,7 +57,7 @@ namespace WebApi.Controllers
         {
             var entity = _mapper.Map<Company>(companyVM);
             var createdCompany = await _companyService.CreateCompanyAsync(entity);
-            return Created(createdCompany.Id.ToString() , createdCompany);
+            return Created(createdCompany.Id.ToString(), createdCompany);
         }
 
         [HttpPut("{id:int}", Name = nameof(ModifyCompany))]
@@ -67,8 +75,8 @@ namespace WebApi.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteCompanyById([FromRoute] int id)
-        { 
-            await _companyService.DeleteIdAsync(id); 
+        {
+            await _companyService.DeleteIdAsync(id);
             return NoContent();
         }
 
