@@ -24,12 +24,5 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetCountryById([FromRoute] long id)
             => Ok(_mapper.Map<CountryView>(await _countryService.GetByIdAsync(id)));
 
-        //[HttpGet("", Name = nameof(GetCountries))]
-        //public async Task<IActionResult> GetCountries()
-        //     => Ok(_mapper.Map<IEnumerable<CountryView>>(await _countryService.GetListAsync()));
-
-        [HttpGet("", Name = nameof(GetCountries))]
-        public List<string> GetCountries()
-            => new List<string>{"azerty","azerto"};
     }
 }

@@ -14,6 +14,14 @@ namespace Infrastructure.Services
             _contactRepository = contactRepository;
         }
 
+        public ValueTask<IEnumerable<Contact>> GetListAsync()
+        {
+            throw new NotImplementedException();
+            // => _countries.ContainsKey(id) ?
+            //_countries[id] :
+            //   await _repository.FindByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Country), id);
+        }
+
         public async ValueTask<long> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
             try
@@ -22,7 +30,6 @@ namespace Infrastructure.Services
                 contact.Active = true;
                 _contactRepository.Add(contact);
                 await _contactRepository.CommitAsync(cancellationToken);
-
             }
             catch
             {
@@ -70,13 +77,12 @@ namespace Infrastructure.Services
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
             => await _contactRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Contact), id);
 
+
+
         public async ValueTask ModifyAsync(long id, Contact model, CancellationToken cancellationToken = default)
         {
             try
             {
-                //var prevContact = await _contactRepository.GetByIdAsync(id, cancellationToken);
-                //if (prevContact == null) throw new EntityNotFoundException(typeof(Contact), id);
-
                 await _contactRepository.Update(id, model, cancellationToken);
                 await _contactRepository.CommitAsync(cancellationToken);
             }

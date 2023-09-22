@@ -21,7 +21,6 @@ namespace Infrastructure.Data
 
         public new void Add(Contact entity)
         {
-            //entity.CreationTime = DateTime.UtcNow;
             entity.CreationTime = DateTime.UtcNow;
 
             _contactRoleRepository.Add(entity.ContactRoles.ToList());
@@ -33,7 +32,7 @@ namespace Infrastructure.Data
 
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
-            var contact = await _context.Contacts
+            return await _context.Contacts.AsNoTracking()
                 .Where(p => p.Id == id && p.Active)
                 .Include(p => p.Address)
                     .ThenInclude(p => p.Country)
@@ -42,26 +41,27 @@ namespace Infrastructure.Data
                         .ThenInclude(p => p.Address)
                             .ThenInclude(p => p.Country)
                 .FirstOrDefaultAsync(cancellationToken);
-            return contact;
         }
 
         public async ValueTask Update(long id, Contact model, CancellationToken cancellationToken = default)
         {
             var prevContact = await GetByIdAsync(id, cancellationToken);
+            _context.Entry(prevContact).State = EntityState.Modified;
             if (prevContact != null)
             {
                 if (prevContact.ContactRoles != null)
                 {
-                    foreach (var prevRole in prevContact.ContactRoles)
+                    foreach (var role in model.ContactRoles)
                     {
-                        var currentContacRole = model.ContactRoles.FirstOrDefault(p => p.Id == prevRole.Id);
-                        if (currentContacRole == null) continue;
-                        prevRole.ContactId = id;
-                        prevRole.Name = currentContacRole.Name;
-                        prevRole.Active = currentContacRole.Active;
+                        var prevContacRole = prevContact.ContactRoles.FirstOrDefault(p => p.Id == role.Id);
+                        if (prevContacRole == null) continue;
+                        _context.Entry(prevContacRole).State = EntityState.Modified;
+                        prevContacRole.Name = role.Name;
+                        prevContacRole.Active = role.Active;
                     }
                 }
 
+                _context.Entry(prevContact.Address).State = EntityState.Modified;
                 prevContact.Address.BoxNumber = model.Address.BoxNumber;
                 prevContact.Address.Zipcode = model.Address.Zipcode;
                 prevContact.Address.Street = model.Address.Street;
@@ -73,15 +73,50 @@ namespace Infrastructure.Data
             }
         }
 
-        private void AttachOrUpdateCompany(ContactRole role)
-        {
-            if (role.Company == null || role.Company.Id == 0) return;
+        #region Tracking way
+        // The Tracking way below
+        //public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
+        //{
+        //    var contact = await _context.Contacts
+        //        .Where(p => p.Id == id && p.Active)
+        //        .Include(p => p.Address)
+        //            .ThenInclude(p => p.Country)
+        //        .Include(p => p.ContactRoles)
+        //            .ThenInclude(p => p.Company)
+        //                .ThenInclude(p => p.Address)
+        //                    .ThenInclude(p => p.Country)
+        //        .FirstOrDefaultAsync(cancellationToken);
+        //    return contact;
+        //}
 
-            var existingCompany = _context.Companies.Local.FirstOrDefault(c => c.Id == role.Company.Id);
-            if (existingCompany == null)
-                _context.Attach(role.Company);
-            else
-                role.Company = existingCompany;
-        }
+        // the tracking way below
+        //public async ValueTask Update(long id, Contact model, CancellationToken cancellationToken = default)
+        //{
+        //    var prevContact = await GetByIdAsync(id, cancellationToken);
+        //    if (prevContact != null)
+        //    {
+        //        if (prevContact.ContactRoles != null)
+        //        {
+        //            foreach (var prevRole in prevContact.ContactRoles)
+        //            {
+        //                var currentContacRole = model.ContactRoles.FirstOrDefault(p => p.Id == prevRole.Id);
+        //                if (currentContacRole == null) continue;
+        //                prevRole.ContactId = id;
+        //                prevRole.Name = currentContacRole.Name;
+        //                prevRole.Active = currentContacRole.Active;
+        //            }
+        //        }
+
+        //        prevContact.Address.BoxNumber = model.Address.BoxNumber;
+        //        prevContact.Address.Zipcode = model.Address.Zipcode;
+        //        prevContact.Address.Street = model.Address.Street;
+        //        prevContact.Address.BoxNumber = model.Address.BoxNumber;
+        //        prevContact.Address.City = model.Address.City;
+        //        prevContact.Firstname = model.Firstname;
+        //        prevContact.Lastname = model.Lastname;
+        //        prevContact.PhoneNumber = model.PhoneNumber;
+        //    }
+        //} 
+        #endregion
     }
 }
