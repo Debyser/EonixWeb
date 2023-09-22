@@ -123,11 +123,11 @@ namespace Infrastructure.Services
             try
             {
                 _companyRepository.Add(company);
-                foreach (var contactRole in company.ContactRoles)
-                {
-                    contactRole.Company.Id = company.Id;
-                    _contactRoleRepository.Add(contactRole);
-                }
+                //foreach (var contactRole in company.ContactRoles)
+                //{
+                //    contactRole.Company.Id = company.Id;
+                //    _contactRoleRepository.Add(contactRole);
+                //}
                 await _companyRepository.CommitAsync(cancellationToken);
             }
             catch

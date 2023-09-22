@@ -55,8 +55,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(409)]
         public async Task<IActionResult> CreateCompany([FromBody] CompanyView companyVM)
         {
-            var entity = _mapper.Map<Company>(companyVM);
-            var createdCompany = await _companyService.CreateCompanyAsync(entity);
+            var createdCompany = _mapper.Map<CompanyView>(await _companyService.CreateCompanyAsync(_mapper.Map<Company>(companyVM)));
             return Created(createdCompany.Id.ToString(), createdCompany);
         }
 
