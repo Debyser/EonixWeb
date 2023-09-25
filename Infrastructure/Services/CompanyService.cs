@@ -47,9 +47,7 @@ namespace Infrastructure.Services
                 if (company == null)
                     throw new EntityNotFoundException(typeof(Company), id);// à vérifier , est ce que leservice connait les business exception ?
                 company.Active = false;
-                _companyRepository.Update(company); // dire que j'update que le champ Actif et pas toute l'entité
-                                                    // pas de tracking car lourd , sans tracking trouver comment maj un champ
-                                                    // lire code de Steph , minimum syndical
+                _companyRepository.Update(company);
                 await _companyRepository.CommitAsync(cancellationToken);
             }
             catch
@@ -60,7 +58,7 @@ namespace Infrastructure.Services
         }
 
         public async ValueTask<IEnumerable<Company>> GetByFilterAsync(Company filter, CancellationToken cancellationToken = default)
-       => string.IsNullOrWhiteSpace(filter.Name) ?
+            => string.IsNullOrWhiteSpace(filter.Name) ?
                await GetAllAsync(cancellationToken) :
                await _companyRepository.GetByFilterAsync(filter, cancellationToken);
 

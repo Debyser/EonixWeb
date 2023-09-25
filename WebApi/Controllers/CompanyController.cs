@@ -28,20 +28,13 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetCompanyById([FromRoute] int id)
             => Ok(_mapper.Map<CompanyView>(await _companyService.GetByIdAsync(id)));
 
-        // Why calling the mapper here ? : because the service doesn't know the ViewModel
-        // So you do the mapping in the Application layer
-        //[HttpGet("", Name = nameof(GetCompanyByFilter))]
-        //[ProducesResponseType(typeof(IEnumerable<CompanyView>), 200)]
-        //[ProducesResponseType(404)]
-        //public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyView filter)
-        // => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
-
-
-        [HttpGet("", Name = nameof(GetCompanies))]
+        // Why calling the mapper here? : because the service doesn't know the ViewModel
+        //So you do the mapping in the Application layer
+        [HttpGet("", Name = nameof(GetCompanyByFilter))]
         [ProducesResponseType(typeof(IEnumerable<CompanyView>), 200)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> GetCompanies()
-            => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetAllAsync()));
+        public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyView filter)
+         => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
 
 
         [HttpGet("collection/({ids})", Name = nameof(GetCompanyCollection))]
