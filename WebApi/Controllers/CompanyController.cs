@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.ModelBinders;
 using WebApi.Models;
@@ -9,6 +10,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    //[Authorize]
     public class CompanyController : ControllerBase
     {
         private readonly IAddressService _addressService;
@@ -33,6 +35,7 @@ namespace WebApi.Controllers
         [HttpGet("", Name = nameof(GetCompanyByFilter))]
         [ProducesResponseType(typeof(IEnumerable<CompanyView>), 200)]
         [ProducesResponseType(404)]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyView filter)
          => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
 

@@ -20,27 +20,27 @@ namespace WebApi.Controllers
 
         private async Task<dynamic> GenerateJwtToken()
         {
+            var claims = new List<Claim>
+            {
+                new Claim("aud", "https://localhost:7201/"),// Audience - The address of the resource
+                new Claim("iss", "https://localhost:7201/"),//Issuer - the party generating the JWT
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Name, "Jason"),
+                new Claim(ClaimTypes.Email, "jason.debyser@gmail.com"),
+                new Claim(ClaimTypes.NameIdentifier,"256"),
+                new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
+                new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds().ToString()),
+            };
+
+            var payload = new JwtPayload(claims);
             var credentials = new SigningCredentials(SigningKey, SecurityAlgorithms.HmacSha256);
-
-            //TOken will be good for 1 minutes
-            var payload = new JwtPayload("EonixWebApi", "www.eonixWebApi.com", null, null, null);
-            var userName = "Debyser";
-
-            payload.AddClaim(new Claim("iss", "https://localhost:7201/")); //Issuer - the party generating the JWT
-            payload.AddClaim(new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()));
-            payload.AddClaim(new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds().ToString()));
-            payload.AddClaim(new Claim("aud", "https://localhost:7201/"));  // Audience - The address of the resource
-            payload.AddClaim(new Claim(ClaimTypes.Name, userName));
-            payload.AddClaim(new Claim("Email", "jason.debyser@gmail.com"));
-            payload.AddClaim(new Claim("Role", "Developer"));
-
             var header = new JwtHeader(credentials);
             var secToken = new JwtSecurityToken(header, payload);
 
             var output = new
             {
                 Access_Token = new JwtSecurityTokenHandler().WriteToken(secToken),
-                UserName = userName
+                UserName = "Jason"
             };
 
             return await Task.FromResult<dynamic>(output);

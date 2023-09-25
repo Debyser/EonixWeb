@@ -1,8 +1,13 @@
 using ApplicationCore.Services;
+using Microsoft.IdentityModel.Tokens;
 using NLog;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using WebApi.Extensions;
+using WebApi.Helpers;
+//using Microsoft.OpenApi.Models;
+//using Microsoft.IdentityModel.Tokens;
+
 
 var builder = WebApplication.CreateBuilder(args);
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
@@ -28,6 +33,26 @@ builder.Services.AddControllers(config =>
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true; // We added the ReturnHttpNotAcceptable = true option, which tells the server that if the client tries to negotiate for the media type the server doesn’t support, it should return the 406 Not Acceptable status code.
 }).AddXmlDataContractSerializerFormatters();
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = "JwtBearer";
+    options.DefaultChallengeScheme = "JwtBearer";
+})
+.AddJwtBearer("JwtBearer", jwtOptions =>
+{
+    jwtOptions.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        IssuerSigningKey = JwtToken.SigningKey,
+        ValidateLifetime = true, // to see if it's not invalid
+        ClockSkew = TimeSpan.FromMinutes(5) // make sure a tolerance for your time checks
+    };
+});
+
 
 builder.Services.AddMvc().AddJsonOptions(o =>
 {
@@ -56,6 +81,7 @@ app.UseSwagger(x => x.SerializeAsV2 = true);
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
