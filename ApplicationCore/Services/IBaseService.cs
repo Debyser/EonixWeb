@@ -9,7 +9,7 @@ namespace ApplicationCore.Services
         ValueTask DeleteIdAsync(long id, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///  <exception cref="EntityNotFoundException">EntityNotFoundException exception is thrown if the archive already exists</exception>
+        ///  <exception cref="EntityNotFoundException">EntityNotFoundException exception is thrown if the entity does not exist</exception>
         /// </summary>
 
         ValueTask<T> GetByIdAsync(long id, CancellationToken cancellationToken = default);

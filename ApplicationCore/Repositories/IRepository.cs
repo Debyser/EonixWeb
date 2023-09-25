@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using System.Linq.Expressions;
+
 namespace ApplicationCore.Repositories
 {
     public interface IRepository<T> where T : class, IEntityBase, new()

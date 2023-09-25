@@ -26,23 +26,17 @@ namespace WebApi.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> ModifyContact([FromRoute] int id, [FromBody] ContactView contactDto)
         {
+            contactDto.Id = id;
             await _contactService.ModifyAsync(id, _mapper.Map<Contact>(contactDto));
             return Ok();
         }
 
         [HttpPost("", Name = nameof(CreateContact))]
         [ProducesResponseType(201)]
-        [ProducesResponseType(404)]     
+        [ProducesResponseType(404)]
         [ProducesResponseType(409)]
         public async Task<IActionResult> CreateContact([FromBody] ContactView contact)
             => Ok(await _contactService.CreateAsync(_mapper.Map<Contact>(contact)));
-
-        //[HttpPost("", Name = nameof(CreateContactForCompany))]
-        //[ProducesResponseType(201)]
-        //[ProducesResponseType(404)]
-        //[ProducesResponseType(409)]
-        //public async Task<IActionResult> CreateContactForCompany(int companyId, [FromBody] ContactView contact) 
-        //    => Ok(await _contactService.CreateEmployeeForCompany(companyId, _mapper.Map<Contact>(contact)));
 
         [HttpGet("{id:int}", Name = nameof(GetContactById))]
         [ProducesResponseType(typeof(ContactView), 200)]

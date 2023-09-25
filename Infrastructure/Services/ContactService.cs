@@ -14,6 +14,14 @@ namespace Infrastructure.Services
             _contactRepository = contactRepository;
         }
 
+        public ValueTask<IEnumerable<Contact>> GetListAsync()
+        {
+            throw new NotImplementedException();
+            // => _countries.ContainsKey(id) ?
+            //_countries[id] :
+            //   await _repository.FindByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Country), id);
+        }
+
         public async ValueTask<long> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
             try
@@ -22,9 +30,8 @@ namespace Infrastructure.Services
                 contact.Active = true;
                 _contactRepository.Add(contact);
                 await _contactRepository.CommitAsync(cancellationToken);
-
             }
-            catch (Exception ex)
+            catch
             {
                 await _contactRepository.RollbackAsync(cancellationToken);
                 throw;
@@ -55,34 +62,9 @@ namespace Infrastructure.Services
             try
             {
                 var contact = await _contactRepository.GetByIdAsync(id, cancellationToken);
+                if (contact == null) throw new EntityNotFoundException(typeof(Contact), id);
+
                 contact.Active = false;
-                _contactRepository.Update(contact);
-                await _contactRepository.CommitAsync(cancellationToken);
-            }
-            catch (Exception)
-            {
-                await _contactRepository.RollbackAsync(cancellationToken);
-                throw;
-            }
-        }
-
-        public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
-            => await _contactRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Contact), id);
-
-        public async ValueTask ModifyAsync(long id, Contact model, CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                var prevContact = await _contactRepository.GetByIdAsync(id, cancellationToken);
-                prevContact.Firstname = model.Firstname;
-                prevContact.Lastname = model.Lastname;
-                prevContact.Address.BoxNumber = model.Address.BoxNumber;
-                prevContact.Address.Zipcode = model.Address.Zipcode;
-                prevContact.Address.City = model.Address.City;
-                prevContact.Address.Country.Iso3Code = model.Address.Country.Iso3Code;
-                prevContact.Address.Country.Name = model.Address.Country.Name; ;
-
-                _contactRepository.Update(prevContact);
                 await _contactRepository.CommitAsync(cancellationToken);
             }
             catch
@@ -92,6 +74,29 @@ namespace Infrastructure.Services
             }
         }
 
-        //TODO: create IActionResult GetEmployeesForCompany(Guid companyId)
+        public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
+            => await _contactRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Contact), id);
+
+
+
+        public async ValueTask ModifyAsync(long id, Contact model, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                await _contactRepository.Update(id, model, cancellationToken);
+                await _contactRepository.CommitAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                await _contactRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
+        }
     }
 }
+
+/*
+SqlException: The UPDATE statement conflicted with the FOREIGN KEY constraint "contact_role_contact_role2contact_fkey". 
+The conflict occurred in database "eonix", table "dbo.contact", column 'id'.
+ 
+ */
