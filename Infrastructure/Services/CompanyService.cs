@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Exceptions;
 using ApplicationCore.Repositories;
+using ApplicationCore.RequestFeatures;
 using ApplicationCore.Services;
 
 namespace Infrastructure.Services
@@ -8,17 +9,12 @@ namespace Infrastructure.Services
     public class CompanyService : ICompanyService
     {
         private readonly ICompanyRepository _companyRepository;
-        private readonly IAddressRepository _addressRepository;
-        private readonly IContactRoleRepository _contactRoleRepository;
-
-        public CompanyService(ICompanyRepository companyRepository, IAddressRepository addressRepository, IContactRoleRepository contactRoleRepository)
+        public CompanyService(ICompanyRepository companyRepository)
         {
             _companyRepository = companyRepository;
-            _addressRepository = addressRepository;
-            _contactRoleRepository = contactRoleRepository;
         }
 
-        public async ValueTask<IEnumerable<Company>> GetAllAsync() => await _companyRepository.GetAllAsync();
+        public async ValueTask<IEnumerable<Company>> GetAllAsync(CompanyParameters companyParameters) => await _companyRepository.GetAllAsync(companyParameters);
 
         public async ValueTask<long> CreateAsync(Company model, CancellationToken cancellationToken = default)
         {
@@ -139,7 +135,5 @@ namespace Infrastructure.Services
 
         private async ValueTask<IEnumerable<Company>> GetAllAsync(CancellationToken cancellationToken = default)
           => (await _companyRepository.GetAllAsync(cancellationToken)).OrderBy(p => p.Name);
-
-
     }
 }

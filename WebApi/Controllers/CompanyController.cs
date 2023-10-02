@@ -1,7 +1,7 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.RequestFeatures;
 using ApplicationCore.Services;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.ModelBinders;
 using WebApi.Models;
@@ -32,12 +32,18 @@ namespace WebApi.Controllers
 
         // Why calling the mapper here? : because the service doesn't know the ViewModel
         //So you do the mapping in the Application layer
-        [HttpGet("", Name = nameof(GetCompanyByFilter))]
+        //[HttpGet("", Name = nameof(GetCompanyByFilter))]
+        //[ProducesResponseType(typeof(IEnumerable<CompanyView>), 200)]
+        //[ProducesResponseType(404)]
+        ////[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyView filter)
+        // => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
+
+        [HttpGet("", Name = nameof(GetCompanies))]
         [ProducesResponseType(typeof(IEnumerable<CompanyView>), 200)]
         [ProducesResponseType(404)]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyView filter)
-         => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
+        public async Task<IActionResult> GetCompanies([FromQuery] CompanyParameters companyParameters)
+        => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetAllAsync(companyParameters)));
 
 
         [HttpGet("collection/({ids})", Name = nameof(GetCompanyCollection))]
