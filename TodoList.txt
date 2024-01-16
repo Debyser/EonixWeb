@@ -58,3 +58,21 @@ Command dos tips or powershell
 The backslash (\) is used to nicely format the command arguments on separate lines for bash-like shells. 
 For CMD you can use the caret symbol (^) instead of (/),
 and for PowerShell you can use the backtick symbol (`) instead.
+
+
+Ecran 1 
+grid avec les contacts
+
+Ecran 2 
+Tu viens de clicker sur un contact
+pour avoir son détail
+
+Il n'y a pas de lien entre contact et compagnie
+comment vais-je récupérer dans le service l'id de la company si CompanyView n'est plus dans contactView => mon front l'a vu que quand tu crées un new contact , tu choisis ses roles 
+parmis des companies existantes
+
+ Les sous requêtes peuvent souvent être lentes, surtout lorsqu’elles sont imbriquées ou complexes.
+ Cela est dû au fait, que le moteur de la base de données doit évaluer la sous-requête pour chaque ligne de la requête principale. 
+ Or en faisant deux requêtes séparées, pour effectuer la sélection d’abord, puis la mise à jour, cela permet au moteur de la base de données de traiter les deux opérations de manière plus optimisée. Plan d’exécution : PostgreSQL (comme pas mal de moteur SGBD), pour l’exécution d’une query, il choisit un plan d’exécution en fonction des statistiques et des indices.
+ Dans le cas du scénario 1 où nous faisant une mise à jour avec une sous-requête, le planificateur doit prendre en compte à la fois la mise à jour et la sélection (en plus des jointures), ce qui peut conduire à un plan d’exécution moins optimal. Or en séparant les deux requêtes, nous pouvons obtenir des plans d’exécution plus efficaces. Verrouillage (deadlock) : L’utilisation de sous-requêtes pourrait également entrainer un verrouillage plus long des ressources, car la mise à jour doit attendre que la sous requête soit évaluée pour chaque ligne. En effectuant la sélection d’abord, nous pouvons réduire le temps de verrouillage nécessaire pour la mise à jour. Face à ces observations, 
+ je recommande d'éviter les requêtes avec sous-requêtes. La meilleure approche serait de sélectionner d'abord les éléments avant d'effectuer une action (Update ou Delete).
