@@ -81,6 +81,12 @@ app.UseSwagger(x => x.SerializeAsV2 = true);
 
 app.UseHttpsRedirection();
 
+
+//app.UseCors(builder => builder
+//.AllowAnyOrigin()
+//.AllowAnyHeader()
+//.AllowAnyMethod());
+
 app.UseAuthentication();
 app.UseAuthorization();
 

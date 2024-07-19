@@ -17,13 +17,17 @@ namespace Infrastructure.Data
             _addressRepository.SetDbContext(context);
         }
 
-        public new async ValueTask<IEnumerable<Company>> GetAllAsync(CompanyParameters companyParameters, CancellationToken cancellationToken = default)
-            => await _context.Companies.AsNoTracking()
+        public new async ValueTask<PagedList<Company>> GetAllAsync(CompanyParameters companyParameters, CancellationToken cancellationToken = default)
+        {
+            var companies = await _context.Companies.AsNoTracking()
                .Include(p => p.Address).ThenInclude(p => p.Country)
                .OrderBy(p => p.Name)
                .Skip((companyParameters.PageNumber - 1) * companyParameters.PageSize)
                .Take(companyParameters.PageSize)
                .ToListAsync(cancellationToken);
+
+            return PagedList<Company>.ToPagedList(companies, companyParameters.PageNumber, companyParameters.PageSize);
+        }
 
         // new : erase the Add from DbRepository
         public new void Add(Company entity)

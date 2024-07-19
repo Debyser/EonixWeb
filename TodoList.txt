@@ -67,6 +67,12 @@ Ecran 2
 Tu viens de clicker sur un contact
 pour avoir son détail
 
+Ecran 3
+liste des companis
+
+Ecran 4
+détail de la company
+
 Il n'y a pas de lien entre contact et compagnie
 comment vais-je récupérer dans le service l'id de la company si CompanyView n'est plus dans contactView => mon front l'a vu que quand tu crées un new contact , tu choisis ses roles 
 parmis des companies existantes

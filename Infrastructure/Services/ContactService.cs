@@ -86,7 +86,7 @@ namespace Infrastructure.Services
                 await _contactRepository.Update(id, model, cancellationToken);
                 await _contactRepository.CommitAsync(cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
                 await _contactRepository.RollbackAsync(cancellationToken);
                 throw;
