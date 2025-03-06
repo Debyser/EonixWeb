@@ -17,7 +17,7 @@ namespace Infrastructure.Data
         {
             if (entity == null) return;
             // Attach existing country for address
-            if (entity.Country == null || entity.Country.Id == 0)
+            if (entity.Country == null || entity.Country.Id <= 0)
                 return;
 
             _context.Attach(entity.Country);

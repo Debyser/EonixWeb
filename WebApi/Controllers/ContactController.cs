@@ -24,10 +24,10 @@ namespace WebApi.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> ModifyContact([FromRoute] int id, [FromBody] ContactView contactDto)
+        public async Task<IActionResult> ModifyContact([FromRoute] int id, [FromBody] ContactView contactView)
         {
-            contactDto.Id = id;
-            await _contactService.ModifyAsync(id, _mapper.Map<Contact>(contactDto));
+            contactView.Id = id;
+            await _contactService.ModifyAsync(id, _mapper.Map<Contact>(contactView));
             return Ok();
         }
 

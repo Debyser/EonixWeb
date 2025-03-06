@@ -1,7 +1,9 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.RequestFeatures;
 using ApplicationCore.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using WebApi.ModelBinders;
 using WebApi.Models;
 
@@ -9,6 +11,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    //[Authorize]
     public class CompanyController : ControllerBase
     {
         private readonly IAddressService _addressService;
@@ -30,11 +33,30 @@ namespace WebApi.Controllers
 
         // Why calling the mapper here? : because the service doesn't know the ViewModel
         //So you do the mapping in the Application layer
-        [HttpGet("", Name = nameof(GetCompanyByFilter))]
+        //[HttpGet("", Name = nameof(GetCompanyByFilter))]
+        //[ProducesResponseType(typeof(IEnumerable<CompanyView>), 200)]
+        //[ProducesResponseType(404)]
+        ////[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyView filter)
+        // => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
+
+        //[HttpGet("", Name = nameof(GetCompanies))]
+        //[ProducesResponseType(typeof(IEnumerable<CompanyView>), 200)]
+        //[ProducesResponseType(404)]
+        //public async Task<IActionResult> GetCompanies([FromQuery] CompanyParameters companyParameters)
+        //=> Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetAllAsync(companyParameters)));
+
+
+        [HttpGet("", Name = nameof(GetCompanies))]
         [ProducesResponseType(typeof(IEnumerable<CompanyView>), 200)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> GetCompanyByFilter([FromQuery] CompanyView filter)
-         => Ok(_mapper.Map<IEnumerable<CompanyView>>(await _companyService.GetByFilterAsync(_mapper.Map<Company>(filter))));
+        public async Task<IActionResult> GetCompanies([FromQuery] CompanyParameters companyParameters)
+        {
+            var (companies, metaData) = await _companyService.GetAllAsync(companyParameters);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
+            return Ok(_mapper.Map<IEnumerable<CompanyView>>(companies));
+        }
+
 
 
         [HttpGet("collection/({ids})", Name = nameof(GetCompanyCollection))]

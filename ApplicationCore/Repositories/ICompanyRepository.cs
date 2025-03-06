@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.RequestFeatures;
 
 namespace ApplicationCore.Repositories
 {
@@ -7,7 +8,8 @@ namespace ApplicationCore.Repositories
         ValueTask<Company> GetByIdAsync(long id, CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<Company>> GetByFilterAsync(Company filter, CancellationToken cancellationToken = default);
 
-        ValueTask<IEnumerable<Company>> GetAllAsync(CancellationToken cancellationToken = default);
+        //ValueTask<IEnumerable<Company>> GetAllAsync(CompanyParameters companyParameters, CancellationToken cancellationToken = default);
+        ValueTask<PagedList<Company>> GetAllAsync(CompanyParameters companyParameters, CancellationToken cancellationToken = default);
 
     }
 }
