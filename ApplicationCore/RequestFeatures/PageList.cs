@@ -19,7 +19,7 @@
             var count = source.Count();
             var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             return new PagedList<T>(items, count, pageNumber, pageSize);
-
+            //can retrieve paging but bug if pageNumber = 2 and pageSize = 20, why ? 
         }
     }
 }
