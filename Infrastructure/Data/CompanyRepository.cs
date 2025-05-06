@@ -22,8 +22,8 @@ namespace Infrastructure.Data
             var companies = await _context.Companies.AsNoTracking()
                .Include(p => p.Address).ThenInclude(p => p.Country)
                .OrderBy(p => p.Name)
-               .Skip((companyParameters.PageNumber - 1) * companyParameters.PageSize)
-               .Take(companyParameters.PageSize)
+               //.Skip((companyParameters.PageNumber - 1) * companyParameters.PageSize)
+               //.Take(companyParameters.PageSize)
                .ToListAsync(cancellationToken);
 
             return PagedList<Company>.ToPagedList(companies, companyParameters.PageNumber, companyParameters.PageSize);

@@ -18,7 +18,7 @@ namespace Infrastructure.Services
         {
             var companies = await _companyRepository.GetAllAsync(companyParameters);
 
-            return (companies: companies, metaData: companies.MetaData);
+            return (companies, metaData: companies.MetaData);
         }
 
         public async ValueTask<long> CreateAsync(Company model, CancellationToken cancellationToken = default)
