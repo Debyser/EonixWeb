@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Repositories
 {
-    public interface ICountryRepository : IRepository<Country>
+    public interface ICountryRepository
     {
         IEnumerable<Country> GetAll();
     }

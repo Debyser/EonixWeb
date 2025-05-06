@@ -3,7 +3,7 @@ using ApplicationCore.RequestFeatures;
 
 namespace ApplicationCore.Repositories
 {
-    public interface ICompanyRepository : IRepository<Company>
+    public interface ICompanyRepository
     {
         ValueTask<Company> GetByIdAsync(long id, CancellationToken cancellationToken = default);
         ValueTask<IEnumerable<Company>> GetByFilterAsync(Company filter, CancellationToken cancellationToken = default);

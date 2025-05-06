@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Repositories
 {
-    public interface IContactRoleRepository : IRepository<ContactRole>
+    public interface IContactRoleRepository
     {
         void Add(IEnumerable<ContactRole> contactRoles);
         void Update(IEnumerable<ContactRole> prevContactRoles, IEnumerable<ContactRole> currentContactRoles);

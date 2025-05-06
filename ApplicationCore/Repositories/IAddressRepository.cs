@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Repositories
 {
-    public interface IAddressRepository : IRepository<Address>
+    public interface IAddressRepository
     {
         ValueTask<Address> GetByIdAsync(long id, CancellationToken cancellationToken = default);
         void Update(Address prevAddress, Address currentAddress);

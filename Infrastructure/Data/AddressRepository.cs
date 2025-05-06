@@ -1,19 +1,20 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class AddressRepository : DbRepository<Address>, IAddressRepository
+    public class AddressRepository : IAddressRepository
     {
         private readonly EonixDbContext _context;
+        private const string TABLE_NAME = "address";
 
-        public AddressRepository(EonixDbContext context, ICountryRepository countryRepository) : base(context)
+
+        public AddressRepository(EonixDbContext context, ICountryRepository countryRepository)
         {
             _context = context;
         }
 
-        public new void Add(Address entity)
+        public void Add(Address entity)
         {
             if (entity == null) return;
             // Attach existing country for address
