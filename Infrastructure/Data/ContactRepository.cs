@@ -31,14 +31,18 @@ namespace Infrastructure.Data
             _context.Add(entity);
         }
 
-        public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
+        public async ValueTask<IEnumerable<Contact>> GetListAsync(string filter, CancellationToken cancellationToken = default)
         {
-            return await _context.Contacts.AsNoTracking()
+            throw new NotImplementedException();
+        }
+
+        public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
+            => await _context.Contacts.AsNoTracking()
                 .Where(p => p.Id == id && p.Active)
                 .Include(p => p.Address).ThenInclude(p => p.Country)
-                .Include(p => p.ContactRoles).ThenInclude(p => p.Company).ThenInclude(p => p.Address).ThenInclude(p => p.Country)
+                .Include(p => p.ContactRoles!.Where(cr => cr != null)) // Ensure ContactRoles is not null
+                .ThenInclude(p => p.Company).ThenInclude(p => p.Address).ThenInclude(p => p.Country)
                 .FirstOrDefaultAsync(cancellationToken) ?? throw new EntityNotFoundException(typeof(Contact), id);
-        }
 
         public async ValueTask Update(long id, Contact model, CancellationToken cancellationToken = default)
         {

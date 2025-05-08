@@ -17,6 +17,7 @@ namespace Infrastructure.Services
             _repository = countryRepository;
             LoadCache();
         }
+
         // TODO : have a get by id non async for the address where no exception is thrown
         public async ValueTask<Country> GetByIdAsync(long id, CancellationToken cancellationToken = default)
             => _countries.ContainsKey(id) ?

@@ -53,7 +53,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetCompanies([FromQuery] CompanyParameters companyParameters)
         {
             var (companies, metaData) = await _companyService.GetAllAsync(companyParameters);
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
+            Response.Headers["X-Pagination"] = JsonSerializer.Serialize(metaData); // Use indexer to set the header
             return Ok(_mapper.Map<IEnumerable<CompanyView>>(companies));
         }
 

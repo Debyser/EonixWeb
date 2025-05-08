@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 // The line to execute for database first in the package Manager Console :
 // Scaffold-DbContext "server=DELL-JASON\MSSQLSERVER2019;database=EonixWebApi;Integrated Security=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure
+// for specific tables :
+// Scaffold-DbContext "server=DELL-JASON\MSSQLSERVER2019;database=EonixWebApi;Integrated Security=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure -Tables address,company,contact,contact_role,country
 
 namespace Infrastructure.Data
 {
@@ -31,7 +33,7 @@ namespace Infrastructure.Data
         //            }
         //        }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ApplyAllConfigurations(modelBuilder);
             base.OnModelCreating(modelBuilder);

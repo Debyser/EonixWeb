@@ -2,7 +2,11 @@
 using ApplicationCore.Exceptions;
 using ApplicationCore.Repositories;
 using ApplicationCore.Services;
-
+/*
+SqlException: The UPDATE statement conflicted with the FOREIGN KEY constraint "contact_role_contact_role2contact_fkey". 
+The conflict occurred in database "eonix", table "dbo.contact", column 'id'.
+ 
+ */
 namespace Infrastructure.Services
 {
     public class ContactService : IContactService
@@ -14,12 +18,10 @@ namespace Infrastructure.Services
             _contactRepository = contactRepository;
         }
 
-        public ValueTask<IEnumerable<Contact>> GetListAsync()
+        public async ValueTask<IEnumerable<Contact>> GetListAsync(string filter, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
-            // => _countries.ContainsKey(id) ?
-            //_countries[id] :
-            //   await _repository.FindByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Country), id);
+            var contacts = await _contactRepository.GetAllAsync(cancellationToken);
+            return contacts.OrderBy(p => p.Lastname);
         }
 
         public async ValueTask<long> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
@@ -77,8 +79,6 @@ namespace Infrastructure.Services
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
             => await _contactRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(typeof(Contact), id);
 
-
-
         public async ValueTask ModifyAsync(long id, Contact model, CancellationToken cancellationToken = default)
         {
             try
@@ -95,8 +95,3 @@ namespace Infrastructure.Services
     }
 }
 
-/*
-SqlException: The UPDATE statement conflicted with the FOREIGN KEY constraint "contact_role_contact_role2contact_fkey". 
-The conflict occurred in database "eonix", table "dbo.contact", column 'id'.
- 
- */

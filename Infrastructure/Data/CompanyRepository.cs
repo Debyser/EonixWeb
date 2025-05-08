@@ -46,7 +46,7 @@ namespace Infrastructure.Data
                 await _context.Companies.AsNoTracking().ToListAsync();
         }
 
-        public async ValueTask<Company> GetByIdAsync(long id, CancellationToken cancellationToken = default)
+        public async ValueTask<Company?> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             return await _context.Companies.AsNoTracking()
                 .Where(p => p.Id == id)

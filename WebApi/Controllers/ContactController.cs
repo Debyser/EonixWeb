@@ -53,5 +53,15 @@ namespace WebApi.Controllers
             await _contactService.DeleteIdAsync(id);
             return NoContent();
         }
+
+        //[HttpGet("", Name = nameof(GetContacts))]
+        //[ProducesResponseType(typeof(IEnumerable<ContactView>), 200)]
+        //[ProducesResponseType(404)]
+        //public async Task<IActionResult> GetContacts([FromQuery] ContactParameters contactParameters, CancellationToken cancellationToken = default)
+        //{
+        //    var (contacts, metaData) = await _contactService.GetAllAsync(contactParameters, cancellationToken);
+        //    Response.Headers["X-Pagination"] = JsonSerializer.Serialize(metaData); // Use indexer to set the header
+        //    return Ok(_mapper.Map<IEnumerable<CompanyView>>(companies));
+        //}
     }
 }

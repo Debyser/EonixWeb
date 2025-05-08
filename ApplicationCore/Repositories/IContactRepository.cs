@@ -8,5 +8,7 @@ namespace ApplicationCore.Repositories
 
         ValueTask Update(long id, Contact prevContact, CancellationToken cancellationToken = default);
 
+        ValueTask<IEnumerable<Contact>> GetListAsync(string filter, CancellationToken cancellationToken = default);
+
     }
 }
