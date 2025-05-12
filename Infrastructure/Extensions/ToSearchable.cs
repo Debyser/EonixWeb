@@ -13,8 +13,8 @@ namespace Infrastructure.Extensions
             return searchable switch
             {
                 SearchableType.None => value,
-                SearchableType.IgnoreCase => value.ToUpper(),
-                SearchableType.IgnoreCaseAndDiacritics => value.ToUpper().ToIgnoreCaseAndDiacritics(),
+                SearchableType.IgnoreCase => value.ToUpper().Trim(),
+                SearchableType.IgnoreCaseAndDiacritics => value.ToUpper().Trim().ToIgnoreCaseAndDiacritics(),
                 _ => value
             };
         }
