@@ -11,6 +11,10 @@ namespace ApplicationCore.Entities
         public long AddressId { get; set; }
         public bool Active { get; set; }
 
+        public string? SLastName { get; set; }
+
+        public string? SFirstName { get; set; }
+
         public DateTime? CreationTime { get; set; }
 
         public Address Address { get; set; }

@@ -1,10 +1,10 @@
 ﻿using ApplicationCore.Entities;
 using Microsoft.EntityFrameworkCore;
 // The line to execute for database first in the package Manager Console :
-// Scaffold-DbContext "server=DELL-JASON\MSSQLSERVER2019;database=EonixWebApi;Integrated Security=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure
+// Scaffold-DbContext "server=02-INF-W419\MSSQLSERVER2022;database=eonix;Integrated Security=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure
 // for specific tables :
-// Scaffold-DbContext "server=DELL-JASON\MSSQLSERVER2019;database=EonixWebApi;Integrated Security=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure -Tables address,company,contact,contact_role,country
 
+//Scaffold-DbContext "server=02-INF-W419\MSSQLSERVER2022;database=eonix;Integrated Security=true;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Project Infrastructure -Tables contact
 namespace Infrastructure.Data
 {
     public partial class EonixDbContext : DbContext

@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Enums;
 
 namespace ApplicationCore.Repositories
 {
@@ -8,7 +9,7 @@ namespace ApplicationCore.Repositories
 
         ValueTask Update(long id, Contact prevContact, CancellationToken cancellationToken = default);
 
-        ValueTask<IEnumerable<Contact>> GetListAsync(string filter, CancellationToken cancellationToken = default);
+        ValueTask<List<Contact>> GetList(string filter, SearchableType searchable, CancellationToken cancellationToken = default);
 
     }
 }

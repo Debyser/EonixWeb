@@ -1,8 +1,9 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Enums;
 using ApplicationCore.Exceptions;
 using ApplicationCore.Repositories;
+using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
-
 namespace Infrastructure.Data
 {
     public class ContactRepository : DbRepository<Contact>, IContactRepository
@@ -31,10 +32,13 @@ namespace Infrastructure.Data
             _context.Add(entity);
         }
 
-        public async ValueTask<IEnumerable<Contact>> GetListAsync(string filter, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        public ValueTask<List<Contact>> GetList(string filter, SearchableType searchable = SearchableType.IgnoreCaseAndDiacritics, CancellationToken cancellationToken = default)
+            => new(
+                _context.Contacts.AsNoTracking()
+                .Where(c => c.SLastName == filter.ToSearchable(searchable) || c.SFirstName == filter.ToSearchable(searchable))
+                .OrderBy(c => c.SLastName).ThenBy(c => c.SFirstName)
+                .ToListAsync(cancellationToken)
+            );
 
         public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)
             => await _context.Contacts.AsNoTracking()
@@ -55,6 +59,10 @@ namespace Infrastructure.Data
             prevContact.Lastname = model.Lastname;
             prevContact.PhoneNumber = model.PhoneNumber;
         }
+
+
+
+
 
         #region Tracking way
         // The Tracking way below

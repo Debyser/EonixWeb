@@ -18,11 +18,8 @@ namespace Infrastructure.Services
             _contactRepository = contactRepository;
         }
 
-        public async ValueTask<IEnumerable<Contact>> GetListAsync(string filter, CancellationToken cancellationToken = default)
-        {
-            var contacts = await _contactRepository.GetAllAsync(cancellationToken);
-            return contacts.OrderBy(p => p.Lastname);
-        }
+        public async ValueTask<List<Contact>> GetListAsync(string name, CancellationToken cancellationToken = default)
+            => await _contactRepository.GetList(name, ApplicationCore.Enums.SearchableType.IgnoreCaseAndDiacritics, cancellationToken);
 
         public async ValueTask<long> CreateAsync(Contact contact, CancellationToken cancellationToken = default)
         {
