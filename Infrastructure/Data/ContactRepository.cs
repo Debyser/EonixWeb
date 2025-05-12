@@ -61,9 +61,6 @@ namespace Infrastructure.Data
         }
 
 
-
-
-
         #region Tracking way
         // The Tracking way below
         //public async ValueTask<Contact> GetByIdAsync(long id, CancellationToken cancellationToken = default)

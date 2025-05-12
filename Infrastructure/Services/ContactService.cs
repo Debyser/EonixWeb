@@ -89,6 +89,20 @@ namespace Infrastructure.Services
                 throw;
             }
         }
+
+        public async ValueTask ModifyAsync(Contact model, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                _contactRepository.Update(model);
+                await _contactRepository.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await _contactRepository.RollbackAsync(cancellationToken);
+                throw;
+            }
+        }
     }
 }
 
