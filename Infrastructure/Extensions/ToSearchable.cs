@@ -10,6 +10,7 @@ namespace Infrastructure.Extensions
         {
             if (string.IsNullOrEmpty(value))
                 return value;
+
             return searchable switch
             {
                 SearchableType.None => value,

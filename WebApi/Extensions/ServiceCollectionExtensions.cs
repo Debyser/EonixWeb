@@ -9,7 +9,7 @@ namespace WebApi.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        private static readonly object _syncRoot = new object();
+        private static readonly object _syncRoot = new();
 
         private static ScopeLifeTime _defaultScore = ScopeLifeTime.Scoped;
         public static void RegisterDbContext(this IServiceCollection services, IConfiguration configuration) =>

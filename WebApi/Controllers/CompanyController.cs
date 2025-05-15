@@ -53,11 +53,9 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetCompanies([FromQuery] CompanyParameters companyParameters)
         {
             var (companies, metaData) = await _companyService.GetAllAsync(companyParameters);
-            Response.Headers["X-Pagination"] = JsonSerializer.Serialize(metaData); // Use indexer to set the header
+            Response.Headers["X-Pagination"] = JsonSerializer.Serialize(metaData);
             return Ok(_mapper.Map<IEnumerable<CompanyView>>(companies));
         }
-
-
 
         [HttpGet("collection/({ids})", Name = nameof(GetCompanyCollection))]
         public async Task<IActionResult> GetCompanyCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<long> ids)

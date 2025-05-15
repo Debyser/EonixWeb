@@ -29,6 +29,9 @@ namespace Infrastructure.Data
             _addressRepository.Add(entity.Address);
 
             // Add contact
+            entity.SLastName = entity.Lastname.ToSearchable(SearchableType.IgnoreCaseAndDiacritics);
+            entity.SFirstName = entity.Firstname.ToSearchable(SearchableType.IgnoreCaseAndDiacritics);
+
             _context.Add(entity);
         }
 
@@ -57,6 +60,9 @@ namespace Infrastructure.Data
 
             prevContact.Firstname = model.Firstname;
             prevContact.Lastname = model.Lastname;
+            prevContact.SFirstName = model.Firstname.ToSearchable(SearchableType.IgnoreCaseAndDiacritics);
+            prevContact.SLastName = model.Lastname.ToSearchable(SearchableType.IgnoreCaseAndDiacritics);
+
             prevContact.PhoneNumber = model.PhoneNumber;
         }
 

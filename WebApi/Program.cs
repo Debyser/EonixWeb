@@ -10,6 +10,16 @@ using WebApi.Helpers;
 
 
 var builder = WebApplication.CreateBuilder(args);
+/*
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5000); //HTTP port
+    serverOptions.ListenAnyIP(5001, listenOptions => //HTTPS port
+    {
+        listenOptions.UseHttps();
+    });
+});*/
+
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
 builder.Services.ConfigureLoggerService();
@@ -70,13 +80,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
 
 var app = builder.Build(); //the Build method builds the WebApplication and registers all the services added with IOC
+
 app.MapHealthChecks("/health");
 
 var logger = app.Services.GetRequiredService<ILoggerService>();
 app.ConfigureExceptionHandler(logger);
 
 app.UseSwaggerUI();
-app.UseSwagger(x => x.SerializeAsV2 = true);
+
+// new version
+app.MapSwagger().RequireAuthorization();
+
+//app.UseSwagger(x => x.SerializeAsV2 = true);
+
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
